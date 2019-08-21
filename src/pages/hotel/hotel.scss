@@ -1,0 +1,13 @@
+page-hotel,
+.hotel {
+
+  agm-map {
+    height: 180px;
+  }
+
+  .list-hotels {
+  	.hotel-bg {
+		border-bottom: 1px solid rgba(86, 61, 124, .95);
+  	}
+  }
+}
