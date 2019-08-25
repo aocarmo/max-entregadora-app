@@ -23,6 +23,7 @@ export class HomePage {
   showItems: boolean = false;
   lat: number = -22.9068;
   lng: number = -43.1729;
+  zoom: number = 12;
 
   public childs: any;
 

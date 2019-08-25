@@ -43,8 +43,8 @@ export class LoginPage implements OnInit {
 
   forgotPass() {
     let forgot = this.forgotCtrl.create({
-      title: 'Forgot Password?',
-      message: "Enter you email address to send a reset link password.",
+      title: 'Esqueceu a senha?',
+      message: "Informe seu e-mail para enviarmos um link de redefinição.",
       inputs: [
         {
           name: 'email',
@@ -54,17 +54,17 @@ export class LoginPage implements OnInit {
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           handler: data => {
             console.log('Cancel clicked');
           }
         },
         {
-          text: 'Send',
+          text: 'Enviar',
           handler: data => {
             console.log('Send clicked');
             let toast = this.toastCtrl.create({
-              message: 'Email was sended successfully',
+              message: 'E-mail de redefinicão enviado!',
               duration: 3000,
               position: 'top',
               cssClass: 'dark-trans',

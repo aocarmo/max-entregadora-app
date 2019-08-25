@@ -4,7 +4,7 @@
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>
-            <span ion-text>Edit Profile</span>
+            <span ion-text>Editar Perfil</span>
         </ion-title>
     </ion-navbar>
 </ion-header>
@@ -13,12 +13,12 @@
 
     <ion-card>
       <ion-card-content class="profile-bg">
-          <img src="assets/img/avatar.jpeg">
-          <h2 class="fw500">João Firmino</h2>
-          <h3 ion-text color="light">Customer</h3>
+		  <img src="assets/img/rander.jpg">
+          <h2 class="fw500">Roberto Rander</h2>
+          <h3 ion-text color="light">Entregador</h3>
           <button ion-button icon-start margin-top color="secondary">
-            <ion-icon name="photos"></ion-icon>
-            Edit / Insert Avatar
+            <ion-icon class="fas fa-camera"></ion-icon>
+            Alterar foto
           </button>
       </ion-card-content>
 
@@ -27,21 +27,21 @@
           <ion-col col-12 margin-bottom padding>
 
   	        <ion-item>
-  	          <ion-label color="dark" stacked>Full Name:</ion-label>
-  	          <ion-input type="text" placeholder="Ex..: Joe Doe" value="João Firmino"></ion-input>
+  	          <ion-label color="dark" stacked>Nome:</ion-label>
+  	          <ion-input type="text" placeholder="Ex..: Joe Doe" value="Roberto Rander"></ion-input>
   	        </ion-item>
 
   	        <ion-item>
   	          <ion-label color="dark" stacked>Email:</ion-label>
-  	          <ion-input type="email" placeholder="Ex.: joe@doe.com" value="firminoata@gmail.com"></ion-input>
+  	          <ion-input type="email" placeholder="Ex.: joe@doe.com" value="rrander@gmail.com"></ion-input>
   	        </ion-item>
-
+	<!-- 
   	        <ion-item>
-  	          <ion-label color="dark" stacked>Address:</ion-label>
+  	          <ion-label color="dark" stacked>Enderco:</ion-label>
   	          <ion-input type="text" placeholder="Ex.: Abey Road 5"></ion-input>
   	        </ion-item>
 
-  				  <ion-item>
+  			 <ion-item>
   				    <ion-label color="dark">City</ion-label>
   				    <ion-select>
   				      <ion-option value="nes">New York</ion-option>
@@ -86,19 +86,19 @@
             <ion-item>
             	<ion-label class="text-1x">Available to chat w/ Travel Agents?</ion-label>
             	<ion-checkbox></ion-checkbox>
-          	</ion-item>
+          	</ion-item> -->
 
           </ion-col>
         </ion-row>
       </ion-grid>
 
-			<button ion-button large full color="dark" (click)="sendData()">Edit</button>
+			<button ion-button large full color="dark" (click)="sendData()">Salvar</button>
     </ion-card>
 
-    <div padding>
+   <!-- <div padding>
       <p ion-text color="dark" no-margin>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio placeat incidunt nesciunt atque ratione quisquam, fugit omnis maxime adipisci excepturi dignissimos aliquam asperiores itaque unde sequi? Minus, quia, dolore?
       </p>
-    </div>
+    </div>-->
 
 </ion-content>

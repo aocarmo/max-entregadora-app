@@ -39,15 +39,12 @@ export class ionBookingApp {
     // console.log(this.nav)
 
     this.appMenuItems = [
-      {title: 'Home', component: 'page-home', icon: 'home'},
-      {title: 'Messages', component: 'page-message-list', icon: 'mail'},
-      {title: 'Local Weather', component: 'page-local-weather', icon: 'sunny'},
-      {title: 'Rent a Car', component: 'page-search-cars', icon: 'car'},
-      {title: 'Trip Activities', component: 'page-search-trips', icon: 'beer'},
-      {title: 'Favorites', component: 'page-favorite-list', icon: 'heart'},
-      {title: 'Booking List', component: 'page-booking-list', icon: 'briefcase'},
-      {title: 'Support', component: 'page-support', icon: 'help-buoy'},
-      {title: 'Extra Pages (with Animations)', component: 'page-custom-pages', icon: 'albums'}
+    
+      {title: 'Entregas', component: 'page-home', icon: 'fas fa-motorcycle'},
+    //  {title: 'Minhas ', component: 'page-message-list', icon: 'mail'}, 
+      {title: 'Contato', component: 'page-support', icon: 'fas fa-phone'},
+
+    
     ];
   }
 

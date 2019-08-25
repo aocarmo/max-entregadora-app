@@ -20,30 +20,30 @@
           <ion-row justify-content-center>
             <ion-col padding-left padding-right padding-bottom text-center col-auto>
               <h2 ion-text color="light" class="no-margin bold">
-                João Firmino
+                Roberto Rander
               </h2>
-              <span ion-text color="secondary">firminoata@gmail.com</span>
+              <span ion-text color="secondary">rrander@gmail.com</span>
               <div padding-top>
                 <button ion-button icon-left small color="secondary" menuClose (click)="editProfile()">
                   <ion-icon name="contact"></ion-icon>
-                  Edit Profile
+                  Editar Perfil
                 </button>
                 <button ion-button icon-left small color="secondary" menuClose (click)="logout()">
                   <ion-icon name="log-out"></ion-icon>
-                  Log Out
+                  Sair
                 </button>
               </div>
             </ion-col>
           </ion-row>
 
           <ion-row class="other-data" no-padding>
-            <ion-col text-center class="column">
+            <!-- <ion-col text-center class="column">
               <span ion-text color="light" class="bold">Points</span>
               <h5 ion-text no-margin class="text-1x text-white">1124</h5>
-            </ion-col>
+            </ion-col>-->
             <ion-col text-center class="column">
-              <span ion-text color="light" class="bold">Location</span>
-              <h5 ion-text no-margin class="text-1x text-white">São Paulo/BR</h5>
+           <!--   <span ion-text color="light" class="bold">Localidade</span>-->
+              <h5 ion-text no-margin class="text-1x text-white">Salvador/BA</h5>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -55,7 +55,7 @@
 
       <ion-list class="user-list">
         <button ion-item menuClose class="text-1x" *ngFor="let menuItem of appMenuItems" (click)="openPage(menuItem)">
-          <ion-icon item-left [name]="menuItem.icon" color="primary"></ion-icon>
+          <ion-icon item-left [class]="menuItem.icon" color="primary"></ion-icon>
           <span ion-text color="primary">{{menuItem.title}}</span>
         </button>
       </ion-list>

@@ -2,13 +2,14 @@
 // http://ionicframework.com/docs/theming/
 $font-path: "../assets/fonts";
 @import "ionic.globals";
+$fa-font-path:        "../assets/webfonts";
 
 // Shared Variables
 // --------------------------------------------------
 // To customize the look and feel of this app, you can override
 // the Sass variables found in Ionic's source scss files.
 
-$text-color: rgba(86, 61, 124, .75);
+$text-color: #2E2E2E;
 $background-color: #fff;
 
 // Named Color Variables
@@ -20,11 +21,11 @@ $background-color: #fff;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary: #F5863C,
-  secondary: #E6E6E6,
+  primary: #2E2E2E,
+  secondary: #F58034,
   danger: #f53d3d,
   light: #D7D6E1,
-  dark: #333333
+  dark: #F58034
 );
 
 $grid-max-widths: (
