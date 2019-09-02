@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {FormGroup, Validators, FormBuilder} from '@angular/forms';
 import {IonicPage, NavController, AlertController, ToastController, MenuController} from "ionic-angular";
+import { OauthService } from "../../providers/oauth-service/oauth-service";
 
 @IonicPage({
   name: 'page-login',
@@ -15,17 +16,23 @@ import {IonicPage, NavController, AlertController, ToastController, MenuControll
 export class LoginPage implements OnInit {
   public onLoginForm: FormGroup;
 
-  constructor(private _fb: FormBuilder, public nav: NavController, public forgotCtrl: AlertController, public menu: MenuController, public toastCtrl: ToastController) {
+  constructor(private _fb: FormBuilder, 
+              public nav: NavController, 
+              public forgotCtrl: AlertController,
+              public menu: MenuController, 
+              public toastCtrl: ToastController,
+              public oauthService: OauthService
+              ) {
     this.menu.swipeEnable(false);
     this.menu.enable(false);
   }
 
   ngOnInit() {
     this.onLoginForm = this._fb.group({
-      email: ['', Validators.compose([
+      usuario: ['', Validators.compose([
         Validators.required
       ])],
-      password: ['', Validators.compose([
+      senha: ['', Validators.compose([
         Validators.required
       ])]
     });
@@ -38,7 +45,13 @@ export class LoginPage implements OnInit {
 
   // login and go to home page
   login() {
-    this.nav.setRoot('page-home');
+    
+    this.oauthService.doLogin(this.onLoginForm.value.usuario, this.onLoginForm.value.senha).then((data:any)=>{
+      this.nav.setRoot('page-home');
+    }).catch((err:any)=>{
+      
+    });
+    
   }
 
   forgotPass() {
