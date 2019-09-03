@@ -5,6 +5,8 @@ import {NotificationsPage} from "../notifications/notifications";
 
 import {HotelService} from "../../providers/hotel-service";
 
+import { AutenticacaoProvider } from "../../providers/autenticacao/autenticacao";
+
 @IonicPage({
   name: 'page-home',
   segment: 'home',
@@ -25,6 +27,7 @@ export class HomePage {
   lng: number = -43.1729;
   zoom: number = 12;
 
+
   public childs: any;
 
   public hotellocation: string;
@@ -43,16 +46,26 @@ export class HomePage {
     date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString().split(',')[0]
   }
 
-  constructor(public nav: NavController, public navParams: NavParams, public menuCtrl: MenuController, public modalCtrl: ModalController, public popoverCtrl: PopoverController, public hotelService: HotelService) {
+  constructor(public nav: NavController, public navParams: NavParams, 
+              public menuCtrl: MenuController, public modalCtrl: ModalController, 
+              public popoverCtrl: PopoverController, public hotelService: HotelService,public autenticacaoProvider: AutenticacaoProvider) {
     // set sample data
     this.menuCtrl.swipeEnable(true, 'authenticated');
     this.menuCtrl.enable(true);
     this.hotels = hotelService.getAll();
+    
   }
 
   ionViewDidLoad() {
     // init map
     // this.initializeMap();
+    if(this.autenticacaoProvider.authenticated()){
+      console.log('logou');
+      
+    }else{
+      console.log('hhahahadeslogou');
+    }
+  
   }
 
   openCalendar() {

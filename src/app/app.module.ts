@@ -19,7 +19,8 @@ import {WeatherProvider} from '../providers/weather';
 import {MessageService} from '../providers/message-service-mock';
 
 import {ionBookingApp} from "./app.component";
-import { OauthService } from '../providers/oauth-service/oauth-service';
+import { AutenticacaoProvider } from '../providers/autenticacao/autenticacao';
+
 
 
 @NgModule({
@@ -65,7 +66,7 @@ import { OauthService } from '../providers/oauth-service/oauth-service';
     MessageService,
     WeatherProvider,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    OauthService
+    AutenticacaoProvider,
   ]
 })
 

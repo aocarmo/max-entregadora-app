@@ -1,9 +1,11 @@
+import { AutenticacaoProvider,  } from './../providers/autenticacao/autenticacao';
 import { Component, ViewChild } from "@angular/core";
 import { Platform, Nav } from "ionic-angular";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
+import {Storage} from "@ionic/storage";
 
 
 export interface MenuItem {
@@ -29,7 +31,9 @@ export class ionBookingApp {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    public keyboard: Keyboard
+    public keyboard: Keyboard,
+    private storage: Storage,
+    public autenticacaoProvider: AutenticacaoProvider
   ) {
     this.initializeApp();
     // this.app.getRootNavs()[0]
@@ -71,7 +75,18 @@ export class ionBookingApp {
   }
 
   logout() {
+  
     this.nav.setRoot('page-login');
+    this.storage.remove('token');
+    this.storage.remove('profile');
+
+    if(this.autenticacaoProvider.authenticated()){
+      console.log('não deslogou');
+      
+    }else{
+      console.log('deslogou');
+    }
+    
   }
 
   editProfile() {
