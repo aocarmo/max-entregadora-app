@@ -1,7 +1,15 @@
+import { Constantes } from './../../constantes/constantes';
 import {Component, OnInit} from "@angular/core";
 import {FormGroup, Validators, FormBuilder} from '@angular/forms';
 import {IonicPage, NavController, AlertController, ToastController, MenuController} from "ionic-angular";
 import { OauthService } from "../../providers/oauth-service/oauth-service";
+
+import {Headers, Http} from "@angular/http";
+import {JwtHelper} from "angular2-jwt";
+import {Storage} from "@ionic/storage";
+import {AuthService} from "../../app/services/auth/auth";
+import 'rxjs/add/operator/map'
+import { HttpHeaders ,HttpClient} from '@angular/common/http';
 
 @IonicPage({
   name: 'page-login',
@@ -16,20 +24,36 @@ import { OauthService } from "../../providers/oauth-service/oauth-service";
 export class LoginPage implements OnInit {
   public onLoginForm: FormGroup;
 
+  auth: AuthService;
+
+  // When the page loads, we want the Login segment to be selected
+  authType: string = "login";
+
+  httpOptions = {
+    headers: new HttpHeaders({
+     'Content-Type':  'application/json'
+    })
+  };  
+  error: string;
+  jwtHelper = new JwtHelper();
+  user: string;
+
   constructor(private _fb: FormBuilder, 
               public nav: NavController, 
               public forgotCtrl: AlertController,
               public menu: MenuController, 
               public toastCtrl: ToastController,
-              public oauthService: OauthService
+              public oauthService: OauthService, private storage: Storage,public http: HttpClient
               ) {
     this.menu.swipeEnable(false);
     this.menu.enable(false);
+
+    
   }
 
   ngOnInit() {
     this.onLoginForm = this._fb.group({
-      usuario: ['', Validators.compose([
+      login: ['', Validators.compose([
         Validators.required
       ])],
       senha: ['', Validators.compose([
@@ -44,7 +68,7 @@ export class LoginPage implements OnInit {
   }
 
   // login and go to home page
-  login() {
+  login2() {
     
     this.oauthService.doLogin(this.onLoginForm.value.usuario, this.onLoginForm.value.senha).then((data:any)=>{
       this.nav.setRoot('page-home');
@@ -52,6 +76,28 @@ export class LoginPage implements OnInit {
       
     });
     
+  }
+
+  login() {
+    
+    this.http.post(Constantes.API_LOGIN,this.onLoginForm.value,this.httpOptions)
+      .subscribe((data:any)=>{
+          this.authSuccess(data.retorno.token);
+          //console.log(JSON.stringify(data.retorno.token));
+        
+          
+      });
+       
+  }
+
+  authSuccess(token) {
+   
+    this.error = null;
+    this.storage.set('token', token);
+    this.user = this.jwtHelper.decodeToken(token).login;
+    console.log(JSON.stringify(this.user));
+    
+   // this.storage.set('profile', this.user);*/
   }
 
   forgotPass() {

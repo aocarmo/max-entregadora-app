@@ -15,9 +15,9 @@
             <ion-icon class="fas fa-user" item-start></ion-icon>             
                  Usuário
         </ion-label>
-        <ion-input type="text" formControlName="usuario"></ion-input>
+        <ion-input type="text" formControlName="login"></ion-input>
       </ion-item>
-      <p ion-text color="danger" class="text-1x has-error" *ngIf="onLoginForm.get('usuario').touched && onLoginForm.get('usuario').hasError('required')">Favor preencher o usuário</p>
+      <p ion-text color="danger" class="text-1x has-error" *ngIf="onLoginForm.get('login').touched && onLoginForm.get('login').hasError('required')">Favor preencher o usuário</p>
 
       <ion-item>
         <ion-label floating>
