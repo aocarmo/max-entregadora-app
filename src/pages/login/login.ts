@@ -3,6 +3,7 @@ import { Constantes } from './../../constantes/constantes';
 import {Component, OnInit} from "@angular/core";
 import {FormGroup, Validators, FormBuilder} from '@angular/forms';
 import {IonicPage, NavController, AlertController, ToastController, MenuController} from "ionic-angular";
+import { FuncoesProvider } from '../../providers/funcoes/funcoes';
 
 
 @IonicPage({
@@ -23,7 +24,8 @@ export class LoginPage implements OnInit {
               public forgotCtrl: AlertController,
               public menu: MenuController, 
               public toastCtrl: ToastController,
-              public autenticacao: AutenticacaoProvider
+              public autenticacao: AutenticacaoProvider,
+              public funcoes: FuncoesProvider
               ) {
     this.menu.swipeEnable(false);
     this.menu.enable(false);
@@ -50,12 +52,13 @@ export class LoginPage implements OnInit {
 
 
   login() {
-    
+    let loading = this.funcoes.showloadingMoto();
     this.autenticacao.login(this.onLoginForm.value).then((data:any)=>{
       console.log(JSON.stringify(data));
       this.nav.setRoot('page-home');
-      
+      loading.dismiss();
     }).catch((err: any)=>{
+      loading.dismiss();
       console.log(JSON.stringify(err));
     });
        

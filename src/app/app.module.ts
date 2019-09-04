@@ -20,6 +20,7 @@ import {MessageService} from '../providers/message-service-mock';
 
 import {ionBookingApp} from "./app.component";
 import { AutenticacaoProvider } from '../providers/autenticacao/autenticacao';
+import { FuncoesProvider } from '../providers/funcoes/funcoes';
 
 
 
@@ -67,6 +68,7 @@ import { AutenticacaoProvider } from '../providers/autenticacao/autenticacao';
     WeatherProvider,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AutenticacaoProvider,
+    FuncoesProvider,
   ]
 })
 
