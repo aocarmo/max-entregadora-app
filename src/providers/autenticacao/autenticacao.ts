@@ -23,7 +23,7 @@ export class AutenticacaoProvider {
   private logger = new Subject<boolean>();
   loggedIn: boolean;
   public usuario : Usuario;
-  private token: string;
+  private token: string = null;
 
   // When the page loads, we want the Login segment to be selected
   authType: string = "login";
@@ -38,18 +38,29 @@ export class AutenticacaoProvider {
   jwtHelper = new JwtHelper();
   user: string;
 
-  public constructor(public http: HttpClient,  private storage: Storage) {
+   public constructor(public http: HttpClient,  private storage: Storage) {
+     
+      this.storage.get(Constantes.STORAGE_TOKEN).then((data:any)=>{
+          this.token  = data;        
+     }).catch((err:any)=>{
 
+     });
+    
   }
 
-  login(crendenciais) {
+  public login(crendenciais){
     
       return new Promise(resolve => {
-
+        
         this.http.post(Constantes.API_LOGIN,crendenciais,this.httpOptions)
-        .subscribe((data:any)=>{
-
-            this.authSuccess(data.retorno.token);
+        .subscribe(async (data:any)=>{
+            
+          if(data.ok){
+            await  this.authSuccess(data.retorno.token);
+              this.loggedIn = true;
+              this.logger.next(this.loggedIn);    
+          }
+            
             resolve(data);
         }), err => {
       
@@ -62,20 +73,40 @@ export class AutenticacaoProvider {
   }
 
   public async authSuccess(token) {
+    
     this.token = token;
-    this.error = null;
-    await this.storage.set('token', token);
-    this.user = this.jwtHelper.decodeToken(token).login;  
-    this.storage.set('profile', this.user);
+    await this.storage.set(Constantes.STORAGE_TOKEN, token);
+    this.usuario = this.jwtHelper.decodeToken(token); 
+    await this.storage.set(Constantes.STORAGE_USER, this.usuario);
 
   }
 
   authenticated() {
-    return this.jwtHelper.isTokenExpired(this.token);
+    if(this.token == null){
+      return false;
+    }
+      return this.jwtHelper.isTokenExpired(this.token)
+    
   }
 
   getToken() {
         return this.token;
+  }
+
+  isLoggedIn(): Observable<boolean> {
+    return this.logger.asObservable();
+  }
+
+  public async doLogout(){
+
+    await this.storage.remove(Constantes.STORAGE_TOKEN);
+    await this.storage.remove(Constantes.STORAGE_USER);
+
+    this.loggedIn = false;
+    this.logger.next(this.loggedIn);
+    
+    
+    
   }
 
 }

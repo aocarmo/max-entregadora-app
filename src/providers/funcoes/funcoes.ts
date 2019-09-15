@@ -53,7 +53,7 @@ export class FuncoesProvider {
         spinner: 'hide',
         content: `
       <div align="center" class="custom-spinner-container">
-        <img class="loading"  src="assets/img/loadMotoLaranja.gif" />
+        <img class="loading"  src="assets/img/deliveryguy.gif" />
         <span align="center">Aguarde...</span>
       </div>`
     });

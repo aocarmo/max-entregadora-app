@@ -15,6 +15,7 @@ export class Constantes {
 
     //STORAGE KEYS
     public static STORAGE_USER='usuario';
+    public static STORAGE_TOKEN='token';
 
 
     //MENSAGENS PADRÃO

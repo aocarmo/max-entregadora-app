@@ -1,3 +1,4 @@
+import { Usuario } from './../model/usuario.model';
 import { AutenticacaoProvider,  } from './../providers/autenticacao/autenticacao';
 import { Component, ViewChild } from "@angular/core";
 import { Platform, Nav } from "ionic-angular";
@@ -6,6 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
 import {Storage} from "@ionic/storage";
+import { Constantes } from '../constantes/constantes';
 
 
 export interface MenuItem {
@@ -24,6 +26,7 @@ export class ionBookingApp {
   rootPage: any = "page-login";
   showMenu: boolean = true;
   // rootNavCtrl: NavController;
+  usuario: Usuario = new Usuario(); 
 
   appMenuItems: Array<MenuItem>;
 
@@ -35,6 +38,32 @@ export class ionBookingApp {
     private storage: Storage,
     public autenticacaoProvider: AutenticacaoProvider
   ) {
+
+    
+     //Verifica fica escutando se existe usuario logado para exibir dados no menu
+     this.autenticacaoProvider.isLoggedIn().subscribe((data: boolean) => {
+       
+      if (data) {  
+       
+        this.storage.get(Constantes.STORAGE_USER).then((data: any) => {
+                 
+          this.usuario =data;  
+          
+          this.appMenuItems = [
+          
+            {title: 'Minhas Entregas', component: 'page-home', icon: 'fas fa-mail-bulk'},
+          //  {title: 'Minhas ', component: 'page-message-list', icon: 'mail'}, 
+            {title: 'Contato', component: 'page-support', icon: 'fas fa-phone'},
+      
+          
+          ];
+
+        });
+
+      }
+    });
+
+
     this.initializeApp();
     // this.app.getRootNavs()[0]
     // this.app._rootNavs.map(page => {
@@ -42,14 +71,7 @@ export class ionBookingApp {
     // })
     // console.log(this.nav)
 
-    this.appMenuItems = [
-    
-      {title: 'Entregas', component: 'page-home', icon: 'fas fa-motorcycle'},
-    //  {title: 'Minhas ', component: 'page-message-list', icon: 'mail'}, 
-      {title: 'Contato', component: 'page-support', icon: 'fas fa-phone'},
-
-    
-    ];
+   
   }
 
   initializeApp() {
@@ -58,6 +80,12 @@ export class ionBookingApp {
       //*** Control Splash Screen
       // this.splashScreen.show();
       // this.splashScreen.hide();
+
+      if(this.autenticacaoProvider.authenticated()){
+         this.nav.setRoot('page-home');      
+       }else{      
+         this.logout();
+       }
 
       //*** Control Status Bar
       this.statusBar.styleDefault();
@@ -76,17 +104,8 @@ export class ionBookingApp {
 
   logout() {
   
+    this.autenticacaoProvider.doLogout();
     this.nav.setRoot('page-login');
-    this.storage.remove('token');
-    this.storage.remove('profile');
-
-    if(this.autenticacaoProvider.authenticated()){
-      console.log('não deslogou');
-      
-    }else{
-      console.log('deslogou');
-    }
-    
   }
 
   editProfile() {

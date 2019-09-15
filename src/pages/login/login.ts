@@ -52,15 +52,23 @@ export class LoginPage implements OnInit {
 
 
   login() {
-    let loading = this.funcoes.showloadingMoto();
+   let loading = this.funcoes.showloadingMoto();
     this.autenticacao.login(this.onLoginForm.value).then((data:any)=>{
-      console.log(JSON.stringify(data));
-      this.nav.setRoot('page-home');
       loading.dismiss();
+    if(data.ok){
+      this.nav.setRoot('page-home');
+    
+    }else{
+      this.funcoes.showAlert(data.msg);
+    }
+     
     }).catch((err: any)=>{
       loading.dismiss();
-      console.log(JSON.stringify(err));
+      this.funcoes.showAlert("Ocorreu um erro ao fazer o login: " +JSON.stringify(err));
+      
     });
+
+    
        
   }
 

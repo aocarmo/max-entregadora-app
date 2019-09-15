@@ -15,7 +15,7 @@
             <ion-icon class="fas fa-user" item-start></ion-icon>             
                  Usuário
         </ion-label>
-        <ion-input type="text" formControlName="login"></ion-input>
+        <ion-input type="text" value="admin" formControlName="login"></ion-input>
       </ion-item>
       <p ion-text color="danger" class="text-1x has-error" *ngIf="onLoginForm.get('login').touched && onLoginForm.get('login').hasError('required')">Favor preencher o usuário</p>
 
@@ -25,7 +25,7 @@
           <ion-icon class="fas fa-unlock" item-start></ion-icon> 
           Senha
         </ion-label>
-        <ion-input   type="password" formControlName="senha"></ion-input>
+        <ion-input   value="admin" type="password" formControlName="senha"></ion-input>
         
       </ion-item>
       <p ion-text color="danger" class="text-1x has-error" *ngIf="onLoginForm.get('senha').touched && onLoginForm.get('senha').hasError('required')">Favor preencher a senha</p>
