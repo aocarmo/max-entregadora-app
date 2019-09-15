@@ -52,7 +52,7 @@ export class LoginPage implements OnInit {
 
 
   login() {
-   let loading = this.funcoes.showloadingMoto();
+   let loading = this.funcoes.showLoading("Autenticando...");
     this.autenticacao.login(this.onLoginForm.value).then((data:any)=>{
       loading.dismiss();
     if(data.ok){

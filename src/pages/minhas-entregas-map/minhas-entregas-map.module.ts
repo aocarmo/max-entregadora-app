@@ -1,23 +1,17 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
+import { MinhasEntregasMapPage } from './minhas-entregas-map';
 import { AgmCoreModule } from '@agm/core';
-import { HomePage } from './home';
-import { SuperTabsModule } from 'ionic2-super-tabs';
 
 @NgModule({
   declarations: [
-    HomePage
+    MinhasEntregasMapPage,
   ],
   imports: [
-    IonicPageModule.forChild(HomePage),
+    IonicPageModule.forChild(MinhasEntregasMapPage),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyD9BxeSvt3u--Oj-_GD-qG2nPr1uODrR0Y'
     }),
-    SuperTabsModule
   ],
-  exports: [
-    HomePage
-  ]
 })
-
-export class HomePageModule { }
+export class MinhasEntregasMapPageModule {}

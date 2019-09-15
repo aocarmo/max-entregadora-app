@@ -1,3 +1,4 @@
+import { CameraService } from './../providers/camera/camera-service';
 import {ErrorHandler, NgModule} from "@angular/core";
 import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
 import {BrowserModule} from '@angular/platform-browser';
@@ -21,7 +22,13 @@ import {MessageService} from '../providers/message-service-mock';
 import {ionBookingApp} from "./app.component";
 import { AutenticacaoProvider } from '../providers/autenticacao/autenticacao';
 import { FuncoesProvider } from '../providers/funcoes/funcoes';
+import { SuperTabsModule } from 'ionic2-super-tabs';
 
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { FilePath } from '@ionic-native/file-path';
+import { File } from '@ionic-native/file';
+import { Diagnostic } from '@ionic-native/diagnostic';
+import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 
 
 @NgModule({
@@ -37,7 +44,8 @@ import { FuncoesProvider } from '../providers/funcoes/funcoes';
         preloadModules: true,
         scrollPadding: false,
         scrollAssist: true,
-        autoFocusAssist: false
+        autoFocusAssist: false,
+        backButtonText: 'Voltar'
       }
     ),
     IonicStorageModule.forRoot({
@@ -47,7 +55,8 @@ import { FuncoesProvider } from '../providers/funcoes/funcoes';
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyD9BxeSvt3u--Oj-_GD-qG2nPr1uODrR0Y'
     }),
-    CalendarModule
+    CalendarModule,
+    SuperTabsModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -69,6 +78,12 @@ import { FuncoesProvider } from '../providers/funcoes/funcoes';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AutenticacaoProvider,
     FuncoesProvider,
+    Camera,
+    CameraService,
+    FilePath,
+    File,
+    Diagnostic,
+    ActionSheet
   ]
 })
 

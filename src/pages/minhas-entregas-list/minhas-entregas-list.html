@@ -1,0 +1,38 @@
+<!--
+  Generated template for the MinhasEntregasListPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-content padding>
+
+    <ion-card *ngFor="let entrega of entregas">
+       <ion-item (click)="verDetalhe(entrega)">            
+          <ion-icon class="fas fa-map-marked-alt" item-start large></ion-icon>
+          <h2>{{entrega.devedor}}</h2>
+          <p>{{entrega.endereco}}</p>
+        </ion-item>     
+      
+        <ion-item>
+          <span item-start>{{entrega.location.distance}} min</span>
+          <span item-start>({{entrega.location.estimateTime}} km)</span>
+          <button ion-button icon-start clear item-end>
+            <ion-icon name="navigate"></ion-icon>
+            Iniciar
+          </button>
+        </ion-item>
+      
+      </ion-card>
+
+ <!--
+  <button ion-button full (click)="goToDetails()">Open Details</button>
+  <button ion-button full (click)="setBadge()">Set Badge</button>
+  <button ion-button full (click)="clearBadge()">Clear Badge</button>
+  <button ion-button full (click)="jumpToAccount()">Go to Account</button>
+ 
+  <button ion-button full (click)="hideToolbar()">Hide Toolbar</button>
+  <button ion-button full (click)="showToolbar()">Show Toolbar</button>
+ -->
+
+</ion-content>
