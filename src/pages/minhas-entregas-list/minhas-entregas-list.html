@@ -6,13 +6,13 @@
 -->
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-searchbar placeholder="Pesquisar"></ion-searchbar>
+    <ion-searchbar placeholder="Pesquisar..." [(ngModel)] = "queryText" (ionInput)="filterCidade($event)" clearInput></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 <ion-content padding>
 
     <ion-card *ngFor="let entrega of entregas">
-       <ion-item (click)="verDetalhe(entrega)">            
+       <ion-item text-wrap (click)="verDetalhe(entrega)">            
           <ion-icon class="fas fa-map-marked-alt" item-start large></ion-icon>
           <h2>{{entrega.devedor}}</h2>
           <p>{{entrega.endereco}}</p>
@@ -21,7 +21,7 @@
         <ion-item>
           <span item-start>{{entrega.location.distance}} min</span>
           <span item-start>({{entrega.location.estimateTime}} km)</span>
-          <button ion-button icon-start clear item-end>
+          <button  color="blueMaps" ion-button icon-start clear item-end>
             <ion-icon name="navigate"></ion-icon>
             Iniciar
           </button>

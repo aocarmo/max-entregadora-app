@@ -1,31 +1,23 @@
 <ion-header>
   <ion-navbar color="secondary">
-    <ion-title>Registro de Pré-Baixa</ion-title>
+    <ion-title>Registro Pré-Baixa</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content align="center" padding>
  <!---->
   <form [formGroup]="langForm" class="list-form">
-   <ion-list radio-group formControlName="diligencia">
 
-      <ion-list-header>
-        Tipo de Diligência
-      </ion-list-header>
+      <ion-label>
+          Tipo Diligência
+        </ion-label>
+      <div class="toggle">
+          <input type="radio" name="sizeBy" value="weight" id="sizeWeight" checked="checked" />
+          <label  for="sizeWeight" name="pos">Positiva</label>
+          <input type="radio" name="sizeBy" value="dimensions" id="sizeDimensions" />
+          <label for="sizeDimensions" name="neg">Negativa</label>
+        </div>
 
-      <ion-item>
-        <ion-label>Positiva</ion-label>
-        <ion-radio value="pos"></ion-radio>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Negativa</ion-label>
-        <ion-radio value="neg"></ion-radio>
-      </ion-item>
-
-    </ion-list>
-    <p ion-text color="danger" class="text-1x has-error"  *ngIf="langForm.get('diligencia').touched && langForm.get('diligencia').hasError('required')">Favor escolher um tipo de diligência</p>
-   
     <ion-item>
       <ion-label>Motivo</ion-label>
       <ion-select formControlName="motivo">

@@ -16,22 +16,22 @@
     <ion-card-content>
         <ion-item-divider>
             <ion-label>
-              Informações da Intimação
+              Detalhamento da Intimação
             </ion-label>
           </ion-item-divider>
     
       <ion-item text-wrap>
         <ion-icon class="fas fa-building" item-start large></ion-icon>
-        <h2>Cartório</h2>
+        <h2><u>Cartório</u></h2>
         <p>{{entrega.tabelionato}}</p>
-        <p><strong>Protocolo: </strong> {{entrega.protocolo}}</p>
-        <p><strong>Data de Limite: </strong> {{entrega.dtLimite}}</p>
-        <p><strong>Data de Protocolo: </strong> {{entrega.dtProtocolo}}</p>
+        <p><strong>Protocolo: </strong> {{entrega.protocolo}}</p>       
+        <p><strong>Data Protocolo: </strong> {{entrega.dtProtocolo}}</p>
+        <p><strong>Data Limite: </strong> {{entrega.dtLimite}}</p>
       </ion-item>
       <ion-item  text-wrap>
 
         <ion-icon class="fas fa-file-invoice-dollar" item-start large></ion-icon>
-        <h2>Título</h2>
+        <h2><u>Título</u></h2>
         <p><strong>Devedor: </strong>{{entrega.devedor}}</p>
         <p><strong>Documento: </strong>{{entrega.documento}}</p>
       </ion-item>
@@ -41,7 +41,7 @@
     <ion-card-content>
         <ion-card align="center">
             <ion-item  text-wrap>        
-                <h2>Endereço</h2>
+                <h2><u>Endereço</u></h2>
                 <p>{{entrega.endereco}}</p>
               </ion-item>
             <agm-map style="height: 20vh;" [latitude]="entrega.location.lat" [longitude]="entrega.location.lon" [zoom]="zoom">
