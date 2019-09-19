@@ -7,6 +7,7 @@ export let ENTREGAS = [
         documento:"035.568.444-55",
         endereco: "Rua Meireles Santos - Nº 194 - Salvador",        
         dtLimite: "05/10/2019",
+        dtProtocolo: "20/10/2019",
         location: {
           lat: -12.988856,
           lon: -38.499025,
@@ -24,6 +25,7 @@ export let ENTREGAS = [
         documento:"235.574.444-55",
         endereco: "Rua Eloi Chaves - Nº 07 - Salvador",        
         dtLimite: "05/12/2019",
+        dtProtocolo: "20/10/2019",
         location: {
           lat: -12.992369,
           lon: -38.503853,
@@ -41,6 +43,7 @@ export let ENTREGAS = [
         documento:"21.272.559/0001-40",
         endereco: "AVENIDA ANITA GARIBALDI , 1815, CENTRO MEDICO EMPRESARIAL GARIBALDI LOJA 04",        
         dtLimite: "05/12/2019",
+        dtProtocolo: "20/10/2019",
         location: {
           lat: -13.008819,
           lon: -38.491127,
@@ -58,6 +61,7 @@ export let ENTREGAS = [
         documento:"16.797.812/0001-40",
         endereco: "AVENIDA ANITA GARIBALDI , 1815, CENTRO MEDICO EMPRESARIAL GARIBALDI LOJA 04",        
         dtLimite: "05/12/2019",
+        dtProtocolo: "20/10/2019",
         location: {
           lat: -12.936990,
           lon: -38.360295,
