@@ -18,6 +18,7 @@ import {
   Environment
 } from '@ionic-native/google-maps';
 import { MapControllerProvider,MapInstance } from "../../providers/map-controller/map-controller";
+import { Diagnostic } from "@ionic-native/diagnostic";
 
 //const mapId = 'HOME_MAP';
 /**
@@ -73,7 +74,8 @@ export class MinhasEntregasMapPage {
     public menuCtrl: MenuController, public modalCtrl: ModalController, 
     public popoverCtrl: PopoverController, public hotelService: HotelService,public autenticacaoProvider: AutenticacaoProvider, private mapCtrl: MapControllerProvider,
     private platform: Platform,
-    private googleMaps: GoogleMaps) {
+    private googleMaps: GoogleMaps,
+    public diagnostic: Diagnostic) {
 // set sample data
 this.menuCtrl.swipeEnable(true, 'authenticated');
 this.menuCtrl.enable(true);
@@ -87,7 +89,9 @@ ionViewWillLeave() {
 }*/
 
 ionViewDidLoad() {
-  
+  this.diagnostic.isCameraAuthorized().then((data: any) => {
+    alert(JSON.stringify(data));
+  });
   this.loadMap();
 }
 /*
@@ -100,6 +104,8 @@ ionViewDidEnter() {
       }
   );
 }*/
+
+
 
 openCalendar() {
   const options: CalendarModalOptions = {

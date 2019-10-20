@@ -27,9 +27,9 @@ import { SuperTabsModule } from 'ionic2-super-tabs';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FilePath } from '@ionic-native/file-path';
 import { File } from '@ionic-native/file';
-import { Diagnostic } from '@ionic-native/diagnostic';
-import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 
+import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
+import { Diagnostic } from '@ionic-native/diagnostic';
 import { GoogleMaps} from '@ionic-native/google-maps';
 import { MapControllerProvider } from '../providers/map-controller/map-controller';
 @NgModule({
