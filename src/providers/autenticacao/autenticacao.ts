@@ -72,6 +72,23 @@ export class AutenticacaoProvider {
        
   }
 
+
+  public RecuperarSenha(email){
+    
+    return new Promise(resolve => {
+      
+      this.http.post(Constantes.API_RECUPERAR_SENHA,email,this.httpOptions)
+      .subscribe(async (data:any)=>{          
+        resolve(data);
+      }), err => {    
+        resolve(err);     
+      };
+
+    });
+     
+}
+
+
   public async authSuccess(token) {
     
     this.token = token;

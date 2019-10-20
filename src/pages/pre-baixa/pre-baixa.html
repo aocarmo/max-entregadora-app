@@ -12,15 +12,15 @@
           Tipo Diligência
         </ion-label>
       <div class="toggle">
-          <input type="radio" name="sizeBy" value="weight" id="sizeWeight" checked="checked" />
-          <label  for="sizeWeight" name="pos">Positiva</label>
-          <input type="radio" name="sizeBy" value="dimensions" id="sizeDimensions" />
+          <input type="radio" id="pos" (change)="onChange(true)" name="sizeBy" value="weight" id="sizeWeight" checked="checked" />
+          <label for="sizeWeight" name="pos">Positiva</label>
+          <input type="radio" name="sizeBy"  id="neg" (change)="onChange(false)"  value="dimensions" id="sizeDimensions" />
           <label for="sizeDimensions" name="neg">Negativa</label>
         </div>
 
     <ion-item>
       <ion-label>Motivo</ion-label>
-      <ion-select formControlName="motivo">
+      <ion-select  formControlName="motivo">
         <ion-option value="Ausente">Ausente</ion-option>
         <ion-option value="Area de Risco">Area de Risco</ion-option>
         <ion-option value="Mudou-se">Mudou-se</ion-option>
@@ -29,11 +29,24 @@
 
     <p ion-text color="danger" class="text-1x has-error" *ngIf="langForm.get('motivo').touched && langForm.get('motivo').hasError('required')">Favor escolher um motivo</p>
 
-   
      <ion-item>
         <ion-label floating>Observação</ion-label>
         <ion-textarea style=" color: black;" placeholder="" formControlName="observacao"></ion-textarea>
       </ion-item>
+
+     
+ <ion-item *ngIf="fotosExibir != []">
+          <ion-grid>
+            <ion-row wrap>
+              <ion-col col-3 *ngFor="let foto  of fotosExibir" (tap)="abrirImagem(foto.fotoExibir)">
+                <ion-thumbnail (press)="removerFoto($event,foto, pergunta.id)">
+                  <img  [src]="foto.fotoExibir">
+                </ion-thumbnail>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+     
 
       
       <!--
@@ -49,9 +62,9 @@
           </ion-row>
         </ion-grid>
       </ion-item>-->
-      <button ion-button icon-start block outline color="primary" tappable>
-      
-        <ion-icon style="font-size: 20px" class="fas fa-camera"></ion-icon>
+      <button item-start  ion-button icon-start block outline color="primary" (click)="tirarFoto()" tappable>
+        <ion-icon  class="fas fa-camera">   </ion-icon>
+        Tirar Foto
       </button>
 
       <button ion-button full color="dark">Salvar</button>

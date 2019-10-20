@@ -3,10 +3,12 @@ import { IonicPageModule } from 'ionic-angular';
 import { AgmCoreModule } from '@agm/core';
 import { HomePage } from './home';
 import { SuperTabsModule } from 'ionic2-super-tabs';
+import { NotificationsPage } from '../notifications/notifications';
 
 @NgModule({
   declarations: [
-    HomePage
+    HomePage,
+
   ],
   imports: [
     IonicPageModule.forChild(HomePage),

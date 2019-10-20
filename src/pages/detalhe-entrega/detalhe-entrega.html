@@ -11,7 +11,7 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card align="center">
+<ion-card align="center">
 
     <ion-card-content>
         <ion-item-divider>
@@ -25,7 +25,7 @@
         <h2><u>Cartório</u></h2>
         <p>{{entrega.tabelionato}}</p>
         <p><strong>Protocolo: </strong> {{entrega.protocolo}}</p>       
-        <p><strong>Data Protocolo: </strong> {{entrega.dtProtocolo}}</p>
+        <p><strong>Data Protocolo: {{entrega.dtProtocolo}}</strong> </p>
         <p><strong>Data Limite: </strong> {{entrega.dtLimite}}</p>
       </ion-item>
       <ion-item  text-wrap>
@@ -38,35 +38,29 @@
     
     </ion-card-content>
 
+    <ion-card-content *ngIf="entrega.historicoTentativas.length > 0">
+        <ion-item-divider>
+            <ion-label>
+              Tentativas de Entrega
+            </ion-label>
+          </ion-item-divider>
+    
+      <ion-item *ngFor="let listaTentativa of entrega.historicoTentativas" text-wrap>
+        <ion-icon class="fas fa-shipping-fast" item-start small></ion-icon>         
+        <p><strong>{{listaTentativa}}</strong></p>                     
+      </ion-item>
+
+    </ion-card-content>
+
     <ion-card-content>
-        <ion-card align="center">
-            <ion-item  text-wrap>        
-                <h2><u>Endereço</u></h2>
-                <p>{{entrega.endereco}}</p>
-              </ion-item>
-            <agm-map style="height: 20vh;" [latitude]="entrega.location.lat" [longitude]="entrega.location.lon" [zoom]="zoom">
-                <agm-marker [latitude]="entrega.location.lat" [longitude]="entrega.location.lon">
-                  <agm-info-window>
-                    <h3>
-                      <strong>{{entrega.devedor}}</strong>
-                    </h3>
-                    <span item-start>{{entrega.location.distance}} min</span>
-                    <p>
-                      <a tappable (click)="viewHotel(hotel)">
-                        <button ion-button icon-start clear item-end>
-                          <ion-icon name="navigate"></ion-icon>
-                          Iniciar
-                        </button>
-                      </a>
-                    </p>
-                    <span item-start>{{entrega.location.distance}} min</span>
-                    <span item-start>({{entrega.location.estimateTime}} km)</span>
-                  </agm-info-window>
-                </agm-marker>
-              </agm-map>
-        </ion-card>
+    
           <button ion-button  (click)="registrarPreBaixa(entrega)" color="dark">Registrar Pré-Baixa</button>
     </ion-card-content>
   
-  </ion-card>
+  </ion-card> 
+  <ion-item  text-wrap>        
+    <h2><u>Endereço</u></h2>
+    <p>{{entrega.endereco}}</p>
+  </ion-item>
+  <div id="map_second"></div>
 </ion-content>

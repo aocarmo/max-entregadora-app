@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {IonicPage, NavController, NavParams, MenuController, ModalController, PopoverController} from "ionic-angular";
+import {IonicPage, NavController, NavParams, MenuController, ModalController, PopoverController, Platform} from "ionic-angular";
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import {NotificationsPage} from "../notifications/notifications";
 
@@ -7,7 +7,19 @@ import {HotelService} from "../../providers/hotel-service";
 
 import { AutenticacaoProvider } from "../../providers/autenticacao/autenticacao";
 import { ENTREGAS } from "../../mocks/mock-entregas";
+import {
+  GoogleMaps,
+  GoogleMap,
+  GoogleMapsEvent,
+  GoogleMapOptions,
+  CameraPosition,
+  MarkerOptions,
+  Marker,
+  Environment
+} from '@ionic-native/google-maps';
+import { MapControllerProvider,MapInstance } from "../../providers/map-controller/map-controller";
 
+//const mapId = 'HOME_MAP';
 /**
  * Generated class for the MinhasEntregasMapPage page.
  *
@@ -21,11 +33,13 @@ import { ENTREGAS } from "../../mocks/mock-entregas";
 })
 
 
+
 @Component({
   selector: 'page-minhas-entregas-map',
   templateUrl: 'minhas-entregas-map.html',
 })
 export class MinhasEntregasMapPage {
+ // private hMap: MapInstance;
   dDate: Date = new Date();
   searchQuery: string = '';
   items: string[];
@@ -34,7 +48,7 @@ export class MinhasEntregasMapPage {
   lng: number = -38.469426;
   zoom: number = 12;
   public entregas: any;
-
+  map_canvas: GoogleMap;
 
   public childs: any;
 
@@ -57,7 +71,9 @@ export class MinhasEntregasMapPage {
 
   constructor(public nav: NavController, public navParams: NavParams, 
     public menuCtrl: MenuController, public modalCtrl: ModalController, 
-    public popoverCtrl: PopoverController, public hotelService: HotelService,public autenticacaoProvider: AutenticacaoProvider) {
+    public popoverCtrl: PopoverController, public hotelService: HotelService,public autenticacaoProvider: AutenticacaoProvider, private mapCtrl: MapControllerProvider,
+    private platform: Platform,
+    private googleMaps: GoogleMaps) {
 // set sample data
 this.menuCtrl.swipeEnable(true, 'authenticated');
 this.menuCtrl.enable(true);
@@ -65,18 +81,25 @@ this.hotels = hotelService.getAll();
 this.entregas = ENTREGAS;
 
 }
+/*
+ionViewWillLeave() {
+  this.hMap.hide();
+}*/
 
 ionViewDidLoad() {
-  // init map
-  // this.initializeMap();
-  if(this.autenticacaoProvider.authenticated()){
-    console.log('logou');
-    
-  }else{
-    console.log('hhahahadeslogou');
-  }
-
+  
+  this.loadMap();
 }
+/*
+ionViewDidEnter() {
+ 
+  this.platform.ready().then(
+      () => {
+        this.hMap.show();
+        //this.events.subscribe('MARKER.CLICK', this._handleMarkerClick);
+      }
+  );
+}*/
 
 openCalendar() {
   const options: CalendarModalOptions = {
@@ -98,36 +121,29 @@ openCalendar() {
   });
 }
 
-// initializeMap() {
-//   let latLng = new google.maps.LatLng(this.hotels[0].location.lat, this.hotels[0].location.lon);
+loadMap() {
 
-//   let mapOptions = {
-//     center: latLng,
-//     zoom: 11,
-//     scrollwheel: false,
-//     mapTypeId: google.maps.MapTypeId.ROADMAP,
-//     mapTypeControl: false,
-//     zoomControl: false,
-//     streetViewControl: false
-//   }
+  // This code is necessary for browser
+  Environment.setEnv({
+    'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyB_6IGpyQsPTenu0afoaBM7csRPLbtryoo',
+    'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyB_6IGpyQsPTenu0afoaBM7csRPLbtryoo'
+  });
 
-//   this.map = new google.maps.Map(document.getElementById("home-map"), mapOptions);
+  let mapOptions: GoogleMapOptions = {
+    camera: {
+       target: {
+         lat: -12.991814,
+         lng:  -38.469426
+       },
+       zoom: 12,
+       tilt: 30
+     }
+  };
 
-//   // add markers to map by hotel
-//   for (let i = 0; i < this.hotels.length; i++) {
-//     let hotel = this.hotels[i];
-//     new google.maps.Marker({
-//       map: this.map,
-//       animation: google.maps.Animation.DROP,
-//       position: new google.maps.LatLng(hotel.location.lat, hotel.location.lon)
-//     });
-//   }
+  
+  this.map_canvas = GoogleMaps.create('map_canvas',mapOptions);
 
-//   // refresh map
-//   setTimeout(() => {
-//     google.maps.event.trigger(this.map, 'resize');
-//   }, 300);
-// }
+}
 
 initializeItems() {
   this.items = [

@@ -30,10 +30,12 @@ import { File } from '@ionic-native/file';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 
-
+import { GoogleMaps} from '@ionic-native/google-maps';
+import { MapControllerProvider } from '../providers/map-controller/map-controller';
 @NgModule({
   declarations: [
-    ionBookingApp
+    ionBookingApp,
+    
   ],
   imports: [
     BrowserModule,
@@ -81,9 +83,11 @@ import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
     Camera,
     CameraService,
     FilePath,
-    File,
+    File,    
+    ActionSheet,
     Diagnostic,
-    ActionSheet
+    GoogleMaps,
+    MapControllerProvider
   ]
 })
 

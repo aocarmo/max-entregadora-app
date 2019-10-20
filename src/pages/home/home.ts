@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
 import { SuperTabs } from 'ionic2-super-tabs';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+import { NotificationsPage } from '../notifications/notifications';
  
 @IonicPage({
   name: 'page-home',
@@ -23,7 +24,7 @@ export class HomePage {
  
   @ViewChild(SuperTabs) superTabs: SuperTabs;
  
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,  public popoverCtrl: PopoverController) { }
  
   onTabSelect(ev: any) {
     if (ev.index === 2) {
@@ -50,5 +51,14 @@ export class HomePage {
       this.superTabs.clearBadge(this.pages[ev.index].id);
     }
   }
+
+  presentNotifications(myEvent) {
+    // console.log(myEvent);
+    let popover = this.popoverCtrl.create('page-notifications');
+    popover.present({
+      ev: myEvent
+    });
+  }
+
  
 }

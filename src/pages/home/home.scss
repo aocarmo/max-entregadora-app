@@ -9,8 +9,18 @@ page-home,
     height: 75px;
     display: inline-block;
     vertical-align: sub;
-    background: url("../assets/img/max_fundo_branco.png") no-repeat;
+    //background: url("../assets/img/logomaxbranca.png") no-repeat;
     background-size: 100%;
+   
+  }
+
+  .logoHeader {
+    position: absolute;
+    width: 80%;
+    left: 5%;
+    bottom: 30%;
+    text-align:center;    
+    height: 60%;
   }
   .booking-card {
     
@@ -202,4 +212,6 @@ page-home,
       }
     }
   }
+
+
 }

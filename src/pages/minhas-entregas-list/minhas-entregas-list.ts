@@ -47,7 +47,12 @@ export class MinhasEntregasListPage {
       this.entregas = this.entregas.filter((entrega)=>{
         return (
           entrega.devedor.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
-          entrega.documento.toLowerCase().indexOf(val.toLowerCase()) > -1 )
+          entrega.documento.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+         // entrega.protocolo.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+          entrega.endereco.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+          entrega.dtLimite.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+          entrega.dtProtocolo.toLowerCase().indexOf(val.toLowerCase()) > -1 
+           )
       });
     }else{
       this.entregas = this.todasEntregas;
