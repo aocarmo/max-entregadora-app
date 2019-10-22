@@ -32,12 +32,12 @@ export class CameraService {
 
     return new Promise(resolve => {
 
-      this.diagnostic.isCameraAuthorized().then((data: any) => {
+  //    this.diagnostic.isCameraAuthorized().then((data: any) => {
    
-        if (data) {
+   //     if (data) {
      
           const options: CameraOptions = {
-            quality: 50,
+            quality: 20,
             //destinationType: this.camera.DestinationType.DATA_URL,
             encodingType: this.camera.EncodingType.JPEG,
             mediaType: this.camera.MediaType.PICTURE,
@@ -100,7 +100,7 @@ export class CameraService {
             resolve(JSON.stringify(retorno));
           });
 
-        } else {
+       /* } else {
  
           this.diagnostic.requestCameraAuthorization().then((data: string) => {
           
@@ -123,7 +123,7 @@ export class CameraService {
         retorno.status = "false";
         retorno.mensagem = JSON.stringify(err);
         resolve(JSON.stringify(retorno));
-      });
+      });*/
     });
   }
 

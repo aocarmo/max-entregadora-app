@@ -39,7 +39,7 @@
           <ion-grid>
             <ion-row wrap>
               <ion-col col-3 *ngFor="let foto  of fotosExibir" (tap)="abrirImagem(foto.fotoExibir)">
-                <ion-thumbnail (press)="removerFoto($event,foto, pergunta.id)">
+                <ion-thumbnail (press)="removerFoto($event,foto)">
                   <img  [src]="foto.fotoExibir">
                 </ion-thumbnail>
               </ion-col>

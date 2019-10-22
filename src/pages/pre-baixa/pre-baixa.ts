@@ -1,18 +1,19 @@
 import { CameraService } from './../../providers/camera/camera-service';
 import { FuncoesProvider } from './../../providers/funcoes/funcoes';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,  ModalController } from 'ionic-angular';
 import {FormGroup, Validators, FormBuilder} from '@angular/forms';
 import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-
+import { ImagemModalPage } from '../imagem-modal/imagem-modal';
+import { File } from '@ionic-native/file';
 /**
  * Generated class for the PreBaixaPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
+declare var cordova: any;
 export class FotoDiligencia {
   fotoExibir: SafeUrl;
   fotoPath: string;
@@ -29,7 +30,7 @@ export class FotoDiligencia {
 export class PreBaixaPage {
   
   public fotosExibir:FotoDiligencia [] = [];
-  public foto :FotoDiligencia;
+  public foto :FotoDiligencia = new FotoDiligencia();
   public entrega: any;
   langs;
   langForm;
@@ -40,10 +41,11 @@ export class PreBaixaPage {
               public navParams: NavParams, 
               private _fb: FormBuilder,
               private funcoes: FuncoesProvider,
-            //  public file: File,
+              public file: File,
               public actionSheet: ActionSheet,
               public camera: CameraService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              public modalCtrl: ModalController) {
 
    this.entrega = this.navParams.get('entrega');
 
@@ -83,7 +85,7 @@ export class PreBaixaPage {
 
    
   }
-  /*removerFoto(e, foto: FotoObjeto, perguntaId: string) {
+  removerFoto(e, foto: FotoDiligencia) {
 
     let options: ActionSheetOptions = {
       title: 'Deseja excluir a imagem?',
@@ -99,16 +101,12 @@ export class PreBaixaPage {
         let loading = this.funcoes.showLoading("Excluindo imagem...");
         let nomeArquivo = foto.fotoPath.replace(/^.*[\\\/]/, '');
         let i = 0;
+        
+          for (let fotoArray of this.fotosExibir) {
 
-        for (let pergunta of this.perguntas) {
-          if (pergunta.id == perguntaId) {
+             if (foto.fotoPath == fotoArray.fotoPath) {
 
-
-            for (let fotoArray of pergunta.fotosExibir) {
-
-              if (foto.fotoPath == fotoArray.fotoPath) {
-
-                pergunta.fotosExibir.splice(i, 1);
+                this.fotosExibir.splice(i, 1);
 
                 this.file.removeFile(cordova.file.dataDirectory, nomeArquivo).then((data: any) => {
 
@@ -120,14 +118,13 @@ export class PreBaixaPage {
               }
               i++;
             }
-          }
-        }
+       
 
       }
 
     });
 
-  }*/
+  }
 
   tirarFoto(): void {
 
@@ -149,18 +146,18 @@ export class PreBaixaPage {
 
         //Transformando o retorno em objeto para validar o retorno
         let retorno = JSON.parse(data);
-
+        
         let loading = this.funcoes.showLoading("Armazenando a foto...");
-
+               
         if (retorno.status == "true") {
 
+          this.fotosExibir.push(
+            {
+              fotoExibir: this.sanitizer.bypassSecurityTrustUrl(this.win.Ionic.WebView.convertFileSrc(retorno.pathImage)),
+              fotoPath: retorno.pathImage
+
+            });
               
-            this.foto.fotoExibir = this.sanitizer.bypassSecurityTrustUrl(this.win.Ionic.WebView.convertFileSrc(retorno.pathImage));
-            this.foto.fotoPath =  retorno.pathImage;
-
-            this.fotosExibir.push(this.foto);            
-         
-
           loading.dismiss();
 
         } else {
@@ -173,6 +170,14 @@ export class PreBaixaPage {
     });
 
 
+}
+
+public abrirImagem(foto: SafeUrl) {
+  let loading = this.funcoes.showLoading("");
+  var data = { fotoURL: foto };
+  var modalPage = this.modalCtrl.create(ImagemModalPage, data);
+  loading.dismiss();
+  modalPage.present();
 }
 
 

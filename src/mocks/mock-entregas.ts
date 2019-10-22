@@ -9,8 +9,10 @@ export let ENTREGAS = [
         dtLimite: "05/10/2019",
         dtProtocolo: "20/10/2019",
         location: {
-          lat: -12.988856,
-          lon: -38.499025,
+          position:{
+            lat: -12.988856,
+            lng: -38.499025,            
+          },
           estimateTime: 16,
           distance: 11
         },
@@ -32,8 +34,10 @@ export let ENTREGAS = [
         dtLimite: "01/12/2019",
         dtProtocolo: "15/10/2019",
         location: {
-          lat: -12.992369,
-          lon: -38.503853,
+          position:{
+            lat: -12.992369,
+            lng: -38.503853,
+          },         
           estimateTime: 5,
           distance: 8
         },
@@ -54,8 +58,10 @@ export let ENTREGAS = [
         dtLimite: "03/12/2019",
         dtProtocolo: "18/10/2019",
         location: {
-          lat: -13.008819,
-          lon: -38.491127,
+          position:{
+            lat: -13.008819,
+            lng: -38.491127,
+          },         
           estimateTime: 23,
           distance: 12
         },
@@ -77,8 +83,10 @@ export let ENTREGAS = [
         dtLimite: "07/12/2019",
         dtProtocolo: "21/10/2019",
         location: {
+          position:{
           lat: -12.936990,
-          lon: -38.360295,
+          lng: -38.360295
+        },
           estimateTime: 40,
           distance: 25
         },

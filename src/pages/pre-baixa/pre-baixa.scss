@@ -79,4 +79,13 @@ $activeShadow: 0 0 10px rgba($teal1, .5);
 	}
 }
 
+.item ion-thumbnail {
+	min-width: 5rem;    
+	min-height: 5rem;
+	img {
+		max-width: 5rem;    
+		min-width: 5rem;
+	}
+}
+
 }

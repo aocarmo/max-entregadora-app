@@ -14,6 +14,7 @@ import {
   GoogleMapOptions,
   CameraPosition,
   MarkerOptions,
+  HtmlInfoWindow,
   Marker,
   Environment
 } from '@ionic-native/google-maps';
@@ -83,27 +84,12 @@ this.hotels = hotelService.getAll();
 this.entregas = ENTREGAS;
 
 }
-/*
-ionViewWillLeave() {
-  this.hMap.hide();
-}*/
+
 
 ionViewDidLoad() {
-  this.diagnostic.isCameraAuthorized().then((data: any) => {
-    alert(JSON.stringify(data));
-  });
+
   this.loadMap();
 }
-/*
-ionViewDidEnter() {
- 
-  this.platform.ready().then(
-      () => {
-        this.hMap.show();
-        //this.events.subscribe('MARKER.CLICK', this._handleMarkerClick);
-      }
-  );
-}*/
 
 
 
@@ -148,8 +134,25 @@ loadMap() {
 
   
   this.map_canvas = GoogleMaps.create('map_canvas',mapOptions);
+ 
+  this.entregas.forEach((data: any) => {
+
+    let options: MarkerOptions = {
+      icon: 'red',    
+      title: 'Hello World',   
+      position: {lat: data.location.position.lat, lng: data.location.position.lng}, 
+      zIndex: 0,    
+      disableAutoPan: true
+    };
+   
+    let marker: Marker = this.map_canvas.addMarkerSync(options);
+    //marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(this.onMarkerClick);
+    //marker.on(GoogleMapsEvent.INFO_CLICK).subscribe(this.onMarkerClick);
+  });
+
 
 }
+
 
 initializeItems() {
   this.items = [
