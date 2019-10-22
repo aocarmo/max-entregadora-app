@@ -74,6 +74,21 @@ export class DetalheEntregaPage {
       this.mapReady = true;
       console.log('SecondPage: map is ready...');
     });
+
+     
+
+    let options: MarkerOptions = {
+      icon: 'red',    
+      title: 'Hello World',   
+      position: {lat: this.entrega.location.position.lat, lng: this.entrega.location.position.lng}, 
+      zIndex: 0,    
+      disableAutoPan: true
+    };
+   
+    let marker: Marker = this.map.addMarkerSync(options);
+    //marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(this.onMarkerClick);
+    //marker.on(GoogleMapsEvent.INFO_CLICK).subscribe(this.onMarkerClick);
+
   }
 
 }

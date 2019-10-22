@@ -52,7 +52,7 @@ export class AutenticacaoProvider {
     
       return new Promise(resolve => {
         
-        this.http.post(Constantes.API_LOGIN,crendenciais,this.httpOptions)
+        this.http.post(Constantes.API_LOGIN,crendenciais,this.httpOptions).timeout(Constantes.TIMEOUT_RESQUEST)
         .subscribe(async (data:any)=>{
             
           if(data.ok){
@@ -77,7 +77,7 @@ export class AutenticacaoProvider {
     
     return new Promise(resolve => {
       
-      this.http.post(Constantes.API_RECUPERAR_SENHA,email,this.httpOptions)
+      this.http.post(Constantes.API_RECUPERAR_SENHA,email,this.httpOptions).timeout(Constantes.TIMEOUT_RESQUEST)
       .subscribe(async (data:any)=>{          
         resolve(data);
       }), err => {    
