@@ -48,8 +48,8 @@ export class IntimacoesProvider {
   
       return new Promise(resolve => {
   
-        this.http.post(Constantes.OBTER_LISTA_INTIMACOES,dados,  {headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token}}).timeout(Constantes.TIMEOUT_RESQUEST).subscribe((data: any) => {
-          console.log(JSON.stringify(data));
+        this.http.post(Constantes.OBTER_LISTA_INTIMACOES,dados, httpOptions).timeout(Constantes.TIMEOUT_RESQUEST).subscribe((data: any) => {
+       
           resolve(data);
   
         }, err => {

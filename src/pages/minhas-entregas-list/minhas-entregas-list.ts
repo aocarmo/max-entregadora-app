@@ -4,6 +4,10 @@ import { SuperTabsController } from 'ionic2-super-tabs';
 
 import {ENTREGAS} from "../../mocks/mock-entregas"; // So para exemplos
 import _ from 'lodash';
+import { IntimacoesProvider } from '../../providers/intimacoes/intimacoes';
+import { FuncoesProvider } from '../../providers/funcoes/funcoes';
+import { Constantes } from '../../constantes/constantes';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the MinhasEntregasListPage page.
@@ -30,7 +34,10 @@ export class MinhasEntregasListPage {
 
 
  
-  constructor(public navCtrl: NavController, public navParams: NavParams, private superTabsCtrl: SuperTabsController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private superTabsCtrl: SuperTabsController,
+              public intimacoesProvider: IntimacoesProvider,
+              public funcoes: FuncoesProvider,
+              public storage: Storage) {
     this.rootNavCtrl = this.navParams.get('rootNavCtrl');
     this.queryText = "";
     this.entregas = ENTREGAS;
@@ -38,6 +45,15 @@ export class MinhasEntregasListPage {
     
   }
 
+
+  
+ionViewWillEnter() {
+  this.ObterListaIntimacoes().then((data:any)=>{
+  
+    
+  });
+//
+}
 
   filterCidade(cid: any){
     let val = cid.target.value;
@@ -86,4 +102,52 @@ export class MinhasEntregasListPage {
   showToolbar() {
     this.superTabsCtrl.showToolbar(true);
   }
+
+  async ObterListaIntimacoes(): Promise<any> {    
+
+    let loading = this.funcoes.showLoading("Carregando o mapa...");
+    
+     await this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
+    
+        if(intimacoesAPI.ok){
+          
+          await this.storage.get(Constantes.INTIMACOES).then(async (intimacoesLocal: any) => {      
+        
+            if(intimacoesLocal != null) {       
+    
+              let localJSON = JSON.stringify(intimacoesLocal);
+              let APIJSON = JSON.stringify(intimacoesAPI.retorno);
+              
+              if(APIJSON != localJSON){
+            
+                this.storage.set(Constantes.INTIMACOES,intimacoesAPI.retorno);
+                loading.dismiss();
+                this.entregas = intimacoesAPI.retorno;
+    
+              }else{            
+                loading.dismiss();
+                this.entregas = intimacoesLocal;
+              }
+    
+            }else{
+              this.storage.set(Constantes.INTIMACOES,intimacoesAPI.retorno);
+              loading.dismiss();
+              this.entregas = intimacoesAPI.retorno;
+            }
+    
+    
+          }).catch((err: any) => {
+            loading.dismiss();
+    
+          });      
+    
+        }
+    
+        
+      }).catch((err) => {
+        console.log(JSON.stringify(err));
+        loading.dismiss();
+    
+      });
+    }
 }

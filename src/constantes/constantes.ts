@@ -18,6 +18,7 @@ export class Constantes {
     //STORAGE KEYS
     public static STORAGE_USER='usuario';
     public static STORAGE_TOKEN='token';
+    public static INTIMACOES='intimacoes';
 
 
     //MENSAGENS PADRÃO
