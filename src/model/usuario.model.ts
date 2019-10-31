@@ -10,6 +10,9 @@ export class Usuario {
     public idPerfil: number;
     public perfil: string;
     public id: number;
+    public idDiligente: number;
+    public sub: string;
+
 
 
 }

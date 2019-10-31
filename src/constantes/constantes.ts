@@ -3,7 +3,7 @@ export class Constantes {
    
     public static API_LOGIN='https://sistema.maxentregadora.com.br/api/usuarios/autenticar.json';
     public static API_RECUPERAR_SENHA='https://sistema.maxentregadora.com.br/api/usuarios/recuperarSenha.json';
-
+    public static OBTER_LISTA_INTIMACOES = "https://sistema.maxentregadora.com.br/api/diligentes/obterListaIntimacoes.json";
    
 
     /*

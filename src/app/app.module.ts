@@ -32,6 +32,7 @@ import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { GoogleMaps} from '@ionic-native/google-maps';
 import { MapControllerProvider } from '../providers/map-controller/map-controller';
+import { IntimacoesProvider } from '../providers/intimacoes/intimacoes';
 @NgModule({
   declarations: [
     ionBookingApp,
@@ -87,7 +88,8 @@ import { MapControllerProvider } from '../providers/map-controller/map-controlle
     ActionSheet,
     Diagnostic,
     GoogleMaps,
-    MapControllerProvider
+    MapControllerProvider,
+    IntimacoesProvider
   ]
 })
 

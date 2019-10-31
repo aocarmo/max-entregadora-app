@@ -1,3 +1,6 @@
+import { Storage } from '@ionic/storage';
+
+import { Usuario } from './../../model/usuario.model';
 import { AutenticacaoProvider } from './../../providers/autenticacao/autenticacao';
 import { Constantes } from './../../constantes/constantes';
 import { Component, OnInit } from "@angular/core";
@@ -18,6 +21,7 @@ import { FuncoesProvider } from '../../providers/funcoes/funcoes';
 })
 export class LoginPage implements OnInit {
   public onLoginForm: FormGroup;
+  public usuario: Usuario;
 
   constructor(private _fb: FormBuilder,
     public nav: NavController,
@@ -25,7 +29,8 @@ export class LoginPage implements OnInit {
     public menu: MenuController,
     public toastCtrl: ToastController,
     public autenticacao: AutenticacaoProvider,
-    public funcoes: FuncoesProvider
+    public funcoes: FuncoesProvider,
+    public storage:Storage
   ) {
     this.menu.swipeEnable(false);
     this.menu.enable(false);
@@ -53,10 +58,17 @@ export class LoginPage implements OnInit {
 
   login() {
     let loading = this.funcoes.showLoading("Autenticando...");
-    this.autenticacao.login(this.onLoginForm.value).then((data: any) => {
+    this.autenticacao.login(this.onLoginForm.value).then(async (data: any) => {
       loading.dismiss();
       if (data.ok) {
-        this.nav.setRoot('page-home');
+
+      await this.storage.get(Constantes.STORAGE_USER).then((data: any) => {
+          this.usuario = data;
+          this.nav.setRoot('page-home', {"usuario" : this.usuario});
+        }).catch((err: any) => {
+
+        });
+      
 
       } else {
         this.funcoes.showAlert(data.msg);
@@ -108,13 +120,13 @@ export class LoginPage implements OnInit {
                 showCloseButton: true
               });
               toast.present();
-       
+
             }).catch((err: any) => {
               loading.dismiss();
               this.funcoes.showAlert("Ocorreu um erro ao fazer o login: " + JSON.stringify(err));
 
             });
-           
+
           }
         }
       ]

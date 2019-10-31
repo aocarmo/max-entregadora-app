@@ -11,6 +11,8 @@ import { Observable, Subject } from 'rxjs';
 import { Usuario } from '../../model/usuario.model';
 import { JSONPBackend } from '@angular/http';
 
+
+
 /*
   Generated class for the AutenticacaoProvider provider.
 
@@ -49,6 +51,7 @@ export class AutenticacaoProvider {
   }
 
   public login(crendenciais){
+
     
       return new Promise(resolve => {
         
@@ -94,6 +97,8 @@ export class AutenticacaoProvider {
     this.token = token;
     await this.storage.set(Constantes.STORAGE_TOKEN, token);
     this.usuario = this.jwtHelper.decodeToken(token); 
+
+    
     await this.storage.set(Constantes.STORAGE_USER, this.usuario);
 
   }
