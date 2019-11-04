@@ -25,6 +25,8 @@ import { Diagnostic } from "@ionic-native/diagnostic";
 import { FuncoesProvider } from '../../providers/funcoes/funcoes';
 import { IntimacoesProvider } from '../../providers/intimacoes/intimacoes';
 import { Constantes } from '../../constantes/constantes';
+import { Subscription } from 'rxjs';
+import { Network } from '@ionic-native/network';
 
 
 //const mapId = 'HOME_MAP';
@@ -47,9 +49,7 @@ import { Constantes } from '../../constantes/constantes';
   templateUrl: 'minhas-entregas-map.html',
 })
 export class MinhasEntregasMapPage {
- // private hMap: MapInstance;
-  dDate: Date = new Date();
-  searchQuery: string = '';
+
   items: string[];
   showItems: boolean = false;
  
@@ -57,13 +57,10 @@ export class MinhasEntregasMapPage {
   public usuario:Usuario;
   map_canvas: GoogleMap;
 
-  public childs: any;
 
-  public hotellocation: string;
-
-  // list of hotels
-  public hotels: any;
-
+  connected: Subscription;
+  disconnected: Subscription;  
+  public isOnline: boolean =  true;
 
   constructor(public nav: NavController, public navParams: NavParams, 
     public menuCtrl: MenuController, public modalCtrl: ModalController, 
@@ -73,17 +70,33 @@ export class MinhasEntregasMapPage {
     public diagnostic: Diagnostic,
     public intimacoesProvider: IntimacoesProvider,
     public funcoes: FuncoesProvider,
-    public storage: Storage
+    public storage: Storage,
+    public network: Network 
     
     ) {
       // set sample datarrr
 this.menuCtrl.swipeEnable(true, 'authenticated');
 this.menuCtrl.enable(true);
-this.hotels = hotelService.getAll();
+
 //this.entregas = this.navParams.get('intimacoes');
 this.usuario = this.navParams.get('usuario');
 
 }
+
+ionViewDidEnter() {
+  this.connected = this.network.onConnect().subscribe(()=>{      
+    this.isOnline = true;       
+   });
+   this.disconnected = this.network.onDisconnect().subscribe(()=>{
+    this.isOnline = false;  
+  });      
+}
+
+ionViewWillLeave(){
+  this.connected.unsubscribe();
+  this.disconnected.unsubscribe();
+}
+
 
 
 async ionViewWillEnter() {
@@ -178,43 +191,47 @@ presentNotifications(myEvent) {
 
 async AtualizarListaIntimacoes(): Promise<any> {    
 
- // let loading = this.funcoes.showLoading("Carregando...");
 
-     
   await this.storage.get(Constantes.INTIMACOES).then(async (intimacoesLocal: any) => {      
       
     if(intimacoesLocal != null) {   
-      this.entregas = intimacoesLocal; 
-      this.ObterListaIntimacoes();
-     // loading.dismiss();
+      this.entregas = intimacoesLocal;
+
+        if(this.isOnline){
+          this.ObterListaIntimacoes();
+        }
 
     }else{
 
-      await this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
-  
-        if(intimacoesAPI.ok){
+        if(this.isOnline){
 
-          this.storage.set(Constantes.INTIMACOES,intimacoesAPI.retorno);
-          this.entregas = intimacoesAPI.retorno; 
-         // loading.dismiss();
+          await this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
+      
+            if(intimacoesAPI.ok){
 
+              this.storage.set(Constantes.INTIMACOES,intimacoesAPI.retorno);
+              this.entregas = intimacoesAPI.retorno; 
+          
+
+            }else{
+
+              this.funcoes.showAlert(intimacoesAPI.msg);
+            
+            }
+
+          }).catch((err) => {
+            console.log(JSON.stringify(err));      
+        
+          });
         }else{
-
-          this.funcoes.showAlert(intimacoesAPI.msg);
-         // loading.dismiss();
+          this.funcoes.showAlert(Constantes.INTERNET_INDISPONIVEL);
         }
-
-      }).catch((err) => {
-        console.log(JSON.stringify(err));
-       // loading.dismiss();
-    
-      });
    
     }
   
 
   }).catch((err: any) => {
-  //  loading.dismiss();
+  
 
   });
 

@@ -9,6 +9,7 @@ import { Storage } from "@ionic/storage";
 import 'rxjs/add/operator/map'
 import { Constantes } from '../../constantes/constantes';
 import { RequestOptions } from '@angular/http';
+import { Usuario } from '../../model/usuario.model';
 
 
 
@@ -22,7 +23,7 @@ import { RequestOptions } from '@angular/http';
 export class IntimacoesProvider {
 
   private token: string = null;
-
+  public usuario : Usuario;
   constructor(public http: HttpClient,private storage: Storage,public autenticacaoProvider: AutenticacaoProvider){
     this.storage.get(Constantes.STORAGE_TOKEN).then((data: any) => {
       this.token = data;
@@ -36,7 +37,10 @@ export class IntimacoesProvider {
   public ObterListaIntimacoes() {
      let token =this.autenticacaoProvider.getToken();
 
-     let dados = {"diligente_id":3};
+     
+     this.usuario = this.autenticacaoProvider.getUser(token);
+
+     let dados = {"diligente_id":  this.usuario.idDiligente};
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',

@@ -2,13 +2,15 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SuperTabsController } from 'ionic2-super-tabs';
 
-import {ENTREGAS} from "../../mocks/mock-entregas"; // So para exemplos
+import { ENTREGAS } from "../../mocks/mock-entregas"; // So para exemplos
 import _ from 'lodash';
 import { IntimacoesProvider } from '../../providers/intimacoes/intimacoes';
 import { FuncoesProvider } from '../../providers/funcoes/funcoes';
 import { Constantes } from '../../constantes/constantes';
 import { Storage } from '@ionic/storage';
 import { Usuario } from '../../model/usuario.model';
+import { Subscription } from 'rxjs/Subscription';
+import { Network } from '@ionic-native/network';
 
 /**
  * Generated class for the MinhasEntregasListPage page.
@@ -32,112 +34,138 @@ export class MinhasEntregasListPage {
   rootNavCtrl: NavController;
   queryText: string;
   todasEntregas: any;
-  public usuario:Usuario;
+  public usuario: Usuario;
+
+  
+  connected: Subscription;
+  disconnected: Subscription;  
+  public isOnline: boolean =  true;
 
 
- 
   constructor(public navCtrl: NavController, public navParams: NavParams, private superTabsCtrl: SuperTabsController,
-              public intimacoesProvider: IntimacoesProvider,
-              public funcoes: FuncoesProvider,
-              public storage: Storage) {
+    public intimacoesProvider: IntimacoesProvider,
+    public funcoes: FuncoesProvider,
+    public storage: Storage,
+    public network: Network ) {
     this.rootNavCtrl = this.navParams.get('rootNavCtrl');
     this.queryText = "";
     this.usuario = this.navParams.get('usuario');
-    
+
+  }
+
+  ionViewDidEnter() {
+    this.connected = this.network.onConnect().subscribe(() => {
+      this.isOnline = true;
+    });
+    this.disconnected = this.network.onDisconnect().subscribe(() => {
+      this.isOnline = false;
+    });
+  }
+
+  ionViewWillLeave() {
+    this.connected.unsubscribe();
+    this.disconnected.unsubscribe();
   }
 
 
-  
-ionViewWillEnter() {
-  this.AtualizarListaIntimacoes().then((data:any)=>{
-  
-  });
-//
-}
+  ionViewWillEnter() {
+    this.AtualizarListaIntimacoes().then((data: any) => {
 
-  filterCidade(cid: any){
+    });
+    //
+  }
+
+  filterCidade(cid: any) {
     let val = cid.target.value;
 
-    if(val  && val.trim() != ''){
+    if (val && val.trim() != '') {
       this.entregas = _.values(this.todasEntregas);
-      this.entregas = this.entregas.filter((entrega)=>{
+      this.entregas = this.entregas.filter((entrega) => {
         return (
           entrega.devedor.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
           entrega.documento.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
-         // entrega.protocolo.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+          // entrega.protocolo.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
           entrega.endereco.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
           entrega.dtLimite.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
-          entrega.dtProtocolo.toLowerCase().indexOf(val.toLowerCase()) > -1 
-           )
+          entrega.dtProtocolo.toLowerCase().indexOf(val.toLowerCase()) > -1
+        )
       });
-    }else{
+    } else {
       this.entregas = this.todasEntregas;
     }
 
   }
-  verDetalhe(entrega:any){
-    this.rootNavCtrl.push('page-detalhe-entrega',{'entrega': entrega }); 
+  verDetalhe(entrega: any) {
+    this.rootNavCtrl.push('page-detalhe-entrega', { 'entrega': entrega });
   }
- 
+
   goToDetails() {
     this.rootNavCtrl.push('NewsDetailsPage');
   }
- 
+
   setBadge() {
     this.superTabsCtrl.setBadge('aboutTab', 9);
   }
- 
+
   clearBadge() {
     this.superTabsCtrl.clearBadge('aboutTab');
   }
- 
+
   jumpToAccount() {
     this.superTabsCtrl.slideTo(2);
   }
- 
+
   hideToolbar() {
     this.superTabsCtrl.showToolbar(false);
   }
- 
+
   showToolbar() {
     this.superTabsCtrl.showToolbar(true);
   }
 
-  async AtualizarListaIntimacoes(): Promise<any> {    
+  async AtualizarListaIntimacoes(): Promise<any> {
 
     let loading = this.funcoes.showLoading("Obtendo intimações...");
 
-       
-    await this.storage.get(Constantes.INTIMACOES).then(async (intimacoesLocal: any) => {      
-        
-      if(intimacoesLocal != null) {      
 
-        this.entregas = intimacoesLocal; 
-        this.ObterListaIntimacoes();
+    await this.storage.get(Constantes.INTIMACOES).then(async (intimacoesLocal: any) => {
+
+      if (intimacoesLocal != null) {
+
+        this.entregas = intimacoesLocal;
+      
+        if(this.isOnline){
+          this.ObterListaIntimacoes();
+        }
+
         loading.dismiss();
 
-      }else{
+      } else {
+        if(this.isOnline){
 
-        await this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
-    
-          if(intimacoesAPI.ok){
+          await this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
 
-            this.storage.set(Constantes.INTIMACOES,intimacoesAPI.retorno);
-            this.entregas = intimacoesAPI.retorno; 
+            if (intimacoesAPI.ok) {
+
+              this.storage.set(Constantes.INTIMACOES, intimacoesAPI.retorno);
+              this.entregas = intimacoesAPI.retorno;
+              loading.dismiss();
+
+            } else {
+
+              this.funcoes.showAlert(intimacoesAPI.msg);
+              loading.dismiss();
+            }
+
+          }).catch((err) => {
+            console.log(JSON.stringify(err));
             loading.dismiss();
 
-          }else{
-
-            this.funcoes.showAlert(intimacoesAPI.msg);
-            loading.dismiss();
-          }
-  
-        }).catch((err) => {
-          console.log(JSON.stringify(err));
-          loading.dismiss();
-      
-        });
-     
+          });
+        }else{
+          this.funcoes.showAlert(Constantes.INTERNET_INDISPONIVEL);
+        }
+   
       }
       this.todasEntregas = this.entregas;
 
@@ -146,75 +174,75 @@ ionViewWillEnter() {
 
     });
 
-   
-    }
 
-    ObterListaIntimacoes(){    
+  }
 
-       this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
-    
-          if(intimacoesAPI.ok){
+  ObterListaIntimacoes() {
 
-            this.storage.set(Constantes.INTIMACOES,intimacoesAPI.retorno);
-         //   this.entregas = intimacoesAPI.retorno; 
-          }
-  
-        }).catch((err) => {
-          console.log(JSON.stringify(err));
-        
-        });
-    };
+    this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
+
+      if (intimacoesAPI.ok) {
+
+        this.storage.set(Constantes.INTIMACOES, intimacoesAPI.retorno);
+        //   this.entregas = intimacoesAPI.retorno; 
+      }
+
+    }).catch((err) => {
+      console.log(JSON.stringify(err));
+
+    });
+  };
 
 
 
- /*   async ObterListaIntimacoes(): Promise<any> {    
-
-      let loading = this.funcoes.showLoading("Carregando o mapa...");
-      
-       await this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
-      
-          if(intimacoesAPI.ok){
-            
-            await this.storage.get(Constantes.INTIMACOES).then(async (intimacoesLocal: any) => {      
-          
-              if(intimacoesLocal != null) {       
-      
-                let localJSON = JSON.stringify(intimacoesLocal);
-                let APIJSON = JSON.stringify(intimacoesAPI.retorno);
-                
-                if(APIJSON != localJSON){
-              
-                  this.storage.set(Constantes.INTIMACOES,intimacoesAPI.retorno);
-                  loading.dismiss();
-                  this.entregas = intimacoesAPI.retorno;              
+  /*   async ObterListaIntimacoes(): Promise<any> {    
+ 
+       let loading = this.funcoes.showLoading("Carregando o mapa...");
+       
+        await this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
+       
+           if(intimacoesAPI.ok){
+             
+             await this.storage.get(Constantes.INTIMACOES).then(async (intimacoesLocal: any) => {      
+           
+               if(intimacoesLocal != null) {       
+       
+                 let localJSON = JSON.stringify(intimacoesLocal);
+                 let APIJSON = JSON.stringify(intimacoesAPI.retorno);
                  
-                }else{            
-                  loading.dismiss();
-                  this.entregas = intimacoesLocal;
-                }
-      
-              }else{
-                this.storage.set(Constantes.INTIMACOES,intimacoesAPI.retorno);
-                loading.dismiss();
-                this.entregas = intimacoesAPI.retorno;
-              }
-      
-      
-            }).catch((err: any) => {
-              loading.dismiss();
-      
-            });      
-      
-          }
-  
-          this.todasEntregas = this.entregas;
-      
-      
-          
-        }).catch((err) => {
-          console.log(JSON.stringify(err));
-          loading.dismiss();
-      
-        });
-      }*/
+                 if(APIJSON != localJSON){
+               
+                   this.storage.set(Constantes.INTIMACOES,intimacoesAPI.retorno);
+                   loading.dismiss();
+                   this.entregas = intimacoesAPI.retorno;              
+                  
+                 }else{            
+                   loading.dismiss();
+                   this.entregas = intimacoesLocal;
+                 }
+       
+               }else{
+                 this.storage.set(Constantes.INTIMACOES,intimacoesAPI.retorno);
+                 loading.dismiss();
+                 this.entregas = intimacoesAPI.retorno;
+               }
+       
+       
+             }).catch((err: any) => {
+               loading.dismiss();
+       
+             });      
+       
+           }
+   
+           this.todasEntregas = this.entregas;
+       
+       
+           
+         }).catch((err) => {
+           console.log(JSON.stringify(err));
+           loading.dismiss();
+       
+         });
+       }*/
 }

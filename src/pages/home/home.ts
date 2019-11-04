@@ -8,7 +8,6 @@ import { SuperTabs } from 'ionic2-super-tabs';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 import { NotificationsPage } from '../notifications/notifications';
 
-
 @IonicPage({
   name: 'page-home',
   segment: 'home',

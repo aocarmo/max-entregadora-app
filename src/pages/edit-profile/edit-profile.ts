@@ -9,6 +9,8 @@ import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 import { Constantes } from '../../constantes/constantes';
 import { NavParams } from 'ionic-angular/navigation/nav-params';
 import { Storage } from '@ionic/storage';
+import { Subscription } from 'rxjs';
+import { Network } from '@ionic-native/network';
 
 @IonicPage({
   name: 'page-edit-profile',
@@ -23,6 +25,9 @@ export class EditProfilePage {
 
   profiledata: Boolean = true;
   public user : Usuario;
+  connected: Subscription;
+  disconnected: Subscription;  
+  public isOnline: boolean =  true;
 
   constructor(public navCtrl: NavController, 
               public loadingCtrl: LoadingController, 
@@ -32,52 +37,32 @@ export class EditProfilePage {
               public funcoes: FuncoesProvider,
               public perfilService: PerfilProvider,
               public storage :Storage,
-              public navParams: NavParams, ) {
+              public navParams: NavParams,
+              public network: Network ) {
 
                 this.user = this.navParams.get('usuario');         
 
   }
 
-  // process send button
-  sendData() {
-    // send booking info
-    let loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    // show message
-    let toast = this.toastCtrl.create({
-      showCloseButton: true,
-      cssClass: 'profile-bg',
-      message: 'Your Data was Edited!',
-      duration: 3000,
-      position: 'bottom'
-    });
-
-    loader.present();
-
-    setTimeout(() => {
-      loader.dismiss();
-      toast.present();
-      // back to home page
-      this.navCtrl.setRoot(HomePage);
-    }, 3000)
-  }
-
+  
   ionViewDidEnter() {
-
-
-    /*this.connected = this.network.onConnect().subscribe(()=>{      
+    this.connected = this.network.onConnect().subscribe(()=>{      
       this.isOnline = true;       
      });
      this.disconnected = this.network.onDisconnect().subscribe(()=>{
       this.isOnline = false;  
-    });      */
+    });      
+  }
+
+  ionViewWillLeave(){
+    this.connected.unsubscribe();
+    this.disconnected.unsubscribe();
   }
 
 
   alteraFoto(): void {
 
-   // if (this.isOnline) {
+    if (this.isOnline) {
 
       let buttonLabels = ['Tirar Foto', 'Escolher da Galeria'];
 
@@ -132,9 +117,9 @@ export class EditProfilePage {
 
       });
 
-   /* } else {
+    } else {
       this.funcoes.showAlert(Constantes.INTERNET_INDISPONIVEL);
-    }*/
+    }
   }
 
 
