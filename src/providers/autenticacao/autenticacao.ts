@@ -103,10 +103,23 @@ export class AutenticacaoProvider {
 
   }
 
+  public getUser(token): any {
+    this.usuario = this.jwtHelper.decodeToken(token); 
+    return  this.usuario;
+  }
+
   authenticated() {
-    if(this.token == null){
+    /*if(this.token == null){
       return false;
-    }
+    }*/
+      return this.jwtHelper.isTokenExpired(this.token)
+    
+  }
+
+  isTokenExpired() {
+    /*if(this.token == null){
+      return false;
+    }*/
       return this.jwtHelper.isTokenExpired(this.token)
     
   }
@@ -130,5 +143,11 @@ export class AutenticacaoProvider {
     
     
   }
+
+  permanecerLogado(condicao: boolean){
+    this.loggedIn = condicao;
+    this.logger.next(this.loggedIn);    
+  }
+
 
 }

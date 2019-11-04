@@ -13,10 +13,10 @@
 
     <ion-card>
       <ion-card-content class="profile-bg">
-		  <img src="assets/img/rander.jpg">
-          <h2 class="fw500">Roberto Rander</h2>
-          <h3 ion-text color="light">Entregador</h3>
-          <button ion-button icon-start margin-top color="secondary">
+			<img [src]="user.foto">
+          <h2 class="fw500">{{user.nome}}</h2>
+          <h3 ion-text color="light">{{user.perfil}}</h3>
+          <button ion-button icon-start margin-top color="secondary"  (click)="alteraFoto()">
             <ion-icon class="fas fa-camera"></ion-icon>
             Alterar foto
           </button>
@@ -28,71 +28,18 @@
 
   	        <ion-item>
   	          <ion-label color="dark" stacked>Nome:</ion-label>
-  	          <ion-input type="text" placeholder="Ex..: Joe Doe" value="Roberto Rander"></ion-input>
+  	          <ion-input type="text" placeholder="Ex..: Joe Doe" disabled="true" [value]="user.nome"></ion-input>
   	        </ion-item>
 
   	        <ion-item>
   	          <ion-label color="dark" stacked>Email:</ion-label>
-  	          <ion-input type="email" placeholder="Ex.: joe@doe.com" value="rrander@gmail.com"></ion-input>
+  	          <ion-input type="email" placeholder="Ex.: joe@doe.com" disabled="true" [value]="user.email"></ion-input>
   	        </ion-item>
-	<!-- 
-  	        <ion-item>
-  	          <ion-label color="dark" stacked>Enderco:</ion-label>
-  	          <ion-input type="text" placeholder="Ex.: Abey Road 5"></ion-input>
-  	        </ion-item>
-
-  			 <ion-item>
-  				    <ion-label color="dark">City</ion-label>
-  				    <ion-select>
-  				      <ion-option value="nes">New York</ion-option>
-  				      <ion-option value="n64">Los Angeles</ion-option>
-  				      <ion-option value="ps">London</ion-option>
-  				      <ion-option value="genesis">Paris</ion-option>
-  				      <ion-option value="saturn">São Paulo</ion-option>
-  				      <ion-option value="snes">Tokyo</ion-option>
-  				      <ion-option value="snes">New Delhi</ion-option>
-  				    </ion-select>
-  				  </ion-item>
-
-  				  <ion-item>
-  				    <ion-label color="dark">State</ion-label>
-  				    <ion-select>
-  				      <ion-option value="nes">NY</ion-option>
-  				      <ion-option value="n64">CA</ion-option>
-  				      <ion-option value="ps">Greater London</ion-option>
-  				      <ion-option value="genesis">Paris</ion-option>
-  				      <ion-option value="saturn">SP</ion-option>
-  				      <ion-option value="snes">Kantō</ion-option>
-  				      <ion-option value="snes">Delhi</ion-option>
-  				    </ion-select>
-  				  </ion-item>
-
-  					<div radio-group margin-top margin-bottom>
-  					  <ion-list-header no-margin no-padding>
-  					    <span ion-text color="dark" class="fw500">User Type</span>
-  					  </ion-list-header>
-
-  					  <ion-item>
-  					    <ion-label color="dark">Customer</ion-label>
-  					    <ion-radio checked="true" value="customer"></ion-radio>
-  					  </ion-item>
-
-  					  <ion-item>
-  					    <ion-label color="dark">Travel Agent</ion-label>
-  					    <ion-radio value="agent"></ion-radio>
-  					  </ion-item>
-  					</div>
-
-            <ion-item>
-            	<ion-label class="text-1x">Available to chat w/ Travel Agents?</ion-label>
-            	<ion-checkbox></ion-checkbox>
-          	</ion-item> -->
-
           </ion-col>
         </ion-row>
       </ion-grid>
 
-			<button ion-button large full color="dark" (click)="sendData()">Salvar</button>
+		   <!--	<button ion-button large full color="dark" (click)="sendData()">Salvar</button> -->
     </ion-card>
 
    <!-- <div padding>

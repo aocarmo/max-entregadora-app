@@ -13,7 +13,10 @@
         <ion-grid>
           <ion-row justify-content-center>
             <ion-col padding-left padding-right padding-top col-auto>
-                <div class="user-avatar"></div>
+                <!--<div class="user-avatar"></div>-->
+                <div> 
+                  <img class="user-avatar" [src]="usuario.foto" alt="">
+              </div>
             </ion-col>
           </ion-row>
 
@@ -26,7 +29,7 @@
               <div padding-top>
                 <button ion-button icon-left small color="secondary" menuClose (click)="editProfile()">
                   <ion-icon name="contact"></ion-icon>
-                  Editar Perfil
+                  Ver Perfil
                 </button>
                 <button ion-button icon-left small color="secondary" menuClose (click)="logout()">
                   <ion-icon name="log-out"></ion-icon>

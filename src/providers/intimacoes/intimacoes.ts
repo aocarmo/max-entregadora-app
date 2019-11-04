@@ -21,8 +21,6 @@ import { RequestOptions } from '@angular/http';
 @Injectable()
 export class IntimacoesProvider {
 
- // public httpOptions: any;
- 
   private token: string = null;
 
   constructor(public http: HttpClient,private storage: Storage,public autenticacaoProvider: AutenticacaoProvider){

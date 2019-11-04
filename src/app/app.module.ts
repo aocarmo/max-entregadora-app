@@ -33,6 +33,7 @@ import { Diagnostic } from '@ionic-native/diagnostic';
 import { GoogleMaps} from '@ionic-native/google-maps';
 import { MapControllerProvider } from '../providers/map-controller/map-controller';
 import { IntimacoesProvider } from '../providers/intimacoes/intimacoes';
+import { PerfilProvider } from '../providers/perfil/perfil';
 @NgModule({
   declarations: [
     ionBookingApp,
@@ -89,7 +90,8 @@ import { IntimacoesProvider } from '../providers/intimacoes/intimacoes';
     Diagnostic,
     GoogleMaps,
     MapControllerProvider,
-    IntimacoesProvider
+    IntimacoesProvider,
+    PerfilProvider
   ]
 })
 

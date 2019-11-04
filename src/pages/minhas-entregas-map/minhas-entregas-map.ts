@@ -80,29 +80,55 @@ export class MinhasEntregasMapPage {
 this.menuCtrl.swipeEnable(true, 'authenticated');
 this.menuCtrl.enable(true);
 this.hotels = hotelService.getAll();
-this.entregas = this.navParams.get('intimacoes');
+//this.entregas = this.navParams.get('intimacoes');
 this.usuario = this.navParams.get('usuario');
 
 }
 
 
-ionViewWillEnter() {
-  this.ObterListaIntimacoes().then((data:any)=>{
+async ionViewWillEnter() {
+  let loading = this.funcoes.showLoading("Carregando...");
+ await this.AtualizarListaIntimacoes().then((data:any)=>{
     this.loadMap();
-    
+    loading.dismiss();
   });
 //
 }
 
 
 loadMap() {
+//  let loading = this.funcoes.showLoading("Carregando...");
+  if(this.map_canvas != null){
 
-  // This code is necessary for browser
-  Environment.setEnv({
+    this.map_canvas.clear();
+
+    this.entregas.forEach((data: any) => {
+
+      let options: MarkerOptions = {
+        icon: 'red',    
+        title: data.devedor,   
+        position: {lat: data.location.position.lat, lng: data.location.position.lng}, 
+        zIndex: 0,    
+        disableAutoPan: true
+      };
+     
+      let marker: Marker = this.map_canvas.addMarkerSync(options);
+    
+      
+      //marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(this.onMarkerClick);
+      //marker.on(GoogleMapsEvent.INFO_CLICK).subscribe(this.onMarkerClick);
+    });
+
+    
+
+  }else{
+
+    // This code is necessary for browser
+ /* Environment.setEnv({
     'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyB_6IGpyQsPTenu0afoaBM7csRPLbtryoo',
     'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyB_6IGpyQsPTenu0afoaBM7csRPLbtryoo'
   });
-
+*/
   let mapOptions: GoogleMapOptions = {
     camera: {
        target: {
@@ -128,17 +154,18 @@ loadMap() {
     };
    
     let marker: Marker = this.map_canvas.addMarkerSync(options);
+  
+    
     //marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(this.onMarkerClick);
     //marker.on(GoogleMapsEvent.INFO_CLICK).subscribe(this.onMarkerClick);
   });
-
+    
+  }
+  
+ 
+  //loading.dismiss();
 
 }
-
-
-
-
-
 
 presentNotifications(myEvent) {
   // console.log(myEvent);
@@ -148,6 +175,69 @@ presentNotifications(myEvent) {
   });
 }
 
+
+async AtualizarListaIntimacoes(): Promise<any> {    
+
+ // let loading = this.funcoes.showLoading("Carregando...");
+
+     
+  await this.storage.get(Constantes.INTIMACOES).then(async (intimacoesLocal: any) => {      
+      
+    if(intimacoesLocal != null) {   
+      this.entregas = intimacoesLocal; 
+      this.ObterListaIntimacoes();
+     // loading.dismiss();
+
+    }else{
+
+      await this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
+  
+        if(intimacoesAPI.ok){
+
+          this.storage.set(Constantes.INTIMACOES,intimacoesAPI.retorno);
+          this.entregas = intimacoesAPI.retorno; 
+         // loading.dismiss();
+
+        }else{
+
+          this.funcoes.showAlert(intimacoesAPI.msg);
+         // loading.dismiss();
+        }
+
+      }).catch((err) => {
+        console.log(JSON.stringify(err));
+       // loading.dismiss();
+    
+      });
+   
+    }
+  
+
+  }).catch((err: any) => {
+  //  loading.dismiss();
+
+  });
+
+ 
+  }
+
+  ObterListaIntimacoes(){    
+
+     this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
+  
+        if(intimacoesAPI.ok){
+
+          this.storage.set(Constantes.INTIMACOES,intimacoesAPI.retorno);
+          //this.entregas = intimacoesAPI.retorno; 
+        }
+
+      }).catch((err) => {
+        console.log(JSON.stringify(err));
+      
+      });
+  };
+
+/*
 async ObterListaIntimacoes(): Promise<any> {    
 
 let loading = this.funcoes.showLoading("Carregando o mapa...");
@@ -194,7 +284,7 @@ let loading = this.funcoes.showLoading("Carregando o mapa...");
     loading.dismiss();
 
   });
-}
+}*/
 
 }
 

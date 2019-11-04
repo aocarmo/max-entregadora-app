@@ -53,7 +53,9 @@ export class ionBookingApp {
           
             {title: 'Minhas Entregas', component: 'page-home', icon: 'fas fa-mail-bulk'},
           //  {title: 'Minhas ', component: 'page-message-list', icon: 'mail'}, 
+
             {title: 'Contato', component: 'page-support', icon: 'fas fa-phone'},
+          
       
           
           ];
@@ -75,25 +77,39 @@ export class ionBookingApp {
   }
 
   initializeApp() {
+
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      //*** Control Splash Screen
-      // this.splashScreen.show();
-      // this.splashScreen.hide();
+    
+        //Pega os dados de usuario da sessão
+        this.storage.get(Constantes.STORAGE_USER).then((data: any) => {
+          //Verifica se existe usuario logado com informações salvas no local storage, caso exista manda para tela inicial
+           if (data != null) {
+          
+            if(this.autenticacaoProvider.isTokenExpired()){  
+          
+              this.logout();
+            }else{
+          
+              this.splashScreen.hide();
+              //Informa a obeservable que o usuario permanece logado
+              this.autenticacaoProvider.permanecerLogado(true);        
+              this.usuario = data;
+              this.nav.setRoot('page-home', { 'usuario': this.usuario });
+            }
+         
+   
+           } else {            
+          
+             this.statusBar.styleDefault();
+             this.statusBar.overlaysWebView(false);   
+             this.logout();
+           
+           }
+   
+         });
+   
+       });
 
-      if(this.autenticacaoProvider.authenticated()){
-         this.nav.setRoot('page-home');      
-       }else{      
-         this.logout();
-       }
-
-      //*** Control Status Bar
-      this.statusBar.styleDefault();
-      this.statusBar.overlaysWebView(false);
-
-      //*** Control Keyboard
-      this.keyboard.hide();
-    });
   }
 
   openPage(page) {
@@ -109,7 +125,7 @@ export class ionBookingApp {
   }
 
   editProfile() {
-    this.nav.setRoot('page-edit-profile');
+    this.nav.setRoot('page-edit-profile',  { 'usuario': this.usuario });
   }
 
 }
