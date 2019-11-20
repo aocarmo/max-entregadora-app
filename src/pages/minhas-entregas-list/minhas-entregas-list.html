@@ -19,20 +19,20 @@
         </ion-item>     
       
         <ion-item>
-          <span item-start>{{entrega.location.distance}} min</span>
-          <span item-start>({{entrega.location.estimateTime}} km)</span>
+      <!--    <span item-start>{{entrega.location.distance}} min</span>
+          <span item-start>({{entrega.location.estimateTime}} km)</span>-->
           <div align="right">
               
-                <button  color="green" *ngIf="entrega.tentativa  == 1" ion-button icon-start clear item-end>
-                    {{entrega.tentativa}}ª 
+                <button  color="green" *ngIf="entrega.idTentativaEntrega  == 1" ion-button icon-start clear item-end>
+                    {{entrega.tentativa}} 
                     <ion-icon class="fas fa-medal"></ion-icon>                   
                 </button>
-                <button   color="secondary" *ngIf="entrega.tentativa  == 2" ion-button icon-start clear item-end>
-                  {{entrega.tentativa}}ª
+                <button   color="secondary" *ngIf="entrega.idTentativaEntrega  == 2" ion-button icon-start clear item-end>
+                  {{entrega.tentativa}}
                   <ion-icon class="fas fa-medal"></ion-icon>                  
                   </button>
-                <button   color="danger" *ngIf="entrega.tentativa  == 3" ion-button icon-start clear item-end>
-                  {{entrega.tentativa}}ª  
+                <button   color="danger" *ngIf="entrega.idTentativaEntrega  == 3" ion-button icon-start clear item-end>
+                  {{entrega.tentativa}}  
                   <ion-icon class="fas fa-medal"></ion-icon>                    
                   </button>
                 <button  color="blueMaps" ion-button icon-start clear item-end>

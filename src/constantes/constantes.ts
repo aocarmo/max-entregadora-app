@@ -5,6 +5,8 @@ export class Constantes {
     public static API_RECUPERAR_SENHA='https://sistema.maxentregadora.com.br/api/usuarios/recuperarSenha.json';
     public static OBTER_LISTA_INTIMACOES = "https://sistema.maxentregadora.com.br/api/diligentes/obterListaIntimacoes.json";
     public static API_ALTERAR_USUARIO = "https://sistema.maxentregadora.com.br/api/usuarios/alterarFoto.json";
+    public static API_LOCALIZACAO_DILIGENTE = "https://sistema.maxentregadora.com.br/api/DiligenteLocalizacoes/registrar.json";
+
     
    
 

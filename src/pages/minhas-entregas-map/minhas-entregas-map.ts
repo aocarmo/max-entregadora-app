@@ -27,6 +27,7 @@ import { IntimacoesProvider } from '../../providers/intimacoes/intimacoes';
 import { Constantes } from '../../constantes/constantes';
 import { Subscription } from 'rxjs';
 import { Network } from '@ionic-native/network';
+import { NetworkProvider } from '../../providers/network/network';
 
 
 //const mapId = 'HOME_MAP';
@@ -58,9 +59,7 @@ export class MinhasEntregasMapPage {
   map_canvas: GoogleMap;
 
 
-  connected: Subscription;
-  disconnected: Subscription;  
-  public isOnline: boolean =  true;
+
 
   constructor(public nav: NavController, public navParams: NavParams, 
     public menuCtrl: MenuController, public modalCtrl: ModalController, 
@@ -71,7 +70,8 @@ export class MinhasEntregasMapPage {
     public intimacoesProvider: IntimacoesProvider,
     public funcoes: FuncoesProvider,
     public storage: Storage,
-    public network: Network 
+    public network: Network ,
+    public networkProvider: NetworkProvider
     
     ) {
       // set sample datarrr
@@ -81,20 +81,6 @@ this.menuCtrl.enable(true);
 //this.entregas = this.navParams.get('intimacoes');
 this.usuario = this.navParams.get('usuario');
 
-}
-
-ionViewDidEnter() {
-  this.connected = this.network.onConnect().subscribe(()=>{      
-    this.isOnline = true;       
-   });
-   this.disconnected = this.network.onDisconnect().subscribe(()=>{
-    this.isOnline = false;  
-  });      
-}
-
-ionViewWillLeave(){
-  this.connected.unsubscribe();
-  this.disconnected.unsubscribe();
 }
 
 
@@ -117,8 +103,16 @@ loadMap() {
 
     this.entregas.forEach((data: any) => {
 
+      let corPin = "green";
+
+      if(data.idTentativaEntrega == 2 ){
+        corPin = "yellow"
+      }else if(data.idTentativaEntrega == 3 ){
+        corPin = "red"
+      }
+
       let options: MarkerOptions = {
-        icon: 'red',    
+        icon: corPin,    
         title: data.devedor,   
         position: {lat: data.location.position.lat, lng: data.location.position.lng}, 
         zIndex: 0,    
@@ -158,8 +152,15 @@ loadMap() {
  
   this.entregas.forEach((data: any) => {
 
+    let corPin = "green";
+
+    if(data.idTentativaEntrega == 2 ){
+      corPin = "yellow"
+    }else if(data.idTentativaEntrega == 3 ){
+      corPin = "red"
+    }
     let options: MarkerOptions = {
-      icon: 'red',    
+      icon: corPin,    
       title: data.devedor,   
       position: {lat: data.location.position.lat, lng: data.location.position.lng}, 
       zIndex: 0,    
@@ -196,14 +197,15 @@ async AtualizarListaIntimacoes(): Promise<any> {
       
     if(intimacoesLocal != null) {   
       this.entregas = intimacoesLocal;
-
-        if(this.isOnline){
+  
+        
+        if(this.networkProvider.previousStatus == 0){
           this.ObterListaIntimacoes();
         }
 
     }else{
 
-        if(this.isOnline){
+        if(this.networkProvider.previousStatus == 0){
 
           await this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
       
@@ -211,6 +213,7 @@ async AtualizarListaIntimacoes(): Promise<any> {
 
               this.storage.set(Constantes.INTIMACOES,intimacoesAPI.retorno);
               this.entregas = intimacoesAPI.retorno; 
+              
           
 
             }else{

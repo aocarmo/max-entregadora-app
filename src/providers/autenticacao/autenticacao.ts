@@ -149,5 +149,39 @@ export class AutenticacaoProvider {
     this.logger.next(this.loggedIn);    
   }
 
+  public RegistrarLocalizacaoAtual(lat, lon) {
+    //Todo Ajustar para quando nao for diligente nem chamar esta função
+    let token =this.getToken();
+    this.usuario = this.getUser(token);
+    let dados = {
+                "diligente_id":  this.usuario.idDiligente,
+                "latitude" : lat,
+                "longitude" : lon,
+                };
+    
+    const httpOptions = {
+       headers: new HttpHeaders({
+         'Content-Type': 'application/json',
+         'Authorization': 'Bearer ' + token
+       })
+     };
+ 
+     return new Promise(resolve => {
+ 
+       this.http.post(Constantes.API_LOCALIZACAO_DILIGENTE,dados, httpOptions).timeout(Constantes.TIMEOUT_RESQUEST).subscribe((data: any) => {
+      
+         resolve(data);
+ 
+       }, err => {
+         console.log(JSON.stringify(err));
+         resolve(err);
+ 
+       });
+     });
+   
+ 
+    
+}
+
 
 }

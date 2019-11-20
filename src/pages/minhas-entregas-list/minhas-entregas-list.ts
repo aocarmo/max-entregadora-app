@@ -11,6 +11,7 @@ import { Storage } from '@ionic/storage';
 import { Usuario } from '../../model/usuario.model';
 import { Subscription } from 'rxjs/Subscription';
 import { Network } from '@ionic-native/network';
+import { NetworkProvider } from '../../providers/network/network';
 
 /**
  * Generated class for the MinhasEntregasListPage page.
@@ -36,36 +37,21 @@ export class MinhasEntregasListPage {
   todasEntregas: any;
   public usuario: Usuario;
 
-  
-  connected: Subscription;
-  disconnected: Subscription;  
-  public isOnline: boolean =  true;
+
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private superTabsCtrl: SuperTabsController,
     public intimacoesProvider: IntimacoesProvider,
     public funcoes: FuncoesProvider,
     public storage: Storage,
-    public network: Network ) {
+    public network: Network,
+    public networkProvider: NetworkProvider ) {
     this.rootNavCtrl = this.navParams.get('rootNavCtrl');
     this.queryText = "";
     this.usuario = this.navParams.get('usuario');
 
   }
 
-  ionViewDidEnter() {
-    this.connected = this.network.onConnect().subscribe(() => {
-      this.isOnline = true;
-    });
-    this.disconnected = this.network.onDisconnect().subscribe(() => {
-      this.isOnline = false;
-    });
-  }
-
-  ionViewWillLeave() {
-    this.connected.unsubscribe();
-    this.disconnected.unsubscribe();
-  }
 
 
   ionViewWillEnter() {
@@ -134,14 +120,14 @@ export class MinhasEntregasListPage {
 
         this.entregas = intimacoesLocal;
       
-        if(this.isOnline){
+        if(this.networkProvider.previousStatus == 0){
           this.ObterListaIntimacoes();
         }
 
         loading.dismiss();
 
       } else {
-        if(this.isOnline){
+        if(this.networkProvider.previousStatus == 0){
 
           await this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
 

@@ -35,6 +35,10 @@ import { MapControllerProvider } from '../providers/map-controller/map-controlle
 import { IntimacoesProvider } from '../providers/intimacoes/intimacoes';
 import { PerfilProvider } from '../providers/perfil/perfil';
 import { Network } from '@ionic-native/network';
+import { NetworkProvider } from '../providers/network/network';
+import { Geolocation } from '@ionic-native/geolocation';
+
+
 @NgModule({
   declarations: [
     ionBookingApp,
@@ -93,7 +97,9 @@ import { Network } from '@ionic-native/network';
     MapControllerProvider,
     IntimacoesProvider,
     PerfilProvider,
-    Network
+    Network,
+    NetworkProvider,
+    Geolocation
   ]
 })
 
