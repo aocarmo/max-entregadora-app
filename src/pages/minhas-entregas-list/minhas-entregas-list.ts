@@ -48,16 +48,23 @@ export class MinhasEntregasListPage {
     public networkProvider: NetworkProvider ) {
     this.rootNavCtrl = this.navParams.get('rootNavCtrl');
     this.queryText = "";
-    this.usuario = this.navParams.get('usuario');
+
 
   }
 
 
 
-  ionViewWillEnter() {
-    this.AtualizarListaIntimacoes().then((data: any) => {
-
+  async ionViewWillEnter() {
+    await this.storage.get(Constantes.STORAGE_USER).then((data :any)=>{
+      this.usuario = data;
+      if(this.usuario.idPerfil == 5){
+        this.AtualizarListaIntimacoes().then((data: any) => {
+  
+        });
+      }
     });
+
+    
     //
   }
 
@@ -113,8 +120,7 @@ export class MinhasEntregasListPage {
 
     let loading = this.funcoes.showLoading("Obtendo intimações...");
 
-
-    await this.storage.get(Constantes.INTIMACOES).then(async (intimacoesLocal: any) => {
+    await this.storage.get(this.usuario.id.toString()).then(async (intimacoesLocal: any) => {
 
       if (intimacoesLocal != null) {
 
@@ -133,7 +139,7 @@ export class MinhasEntregasListPage {
 
             if (intimacoesAPI.ok) {
 
-              this.storage.set(Constantes.INTIMACOES, intimacoesAPI.retorno);
+              this.storage.set(this.usuario.id.toString(), intimacoesAPI.retorno);
               this.entregas = intimacoesAPI.retorno;
               loading.dismiss();
 
@@ -169,7 +175,7 @@ export class MinhasEntregasListPage {
 
       if (intimacoesAPI.ok) {
 
-        this.storage.set(Constantes.INTIMACOES, intimacoesAPI.retorno);
+        this.storage.set(this.usuario.id.toString(), intimacoesAPI.retorno);
         //   this.entregas = intimacoesAPI.retorno; 
       }
 

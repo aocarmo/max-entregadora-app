@@ -10,40 +10,44 @@
   </ion-toolbar>
 </ion-header>
 <ion-content padding>
-
-    <ion-card *ngFor="let entrega of entregas">
-       <ion-item text-wrap (click)="verDetalhe(entrega)">            
-          <ion-icon class="fas fa-map-marked-alt" item-start large></ion-icon>
-          <h2>{{entrega.devedor}}</h2>
-          <p>{{entrega.endereco}}</p>
-        </ion-item>     
-      
-        <ion-item>
-      <!--    <span item-start>{{entrega.location.distance}} min</span>
-          <span item-start>({{entrega.location.estimateTime}} km)</span>-->
-          <div align="right">
-              
-                <button  color="green" *ngIf="entrega.idTentativaEntrega  == 1" ion-button icon-start clear item-end>
-                    {{entrega.tentativa}} 
-                    <ion-icon class="fas fa-medal"></ion-icon>                   
-                </button>
-                <button   color="secondary" *ngIf="entrega.idTentativaEntrega  == 2" ion-button icon-start clear item-end>
-                  {{entrega.tentativa}}
-                  <ion-icon class="fas fa-medal"></ion-icon>                  
-                  </button>
-                <button   color="danger" *ngIf="entrega.idTentativaEntrega  == 3" ion-button icon-start clear item-end>
-                  {{entrega.tentativa}}  
-                  <ion-icon class="fas fa-medal"></ion-icon>                    
-                  </button>
-                <button  color="blueMaps" ion-button icon-start clear item-end>
-                  <ion-icon name="navigate"></ion-icon>
-                  Iniciar
-                </button>
-          </div>
+    <div *ngIf="entregas != null">
+      <ion-card  *ngFor="let entrega of entregas">
+        <ion-item text-wrap (click)="verDetalhe(entrega)">            
+           <ion-icon class="fas fa-map-marked-alt" item-start large></ion-icon>
+           <h2>{{entrega.devedor}}</h2>
+           <p>{{entrega.endereco}}</p>
+         </ion-item>     
+       
+         <ion-item>
+       <!--    <span item-start>{{entrega.location.distance}} min</span>
+           <span item-start>({{entrega.location.estimateTime}} km)</span>-->
+           <div align="right">
+               
+                 <button  color="green" *ngIf="entrega.idTentativaEntrega  == 1" ion-button icon-start clear item-end>
+                     {{entrega.tentativa}} 
+                     <ion-icon class="fas fa-medal"></ion-icon>                   
+                 </button>
+                 <button   color="secondary" *ngIf="entrega.idTentativaEntrega  == 2" ion-button icon-start clear item-end>
+                   {{entrega.tentativa}}
+                   <ion-icon class="fas fa-medal"></ion-icon>                  
+                   </button>
+                 <button   color="danger" *ngIf="entrega.idTentativaEntrega  == 3" ion-button icon-start clear item-end>
+                   {{entrega.tentativa}}  
+                   <ion-icon class="fas fa-medal"></ion-icon>                    
+                   </button>
+                 <button  color="blueMaps" ion-button icon-start clear item-end>
+                   <ion-icon name="navigate"></ion-icon>
+                   Iniciar
+                 </button>
+           </div>
+     
+         </ion-item>       
+       </ion-card>
+    </div>
+    <div align="center" *ngIf="entregas == null">
+      <span align="center"><strong>No momento não há entregas a fazer...</strong></span>
+    </div>
     
-        </ion-item>
-      
-      </ion-card>
 
  <!--
   <button ion-button full (click)="goToDetails()">Open Details</button>

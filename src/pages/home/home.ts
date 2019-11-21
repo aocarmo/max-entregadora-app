@@ -23,8 +23,8 @@ export class HomePage {
   public usuario: Usuario;
   public intimacoes: Intimacao[] = [];
   public  pages = [
-    { pageName: 'page-minhas-entregas-map', title: 'Mapa', icon: 'map', id: 'newsTab', params: { "usuario": this.usuario} },
-    { pageName: 'page-minhas-entregas-list', title: 'Entregas', icon: 'mail', id: 'aboutTab', params: { "usuario": this.usuario } }
+    { pageName: 'page-minhas-entregas-map', title: 'Mapa', icon: 'map', id: 'newsTab' },
+    { pageName: 'page-minhas-entregas-list', title: 'Entregas', icon: 'mail', id: 'aboutTab' }
   ]; 
 
   selectedTab = 0;
@@ -37,7 +37,8 @@ export class HomePage {
     public funcoes: FuncoesProvider,
     public zone: NgZone) {
 
-    this.usuario = this.navParams.get('usuario');
+  
+
 
   }
 

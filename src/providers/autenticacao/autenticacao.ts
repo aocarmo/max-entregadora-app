@@ -7,9 +7,10 @@ import {Storage} from "@ionic/storage";
 
 import 'rxjs/add/operator/map'
 import { Constantes } from '../../constantes/constantes';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { Usuario } from '../../model/usuario.model';
 import { JSONPBackend } from '@angular/http';
+import { Geolocation } from '@ionic-native/geolocation';
 
 
 
@@ -26,6 +27,9 @@ export class AutenticacaoProvider {
   loggedIn: boolean;
   public usuario : Usuario;
   private token: string = null;
+  localizacao: Subscription;
+  public latitudeAtual: any = "";
+  public longitiudeAtual: any = "";
 
   // When the page loads, we want the Login segment to be selected
   authType: string = "login";
@@ -40,7 +44,7 @@ export class AutenticacaoProvider {
   jwtHelper = new JwtHelper();
   user: string;
 
-   public constructor(public http: HttpClient,  private storage: Storage) {
+   public constructor(public http: HttpClient,  private storage: Storage, public geolocation: Geolocation) {
      
       this.storage.get(Constantes.STORAGE_TOKEN).then((data:any)=>{
           this.token  = data;        
@@ -62,6 +66,7 @@ export class AutenticacaoProvider {
             await  this.authSuccess(data.retorno.token);
               this.loggedIn = true;
               this.logger.next(this.loggedIn);    
+              await this.iniciarLocalizador();
           }
             
             resolve(data);
@@ -139,7 +144,9 @@ export class AutenticacaoProvider {
 
     this.loggedIn = false;
     this.logger.next(this.loggedIn);
-    
+   if(this.localizacao != null){
+    this.localizacao.unsubscribe();
+   }
     
     
   }
@@ -182,6 +189,37 @@ export class AutenticacaoProvider {
  
     
 }
+
+async iniciarLocalizador(){
+  var posOptions = { timeout: 10000, enableHighAccuracy: true };
+  this.localizacao = await this.geolocation.watchPosition(posOptions)
+            .filter((p) => p.coords !== undefined) //Filter Out Errors
+            .subscribe(position => {
+              this.latitudeAtual = position.coords.latitude;
+              this.longitiudeAtual = position.coords.longitude;
+              this.RegistrarLocalizacaoAtual(position.coords.latitude,position.coords.longitude).then((data:any)=>{});
+     
+    });
+}
+
+  async obterLocalizacaoAtual(): Promise<any>{
+    
+    var posOptions = { timeout: 10000, enableHighAccuracy: true };
+    await this.geolocation.getCurrentPosition(posOptions).then((resp)=> {
+      this.latitudeAtual = resp.coords.latitude;
+      this.longitiudeAtual = resp.coords.longitude;
+   
+    });
+    let location = {
+      lat : this.latitudeAtual,
+      lng : this.longitiudeAtual
+    }
+return location;
+
+
+
+}
+
 
 
 }

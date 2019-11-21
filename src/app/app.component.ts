@@ -1,4 +1,4 @@
-import { Geolocation } from '@ionic-native/geolocation';
+
 import { Usuario } from './../model/usuario.model';
 import { AutenticacaoProvider,  } from './../providers/autenticacao/autenticacao';
 import { Component, ViewChild } from "@angular/core";
@@ -11,7 +11,7 @@ import {Storage} from "@ionic/storage";
 import { Constantes } from '../constantes/constantes';
 import { NetworkProvider } from '../providers/network/network';
 import { Network } from '@ionic-native/network';
-import { Subscription } from 'rxjs';
+
 
 
 export interface MenuItem {
@@ -33,8 +33,7 @@ export class ionBookingApp {
   usuario: Usuario = new Usuario(); 
 
   appMenuItems: Array<MenuItem>;
-  localizacao: Subscription;
-
+  
   constructor(
     public platform: Platform,
     public statusBar: StatusBar,
@@ -44,8 +43,7 @@ export class ionBookingApp {
     public autenticacaoProvider: AutenticacaoProvider,
     public network: Network,
     public events: Events,
-    public networkProvider: NetworkProvider,   
-    public geolocation: Geolocation
+    public networkProvider: NetworkProvider
   ) {
 
     
@@ -53,7 +51,7 @@ export class ionBookingApp {
      this.autenticacaoProvider.isLoggedIn().subscribe((data: boolean) => {
        
       if (data) {  
-       
+      
         this.storage.get(Constantes.STORAGE_USER).then((data: any) => {
                  
           this.usuario =data;  
@@ -85,20 +83,14 @@ export class ionBookingApp {
    
   }
 
+
   initializeApp() {
 
-    this.platform.ready().then(() => {
+    this.platform.ready().then(async () => {
 
-      this.localizacao = this.geolocation.watchPosition()
-              .filter((p) => p.coords !== undefined) //Filter Out Errors
-              .subscribe(position => {
-            
-                this.autenticacaoProvider.RegistrarLocalizacaoAtual(position.coords.latitude,position.coords.longitude).then((data:any)=>{
-                  console.log(JSON.stringify(data));
-                  
-                });
-        console.log(position.coords.longitude + ' ' + position.coords.latitude);
-      });
+      if(this.usuario != null){
+       await this.autenticacaoProvider.iniciarLocalizador();
+      }
 
       this.networkProvider.initializeNetworkEvents();
 
@@ -153,7 +145,7 @@ export class ionBookingApp {
   logout() {
   
     this.autenticacaoProvider.doLogout();
-    this.localizacao.unsubscribe();
+   
     this.nav.setRoot('page-login');
   }
 
