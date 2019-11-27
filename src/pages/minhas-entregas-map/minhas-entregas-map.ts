@@ -170,9 +170,16 @@ export class MinhasEntregasMapPage {
 
     } else {
 
+      let latInicial = -12.991814;
+      let lngInicial = -38.469426;
+      if(this.entregas != null &&  this.entregas != []){
+        let latInicial = this.entregas[0].location.position.lat;
+        let lngInicial = this.entregas[0].location.position.lng;
+      }
+
       this.map_canvas = GoogleMaps.create('map_canvas', {
         camera: {
-          target: { lat: -12.991814, lng: -38.469426 },
+          target: { lat: latInicial, lng: lngInicial},
           zoom: 12,
           tilt: 30
         }

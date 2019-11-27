@@ -12,18 +12,17 @@
           Tipo Diligência
         </ion-label>
       <div class="toggle">
-          <input type="radio" id="pos" (change)="onChange(true)" name="sizeBy" value="weight" id="sizeWeight" checked="checked" />
+          <input type="radio" value="1" id="positiva" (change)="onChange(true)" name="tpDiligencia" value="weight" id="sizeWeight" checked="checked" />
           <label for="sizeWeight" name="pos">Positiva</label>
-          <input type="radio" name="sizeBy"  id="neg" (change)="onChange(false)"  value="dimensions" id="sizeDimensions" />
+          <input type="radio" value="2" name="tpDiligencia"  id="positiva" (change)="onChange(false)"  value="dimensions" id="sizeDimensions" />
           <label for="sizeDimensions" name="neg">Negativa</label>
         </div>
 
     <ion-item>
       <ion-label>Motivo</ion-label>
       <ion-select  formControlName="motivo">
-        <ion-option value="Ausente">Ausente</ion-option>
-        <ion-option value="Area de Risco">Area de Risco</ion-option>
-        <ion-option value="Mudou-se">Mudou-se</ion-option>
+        <ion-option *ngFor="let tipoEntrega  of listaTipoEntrega" [value]="tipoEntrega.id">{{tipoEntrega.descricao}}</ion-option>
+     
       </ion-select>
     </ion-item>
 
@@ -67,7 +66,7 @@
         Tirar Foto
       </button>
 
-      <button ion-button full color="dark">Salvar</button>
+      <button   [disabled]="!langForm.valid && tipoDiligencia == 2" ion-button full color="dark" (click)="registrarPreBaixa()">Salvar</button>
   </form>
 
 </ion-content>

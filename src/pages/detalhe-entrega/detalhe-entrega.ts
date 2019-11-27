@@ -8,8 +8,10 @@ import {
   CameraPosition,
   MarkerOptions,
   Marker,
-  Environment
+  Environment,
+  HtmlInfoWindow
 } from '@ionic-native/google-maps';
+import { AutenticacaoProvider } from '../../providers/autenticacao/autenticacao';
 /**
  * Generated class for the DetalheEntregaPage page.
  *
@@ -34,7 +36,7 @@ export class DetalheEntregaPage {
   lng: number = -38.469426;
   zoom: number = 20;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public autenticacaoProvider: AutenticacaoProvider) {
 
     this.entrega = this.navParams.get('entrega');
  
@@ -52,16 +54,18 @@ export class DetalheEntregaPage {
   loadMap() {
 
     // This code is necessary for browser
-    Environment.setEnv({
-      'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyB_6IGpyQsPTenu0afoaBM7csRPLbtryoo',
-      'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyB_6IGpyQsPTenu0afoaBM7csRPLbtryoo'
-    });
-  
+    let latInicial = -12.991814;
+    let lngInicial = -38.469426;
+    if(this.entrega != null &&  this.entrega != []){
+      let latInicial = this.entrega.location.position.lat;
+      let lngInicial = this.entrega.location.position.lng;
+    }
+
     let mapOptions: GoogleMapOptions = {
       camera: {
          target: {
-           lat: -12.991814,
-           lng:  -38.469426
+           lat: latInicial,
+           lng: lngInicial
          },
          zoom: 12,
          tilt: 30
@@ -76,19 +80,49 @@ export class DetalheEntregaPage {
     });
 
      
+    let htmlInfoWindow = new HtmlInfoWindow();
+
+    let frame: HTMLElement = document.createElement('div');
+    frame.innerHTML = [
+      '<div style="width: 250px; max-height:300px;">',
+      '<h5>' + this.entrega.devedor + '</h5><br>',
+      ' <span><b>Tentativa: </b>' + this.entrega.tentativa + '</span><br>',
+      ' <span><b>Endereço: </b>' + this.entrega.endereco + '</span><br>',
+      '<a onclick="window.open(this.href, \'_system\'); return false;" style="color: blue;" href="https://www.google.com/maps/dir/?api=1&origin=' + this.autenticacaoProvider.latitudeAtual + ',' + this.autenticacaoProvider.longitiudeAtual + '&destination=' + this.entrega.location.position.lat + ',' + this.entrega.location.position.lng + '">Iniciar trajeto</a></div>'
+    ].join("");
+
+    /*frame.getElementsByTagName("img")[0].addEventListener("click", () => {
+      htmlInfoWindow.setBackgroundColor('red');
+    });*/
+
+    let corPin = "green";
+
+    if (this.entrega.idTentativaEntrega == 2) {
+      corPin = "yellow"
+    } else if (this.entrega.idTentativaEntrega == 3) {
+      corPin = "red"
+    }
 
     let options: MarkerOptions = {
-      icon: 'red',    
-      title: 'Hello World',   
-      position: {lat: this.entrega.location.position.lat, lng: this.entrega.location.position.lng}, 
-      zIndex: 0,    
+      icon: corPin,
+      position: { lat: this.entrega.location.position.lat, lng: this.entrega.location.position.lng },
+      draggable: true,
       disableAutoPan: true
     };
-   
-    let marker: Marker = this.map.addMarkerSync(options);
-    //marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(this.onMarkerClick);
-    //marker.on(GoogleMapsEvent.INFO_CLICK).subscribe(this.onMarkerClick);
 
+    /*htmlInfoWindow.setContent(frame, {
+      width: "100px",
+      height: "100px"
+    });*/
+
+    htmlInfoWindow.setContent(frame);
+
+
+    let marker: Marker = this.map.addMarkerSync(options);
+
+    marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+      htmlInfoWindow.open(marker);
+    });
   }
 
 }
