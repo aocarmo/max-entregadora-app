@@ -78,7 +78,7 @@ export class PreBaixaPage {
     let loading = this.funcoes.showLoading("Carregando...");
 
     await this.storage.get(Constantes.STORAGE_USER).then(async (data: any) => {
-      this.usuario = data;
+      this.usuario = data; 
       await this.AtualizarListaTipoEntrega().then((data: any) => {
         loading.dismiss();
       });
@@ -228,7 +228,7 @@ public convertURLImgToBase64(foto: FotoDiligencia){
 }
 
 registrarPreBaixa(){
-
+   
   let loading = this.funcoes.showLoading('Salvando...');
   //Salvando fotos no array;
   let fotos = [];
@@ -253,7 +253,7 @@ registrarPreBaixa(){
 
    }
    
-  
+
 
   
    this.intimacoesProvider.RegistrarPreBaixa(dadosDiligencia).then((data:any) =>{
