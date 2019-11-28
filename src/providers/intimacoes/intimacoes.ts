@@ -24,6 +24,7 @@ export class IntimacoesProvider {
 
   private token: string = null;
   public usuario : Usuario;
+  
   constructor(public http: HttpClient,private storage: Storage,public autenticacaoProvider: AutenticacaoProvider, public file: File){
     this.storage.get(Constantes.STORAGE_TOKEN).then((data: any) => {
       this.token = data;
@@ -105,7 +106,8 @@ public RegistrarPreBaixa(dadosPrebaixa: any) {
 
    const httpOptions = {
      headers: new HttpHeaders({      
-       'Authorization': 'Bearer ' + token
+       'Authorization': 'Bearer ' + token,
+       'Content-Type' : 'multipart/form-data'
      })
    };
    
@@ -120,7 +122,7 @@ public RegistrarPreBaixa(dadosPrebaixa: any) {
    postData.append('usuario_id', dadosPrebaixa.motivo_entrega_id);
    postData.append('latitude', dadosPrebaixa.latitude);
    postData.append('longitude', dadosPrebaixa.longitude);
-
+   
    
    if(dadosPrebaixa.arquivos != []){
      
@@ -131,15 +133,25 @@ public RegistrarPreBaixa(dadosPrebaixa: any) {
         let caminho = foto.substring(0,foto.lastIndexOf('/')+1);
         
         await this.file.readAsDataURL(caminho,nomeArquivo).then((data:any )=>{ 
-           
-             postData.append('foto_' + i, data);
+        
+          
+          var block = data.split(";");
+          // Get the content type of the image
+          var contentType = block[0].split(":")[1];// In this case "image/gif"
+          // get the real base64 content of the file
+          var realData = block[1].split(",")[1];// In this case "R0lGODlhPQBEAPeoAJosM...."
+
+          // Convert it to a blob to upload
+          var blob = this.b64toBlob(realData, contentType,512);
+          
+             postData.append('foto_' + i, blob,nomeArquivo);
              i++;
         });
 
      });
 
    }
-   console.log(postData.get("intimacao_id"));
+ 
 
    return new Promise(resolve => {
 
@@ -156,6 +168,36 @@ public RegistrarPreBaixa(dadosPrebaixa: any) {
  
 
   
+}
+
+
+
+ b64toBlob(b64Data, contentType, sliceSize) {
+  contentType = contentType || '';
+  sliceSize = sliceSize || 512;
+
+  var byteCharacters = atob(b64Data);
+ 
+  
+  var byteArrays = [];
+
+  for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      var byteNumbers = new Array(slice.length);
+      for (var i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      var byteArray = new Uint8Array(byteNumbers);
+
+      byteArrays.push(byteArray);
+  }
+  
+var blob = new Blob(byteArrays, {type: contentType});
+
+
+return blob;
 }
 
 
