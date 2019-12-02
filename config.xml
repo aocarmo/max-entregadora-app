@@ -110,6 +110,8 @@
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
     <allow-navigation href="http://localhost:8100" sessionid="ef6ee396" />
+    <engine name="browser" spec="5.0.4" />
+    <engine name="android" spec="^8.0.0" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.7" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.3" />
@@ -139,6 +141,4 @@
     <plugin name="cordova-plugin-geolocation" spec="^4.0.2">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="Sua localização será utilizada para informar a Max Entregadora seu posicionamento." />
     </plugin>
-    <engine name="browser" spec="5.0.4" />
-    <engine name="android" spec="^8.0.0" />
 </widget>

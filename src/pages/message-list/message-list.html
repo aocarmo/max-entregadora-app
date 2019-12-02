@@ -4,7 +4,7 @@
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>
-        	<span ion-text>Messages</span>
+        	<span ion-text>Notificações</span>
         </ion-title>
     </ion-navbar>
 </ion-header>
@@ -14,24 +14,24 @@
 	<ion-grid no-padding fixed>
 		<ion-row no-padding>
 			<ion-col>
-				<ion-card *ngIf="!messages.length" class="primary-bg" margin-top>
+				<ion-card *ngIf="!notificacoes.length" class="primary-bg" margin-top>
 					<ion-card-content>
-						<p text-center class="text-white">You have no messages yet.</p>
+						<p text-center class="text-white">Você não tem notificações.</p>
 					</ion-card-content>
 				</ion-card>
 
 				<ion-list>
-					<ion-item-sliding *ngFor="let message of messages">
-						<button ion-item (click)="itemTapped(message)" [ngClass]="{'dark-bg': !message.read}">
-							<h2 [ngClass]="{'fw700 text-white': !message.read}">
-								<ion-icon name="mail" color="light" *ngIf="!message.read"></ion-icon>
-								<ion-icon name="mail-open" color="primary" *ngIf="message.read"></ion-icon>
-								{{message.title}}
+					<ion-item-sliding *ngFor="let notificacao of notificacoes" #slidingItem>
+						<button ion-item (click)="itemTapped(notificacao)" [ngClass]="{'dark-bg': !notificacao.lida}">
+							<h2 [ngClass]="{'fw700 text-white': !notificacao.lida}">
+								<ion-icon name="mail" color="light" *ngIf="!notificacao.lida"></ion-icon>
+								<ion-icon name="mail-open" color="primary" *ngIf="notificacao.lida"></ion-icon>
+								{{notificacao.titulo}}
 							</h2>
-							<p ion-text color="dark" [ngClass]="{'text-light': !message.read}">{{message.senderName}} ∙ {{message.date | date: 'MM/dd/yyyy'}}</p>
+							<p ion-text color="dark" [ngClass]="{'text-light': !notificacao.lida}">{{notificacao.data_criacao}}</p>
 						</button>
 						<ion-item-options>
-							<button ion-button color="danger" (click)="deleteItem(message)">Delete</button>
+							<button ion-button color="danger" (click)="deleteItem(notificacao, slidingItem)">Apagar</button>
 						</ion-item-options>
 					</ion-item-sliding>
 				</ion-list>

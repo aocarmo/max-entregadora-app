@@ -94,14 +94,14 @@ export class MinhasEntregasMapPage {
     });
 
     if (this.usuario.idPerfil == 5) {
-      await this.AtualizarListaIntimacoes().then((data: any) => {
-        this.loadMap();
+      await this.AtualizarListaIntimacoes().then(async (data: any) => {
+       await this.loadMap();
         loading.dismiss();
       });
 
     } else {
       loading.dismiss();
-      this.loadMap();
+      await this.loadMap();
     }
 
   }

@@ -4,7 +4,7 @@
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>
-            <span ion-text>Message</span>
+            <span ion-text>Notificação</span>
         </ion-title>
     </ion-navbar>
 </ion-header>
@@ -15,14 +15,14 @@
 		<ion-row no-padding>
 			<ion-col>
 				<div class="message-header profile-bg" padding>
-					<h5 ion-text class="fw700 text-white">{{message.title}}</h5>
-					<p ion-text no-margin color="light">{{message.date | date: 'MM/dd/yyyy'}} ∙ by <strong>{{message.senderName}}</strong></p>
+					<h5 ion-text class="fw700 text-white">{{notificacao.titulo}}</h5>
+					<p ion-text no-margin color="light">{{notificacao.data_criacao}}</p>
 				</div>
 
-				<div padding-horizontal>
-					<p>
-						{{message.message}}
-					</p>
+				<div  [innerHTML]="notificacao.mensagem" padding-horizontal>
+					
+						
+			
 				</div>
 			</ion-col>
 		</ion-row>

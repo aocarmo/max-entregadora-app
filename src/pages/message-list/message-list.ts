@@ -1,7 +1,13 @@
+import { Usuario } from './../../model/usuario.model';
+import { Notificacao } from './../../model/notificacao.model';
 import {Component} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import {MessageService} from '../../providers/message-service-mock';
+import { Constantes } from '../../constantes/constantes';
+import { ItemSliding } from 'ionic-angular';
+
 
 @IonicPage({
 	name: 'page-message-list',
@@ -13,25 +19,48 @@ import {MessageService} from '../../providers/message-service-mock';
     templateUrl: 'message-list.html'
 })
 export class MessageListPage {
-
-    messages: Array<any> = [];
-
-    constructor(public navCtrl: NavController, public service: MessageService) {
-        this.getMessages();
+   
+    public notificacoes : Notificacao [] = [];
+    public usuario:Usuario;
+    constructor(public navCtrl: NavController, public service: MessageService,public navParams: NavParams,  public storage: Storage) {
+        this.notificacoes = this.navParams.get('notificacoes');
+        this.usuario = this.navParams.get('usuario');
     }
 
-    itemTapped(message) {
+    async itemTapped(notificacao: Notificacao) {
+
+        this.notificacoes.forEach(listaNotificacao => {
+            if(listaNotificacao.idNotificacao == notificacao.idNotificacao){
+                listaNotificacao.lida = true;
+            }
+        });
+
+        await this.storage.set(Constantes.NOTIFICACOES + this.usuario.id.toString(), this.notificacoes).then(async (notificacoes: any) => {
+
+        });
+
         this.navCtrl.push('page-message-detail', {
-	      'id': message.id
+	      'notificacao': notificacao
 	    });
     }
 
-    deleteItem(message) {
-        this.service.delMessage(message);
+    async  deleteItem(notificacao: Notificacao, slidingItem: ItemSliding) {
+        let i= 0;
+        this.notificacoes.forEach(listaNotificacao => {
+
+            if(listaNotificacao.idNotificacao == notificacao.idNotificacao){
+                this.notificacoes.splice(i,1);
+            }
+            i++;
+        });
+
+        await this.storage.set(Constantes.NOTIFICACOES + this.usuario.id.toString(), this.notificacoes).then(async (notificacoes: any) => {
+
+        });
+        slidingItem.close();
+
     }
 
-    getMessages() {
-        this.messages = this.service.getMessages();
-    }
+   
 
 }

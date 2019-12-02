@@ -3,18 +3,19 @@
   	<ion-icon name="notifications" color="primary"></ion-icon>
   	<span ion-text color="primary" class="bold">Notificações</span>
   </ion-list-header>
-  <button text-wrap ion-item color="secondary" class="text-1x" tappable (click)="messages()">
-  	<ion-icon name="mail"></ion-icon>
-  	Hoje você tem 5 intimações na 3ª tentativa de entrega.
+  <div *ngIf="notificacoes != []">
+  <button *ngFor="let notificacao of notificacoes" text-wrap ion-item color="secondary" class="text-1x" tappable (click)="messages(notificacoes)">
+    <ion-icon *ngIf="notificacao.lida == false" name="mail"></ion-icon>
+    <ion-icon *ngIf="notificacao.lida == true" name="mail-open"></ion-icon>
+  	{{notificacao.titulo}}
   </button>
-  <button text-wrap  ion-item color="secondary" class="text-1x" tappable (click)="messages()">
-  	<ion-icon name="mail-open"></ion-icon>
-  	Hoje você tem 2 intimações na 1ª tentativa de entrega.
-  </button>
-  <button text-wrap ion-item class="text-1x" tappable (click)="messages()">
-  	<ion-icon name="mail-open" color="secondary"></ion-icon>
-  	<span ion-text color="secondary">Av ACM está congestionada!</span>
-  </button>
+  </div>
+  <div *ngIf="notificacoes == []">
+    <span>Você não tem notificações.</span>
+  </div>
+  
+
+
   <!--<button ion-item class="text-1x" tappable (click)="messages()">
   	<ion-icon name="mail-open" color="secondary"></ion-icon>
   	<span ion-text color="secondary">Big Deal of the Week!</span>

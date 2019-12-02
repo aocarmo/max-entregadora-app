@@ -42,8 +42,9 @@ export class CameraService {
             encodingType: this.camera.EncodingType.JPEG,
             mediaType: this.camera.MediaType.PICTURE,
             sourceType: sourceType,
-            allowEdit: true,
-            destinationType: this.camera.DestinationType.FILE_URI
+            //allowEdit: true,
+            destinationType: this.camera.DestinationType.FILE_URI,
+            correctOrientation:true
           }
 
           this.camera.getPicture(options).then((imageData) => {

@@ -8,6 +8,7 @@ export class Constantes {
     public static API_LOCALIZACAO_DILIGENTE = "https://sistema.maxentregadora.com.br/api/DiligenteLocalizacoes/registrar.json";
     public static API_OBTER_TIPOS_ENTREGA = "https://sistema.maxentregadora.com.br/api/MotivoEntregas/obterMotivosDeEntrega.json";
     public static API_REGISTRAR_PRE_BAIXA = "https://sistema.maxentregadora.com.br/api/intimacoes/registrarPreBaixa.json";
+    public static API_OBTER_NOTIFICACOES = "https://sistema.maxentregadora.com.br/api/notificacoes/obterNotificacoes.json";
 
     /*
     public static API_LOGIN='http://192.168.0.18/apihuntvision/autenticacao';
@@ -23,6 +24,7 @@ export class Constantes {
     public static STORAGE_TOKEN='token';
     public static INTIMACOES='intimacoes';
     public static TIPOS_ENTREGA='tiposEntrega';
+    public static NOTIFICACOES='notificacoes_';
 
 
     //MENSAGENS PADRÃO

@@ -163,7 +163,7 @@ export class PreBaixaPage {
   }
 
   tirarFoto(): void {
-
+    let loading = this.funcoes.showLoading("Tirando a foto...");
     let buttonLabels = ['Tirar Foto'];
 
     const options: ActionSheetOptions = {
@@ -179,11 +179,11 @@ export class PreBaixaPage {
     this.actionSheet.show(options).then((buttonIndex: number) => {
 
       this.camera.takePicture(buttonIndex).then((data: string) => {
-
+        
         //Transformando o retorno em objeto para validar o retorno
         let retorno = JSON.parse(data);
         
-        let loading = this.funcoes.showLoading("Armazenando a foto...");
+     
                
         if (retorno.status == "true") {
 

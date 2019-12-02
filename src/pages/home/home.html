@@ -19,12 +19,13 @@
           <ion-icon class="fas fa-barcode"></ion-icon>
           
         </button>   -->
+        
         <button ion-button tappable (click)="presentNotifications($event)">
          
           <ion-icon name="notifications"></ion-icon>
           
         </button>
-        <ion-badge class="pull-right secondary-bg text-white" tappable>2</ion-badge>
+        <ion-badge class="pull-right secondary-bg text-white" tappable>{{qtdNotificacoesNaoLidas}}</ion-badge>
        <!-- <button ion-button tappable (click)="goToAccount()">
           <ion-icon name="cog"></ion-icon>
         </button>-->
@@ -38,6 +39,9 @@
 </ion-header>
 
 <ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
 
   <super-tabs tabsPlacement="top" toolbarBackground="secondary" toolbarColor="light" indicatorColor="light"
   (tabSelect)="onTabSelect($event)">
