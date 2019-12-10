@@ -232,6 +232,39 @@ export class IntimacoesProvider {
     return blob;
   }
 
+  
+  public ExcluirNotificacoes(idNotificacao : number) {
+
+    let token = this.autenticacaoProvider.getToken();
+
+    this.usuario = this.autenticacaoProvider.getUser(token);
+    let dados = { "notificacao_id": idNotificacao };
+  
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      })
+    };
+
+    return new Promise(resolve => {
+
+      this.http.post(Constantes.API_EXCLUIR_NOTIFICACOES, dados, httpOptions).timeout(Constantes.TIMEOUT_RESQUEST).subscribe((data: any) => {
+
+        resolve(data);
+
+      }, err => {
+        console.log(JSON.stringify(err));
+        resolve(err);
+
+      });
+    });
+
+
+
+  }
+
 
 
 

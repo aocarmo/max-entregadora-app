@@ -88,6 +88,7 @@ export class DetalheEntregaPage {
       '<h5>' + this.entrega.devedor + '</h5><br>',
       ' <span><b>Tentativa: </b>' + this.entrega.tentativa + '</span><br>',
       ' <span><b>Endereço: </b>' + this.entrega.endereco + '</span><br>',
+      ' <span><b>Protocolo: </b>' + this.entrega.protocolo + '</span><br>',
       '<a onclick="window.open(this.href, \'_system\'); return false;" style="color: blue;" href="https://www.google.com/maps/dir/?api=1&origin=' + this.autenticacaoProvider.latitudeAtual + ',' + this.autenticacaoProvider.longitiudeAtual + '&destination=' + this.entrega.location.position.lat + ',' + this.entrega.location.position.lng + '">Iniciar trajeto</a></div>'
     ].join("");
 

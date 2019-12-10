@@ -128,6 +128,7 @@ export class MinhasEntregasMapPage {
             '<h5>' + data.devedor + '</h5><br>',
             ' <span><b>Tentativa: </b>' + data.tentativa + '</span><br>',
             ' <span><b>Endereço: </b>' + data.endereco + '</span><br>',
+            ' <span><b>Protocolo: </b>' + data.protocolo + '</span><br>',
             '<a onclick="window.open(this.href, \'_system\'); return false;" style="color: blue;" href="https://www.google.com/maps/dir/?api=1&origin=' + this.autenticacaoProvider.latitudeAtual + ',' + this.autenticacaoProvider.longitiudeAtual + '&destination=' + data.location.position.lat + ',' + data.location.position.lng + '">Iniciar trajeto</a></div>'
           ].join("");
           /*frame.getElementsByTagName("img")[0].addEventListener("click", () => {
@@ -195,6 +196,7 @@ export class MinhasEntregasMapPage {
           '<h5>' + data.devedor + '</h5><br>',
           ' <span><b>Tentativa: </b>' + data.tentativa + '</span><br>',
           ' <span><b>Endereço: </b>' + data.endereco + '</span><br>',
+          ' <span><b>Protocolo: </b>' + data.protocolo + '</span><br>',
           '<a onclick="window.open(this.href, \'_system\'); return false;" style="color: blue;" href="https://www.google.com/maps/dir/?api=1&origin=' + this.autenticacaoProvider.latitudeAtual + ',' + this.autenticacaoProvider.longitiudeAtual + '&destination=' + data.location.position.lat + ',' + data.location.position.lng + '">Iniciar trajeto</a></div>'
         ].join("");
 

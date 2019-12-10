@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SuperTabsController } from 'ionic2-super-tabs';
-
-import { ENTREGAS } from "../../mocks/mock-entregas"; // So para exemplos
 import _ from 'lodash';
 import { IntimacoesProvider } from '../../providers/intimacoes/intimacoes';
 import { FuncoesProvider } from '../../providers/funcoes/funcoes';
@@ -12,7 +10,8 @@ import { Usuario } from '../../model/usuario.model';
 import { Subscription } from 'rxjs/Subscription';
 import { Network } from '@ionic-native/network';
 import { NetworkProvider } from '../../providers/network/network';
-
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { AutenticacaoProvider } from '../../providers/autenticacao/autenticacao';
 /**
  * Generated class for the MinhasEntregasListPage page.
  *
@@ -41,11 +40,13 @@ export class MinhasEntregasListPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private superTabsCtrl: SuperTabsController,
+    public autenticacaoProvider: AutenticacaoProvider,
     public intimacoesProvider: IntimacoesProvider,
     public funcoes: FuncoesProvider,
     public storage: Storage,
     public network: Network,
-    public networkProvider: NetworkProvider ) {
+    public networkProvider: NetworkProvider,
+    private iab: InAppBrowser ) {
     this.rootNavCtrl = this.navParams.get('rootNavCtrl');
     this.queryText = "";
 
@@ -55,6 +56,7 @@ export class MinhasEntregasListPage {
 
 
   async ionViewWillEnter() {
+    await this.autenticacaoProvider.obterLocalizacaoAtual();
     await this.storage.get(Constantes.STORAGE_USER).then((data :any)=>{
       this.usuario = data;
       if(this.usuario.idPerfil == 5){
@@ -237,4 +239,11 @@ export class MinhasEntregasListPage {
        
          });
        }*/
+
+       public abrirNavegacao(entrega :any){
+
+        const browser = this.iab.create('https://www.google.com/maps/dir/?api=1&origin=' + this.autenticacaoProvider.latitudeAtual + ',' + this.autenticacaoProvider.longitiudeAtual + '&destination=' + entrega.location.position.lat + ',' + entrega.location.position.lng,'_system');
+
+ 
+       }
 }

@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import {MessageService} from '../../providers/message-service-mock';
 import { Constantes } from '../../constantes/constantes';
 import { ItemSliding } from 'ionic-angular';
+import { IntimacoesProvider } from '../../providers/intimacoes/intimacoes';
 
 
 @IonicPage({
@@ -22,7 +23,9 @@ export class MessageListPage {
    
     public notificacoes : Notificacao [] = [];
     public usuario:Usuario;
-    constructor(public navCtrl: NavController, public service: MessageService,public navParams: NavParams,  public storage: Storage) {
+    constructor(public navCtrl: NavController, public service: MessageService,
+                public navParams: NavParams,  public storage: Storage, 
+                public intimacoesProvider :  IntimacoesProvider) {
         this.notificacoes = this.navParams.get('notificacoes');
         this.usuario = this.navParams.get('usuario');
     }
@@ -45,6 +48,8 @@ export class MessageListPage {
     }
 
     async  deleteItem(notificacao: Notificacao, slidingItem: ItemSliding) {
+
+
         let i= 0;
         this.notificacoes.forEach(listaNotificacao => {
 
@@ -58,6 +63,13 @@ export class MessageListPage {
 
         });
         slidingItem.close();
+
+        
+      await this.intimacoesProvider.ExcluirNotificacoes(notificacao.idNotificacao).then((data: any)=>{
+            alert(data.msg); 
+        }).catch((err: any)=>{
+            alert("Ocorreu um erro ao excluir a notificação: " +JSON.stringify(err)); 
+        });
 
     }
 

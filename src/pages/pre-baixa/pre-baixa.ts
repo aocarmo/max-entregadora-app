@@ -111,8 +111,10 @@ export class PreBaixaPage {
     if(isChecked){
       this.tipoDiligencia = 1;
      this.langForm.reset();
-      this.langForm.get('motivo').disable();
+      this.langForm.get('motivo').disable();    
       this.langForm.get('observacao').disable();
+    
+
     }else{
       this.tipoDiligencia = 2;
       this.langForm.get('motivo').enable();
@@ -228,6 +230,7 @@ public convertURLImgToBase64(foto: FotoDiligencia){
 }
 
 registrarPreBaixa(){
+   console.log(JSON.stringify(this.langForm.value.motivo));
    
   let loading = this.funcoes.showLoading('Salvando...');
   //Salvando fotos no array;
@@ -244,7 +247,7 @@ registrarPreBaixa(){
     diligente_id: this.usuario.idDiligente,
     tentativa_entrega_id: this.entrega.idTentativaEntrega,
     tipo_diligencia_id : this.tipoDiligencia,
-    motivo_entrega_id: this.langForm.value.motivo,
+    motivo_entrega_id: this.langForm.value.motivo == null ? "" : this.langForm.value.motivo,
     observacao: this.langForm.value.observacao,
     usuario_id: this.usuario.id,
     latitude: this.autenticacaoProvider.latitudeAtual,

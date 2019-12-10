@@ -37,6 +37,7 @@ import { PerfilProvider } from '../providers/perfil/perfil';
 import { Network } from '@ionic-native/network';
 import { NetworkProvider } from '../providers/network/network';
 import { Geolocation } from '@ionic-native/geolocation';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 
 @NgModule({
@@ -99,7 +100,8 @@ import { Geolocation } from '@ionic-native/geolocation';
     PerfilProvider,
     Network,
     NetworkProvider,
-    Geolocation
+    Geolocation,
+    InAppBrowser
   ]
 })
 
