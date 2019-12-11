@@ -66,7 +66,10 @@ export class MessageListPage {
 
         
       await this.intimacoesProvider.ExcluirNotificacoes(notificacao.idNotificacao).then((data: any)=>{
-            alert(data.msg); 
+            if(!data.ok){
+                alert(data.msg); 
+            }
+            
         }).catch((err: any)=>{
             alert("Ocorreu um erro ao excluir a notificação: " +JSON.stringify(err)); 
         });

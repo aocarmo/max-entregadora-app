@@ -82,6 +82,7 @@ export class HomePage {
 
   presentNotifications(myEvent) {
     // console.log(myEvent);
+    this.qtdNotificacoesNaoLidas = null;
     let popover = this.popoverCtrl.create('page-notifications');
     popover.present({
       ev: myEvent

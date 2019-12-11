@@ -56,8 +56,10 @@ export class MinhasEntregasListPage {
 
 
   async ionViewWillEnter() {
+    let load = this.funcoes.showLoading('Carregando...');
     await this.autenticacaoProvider.obterLocalizacaoAtual();
     await this.storage.get(Constantes.STORAGE_USER).then((data :any)=>{
+      load.dismiss();
       this.usuario = data;
       if(this.usuario.idPerfil == 5){
         this.AtualizarListaIntimacoes().then((data: any) => {
@@ -66,7 +68,7 @@ export class MinhasEntregasListPage {
       }
     });
 
-    
+  
     //
   }
 
