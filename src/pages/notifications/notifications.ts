@@ -42,9 +42,9 @@ export class NotificationsPage {
 
         if (notificacoes != null) {
           this.notificacoes = notificacoes;
-          loader.dismiss();
+         
         }
-
+        loader.dismiss();
       });
 
     });
