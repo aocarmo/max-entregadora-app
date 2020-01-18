@@ -14,8 +14,10 @@
       <ion-card  *ngFor="let entrega of entregas">
         <ion-item text-wrap (click)="verDetalhe(entrega)">            
            <ion-icon class="fas fa-map-marked-alt" item-start large></ion-icon>
-           <h2>{{entrega.devedor}}</h2>
+           <h2><strong>{{entrega.devedor}}</strong></h2>
            <p>{{entrega.endereco}}</p>
+           <p><strong>Protocolo: {{entrega.protocolo}}</strong></p>
+
          </ion-item>     
        
          <ion-item>

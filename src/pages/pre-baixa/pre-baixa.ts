@@ -300,7 +300,8 @@ async AtualizarListaTipoEntrega(): Promise<any> {
     if (tiposEntrega != null) {
       
       let arrIdTipoEntrega =  Object.keys(tiposEntrega);
-    
+      console.log(JSON.stringify(tiposEntrega));
+      
 
       arrIdTipoEntrega.forEach(id => {
         let tipoEntrega : TipoEntrega = new TipoEntrega();
@@ -311,6 +312,7 @@ async AtualizarListaTipoEntrega(): Promise<any> {
           
       });
    
+      this.listaTipoEntrega.sort((a, b) => (a.descricao > b.descricao) ? 1 : -1)
   
       if (this.networkProvider.previousStatus == 0) {
         this.ObterListaTipoEntrega();
@@ -337,7 +339,7 @@ async AtualizarListaTipoEntrega(): Promise<any> {
                 
             });
          
-
+            this.listaTipoEntrega.sort((a, b) => (a.descricao > b.descricao) ? 1 : -1)
 
           } else {
 

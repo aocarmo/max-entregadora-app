@@ -32,19 +32,20 @@ export class CameraService {
 
     return new Promise(resolve => {
 
-  //    this.diagnostic.isCameraAuthorized().then((data: any) => {
+      this.diagnostic.isCameraAuthorized().then((data: any) => {
    
-   //     if (data) {
+       if (data) {
      
           const options: CameraOptions = {
-            quality: 20,
+            quality: 50,
             //destinationType: this.camera.DestinationType.DATA_URL,
             encodingType: this.camera.EncodingType.JPEG,
             mediaType: this.camera.MediaType.PICTURE,
             sourceType: sourceType,
             //allowEdit: true,
             destinationType: this.camera.DestinationType.FILE_URI,
-            correctOrientation:true
+            correctOrientation:true,
+            cameraDirection: 0
           }
 
           this.camera.getPicture(options).then((imageData) => {
@@ -101,15 +102,15 @@ export class CameraService {
             resolve(JSON.stringify(retorno));
           });
 
-       /* } else {
+       } else {
  
           this.diagnostic.requestCameraAuthorization().then((data: string) => {
           
-            if (data == "GRANTED") {
+            if (data == "GRANTED" || data == "authorized") {
               this.takePicture(sourceType);
             } else {
               retorno.status = "false";
-              retorno.mensagem = "Sem permissão para acessar a câmera, por favor conceda permissão ao HuntVision para acessar a câmera do seu dispositivo em configurações.";
+              retorno.mensagem = "Sem permissão para acessar a câmera, por favor conceda permissão ao Max Entregadora para acessar a câmera do seu dispositivo em configurações.";
               resolve(JSON.stringify(retorno));
             }
           }).catch((err: any) => {
@@ -124,7 +125,7 @@ export class CameraService {
         retorno.status = "false";
         retorno.mensagem = JSON.stringify(err);
         resolve(JSON.stringify(retorno));
-      });*/
+      });
     });
   }
 
@@ -138,9 +139,9 @@ export class CameraService {
 
     return new Promise(resolve => {
 
-      //this.diagnostic.isCameraAuthorized().then((data: any) => {
+      this.diagnostic.isCameraAuthorized().then((data: any) => {
 
-       // if (data) {
+        if (data) {
 
           const options: CameraOptions = {
             quality: 50,
@@ -168,11 +169,11 @@ export class CameraService {
             resolve(JSON.stringify(retorno));
           });
 
-        /*} else {
+        } else {
 
           this.diagnostic.requestCameraAuthorization().then((data: string) => {
 
-            if (data == "authorized") {
+            if (data == "GRANTED" || data == "authorized") {
               this.takePicture(sourceType);
             } else {
               retorno.status = "false";
@@ -184,13 +185,13 @@ export class CameraService {
             retorno.mensagem = ("Ocorreu um erro ao scanear o QrCode: " + JSON.stringify(err));
             resolve(JSON.stringify(retorno));
           });
-        }*/
-   /*   }).catch((err: any) => {
+        }
+      }).catch((err: any) => {
 
         retorno.status = "false";
         retorno.mensagem = JSON.stringify(err);
         resolve(JSON.stringify(retorno));
-      });*/
+      });
     });
   }
 
