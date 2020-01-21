@@ -1,7 +1,7 @@
 import { Usuario } from './../../model/usuario.model';
 import { Intimacao } from './../../model/intimacao.model';
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams, MenuController, ModalController, PopoverController, Platform } from "ionic-angular";
+import { IonicPage, NavController, NavParams, MenuController, ModalController, PopoverController, Platform, AlertController } from "ionic-angular";
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { NotificationsPage } from "../notifications/notifications";
 import { Storage } from '@ionic/storage';
@@ -58,6 +58,8 @@ export class MinhasEntregasMapPage {
   public entregas: Intimacao[];
   public usuario: Usuario;
   map_canvas: GoogleMap;
+  public lat: Number;
+  public lon: Number;
 
 
 
@@ -73,7 +75,8 @@ export class MinhasEntregasMapPage {
     public storage: Storage,
     public network: Network,
     public networkProvider: NetworkProvider,
-    public geolocation: Geolocation,
+    public geolocation: Geolocation, 
+    public alertCtrl: AlertController
 
 
   ) {
@@ -87,6 +90,7 @@ export class MinhasEntregasMapPage {
 
   async ionViewWillEnter() {
     let loading = this.funcoes.showLoading("Carregando...");
+  
 
     await this.storage.get(Constantes.STORAGE_USER).then((data: any) => {
       this.usuario = data;
@@ -106,11 +110,63 @@ export class MinhasEntregasMapPage {
 
   }
 
+   async obterLocalizacao(){
+    
+    await this.diagnostic.isLocationEnabled().then(async (gpsAtivado:boolean)=>{
+      
+      if(!gpsAtivado){
+       
+        const confirm = this.alertCtrl.create({
+          title: 'Lozalização desativada!',
+          message: 'O aplicativo Max Entregadora precisa acessar sua localização para funcionar corretamente.',
+          buttons: [
+            {
+              text: 'OK',
+              handler: () => {
+                console.log('Disagree clicked');
+              }
+            }
+          ]
+        });
+        confirm.present();
+
+        await this.storage.get("CONFIG").then((data: any)=>{
+          let localizacao = JSON.parse(data);
+         
+          this.lat = localizacao[0].valor;
+          this.lon = localizacao[1].valor;
+        })
+        
+      }else{
+      await  this.diagnostic.isLocationAuthorized().then(async (gpsAutorizado:any)=>{
+        
+          if(gpsAutorizado){
+        
+            await this.autenticacaoProvider.obterLocalizacaoAtual();     
+            this.lat = this.autenticacaoProvider.latitudeAtual;
+            this.lon = this.autenticacaoProvider.longitiudeAtual;
+           
+          }else{
+           
+            //Colocar a latitude padrão
+            await this.storage.get("CONFIG").then((data: any)=>{
+              let localizacao = JSON.parse(data);
+             
+              this.lat = localizacao[0].valor;
+              this.lon = localizacao[1].valor;
+            })
+          }
+        });
+        
+      }
+    });
+
+  }
+
   async loadMap() {
 
-    await this.autenticacaoProvider.obterLocalizacaoAtual();
-
-
+    await this.obterLocalizacao();    
+    
     if (this.map_canvas != null) {
 
       this.map_canvas.clear();
@@ -129,7 +185,7 @@ export class MinhasEntregasMapPage {
             ' <span><b>Tentativa: </b>' + data.tentativa + '</span><br>',
             ' <span><b>Endereço: </b>' + data.endereco + '</span><br>',
             ' <span><b>Protocolo: </b>' + data.protocolo + '</span><br>',
-            '<a onclick="window.open(this.href, \'_system\'); return false;" style="color: blue;" href="https://www.google.com/maps/dir/?api=1&origin=' + this.autenticacaoProvider.latitudeAtual + ',' + this.autenticacaoProvider.longitiudeAtual + '&destination=' + data.location.position.lat + ',' + data.location.position.lng + '">Iniciar trajeto</a></div>'
+            '<a onclick="window.open(this.href, \'_system\'); return false;" style="color: blue;" href="https://www.google.com/maps/dir/?api=1&origin=' + this.lat + ',' + this.lon + '&destination=' + data.location.position.lat + ',' + data.location.position.lng + '">Iniciar trajeto</a></div>'
           ].join("");
           /*frame.getElementsByTagName("img")[0].addEventListener("click", () => {
             htmlInfoWindow.setBackgroundColor('red');
@@ -197,7 +253,7 @@ export class MinhasEntregasMapPage {
           ' <span><b>Tentativa: </b>' + data.tentativa + '</span><br>',
           ' <span><b>Endereço: </b>' + data.endereco + '</span><br>',
           ' <span><b>Protocolo: </b>' + data.protocolo + '</span><br>',
-          '<a onclick="window.open(this.href, \'_system\'); return false;" style="color: blue;" href="https://www.google.com/maps/dir/?api=1&origin=' + this.autenticacaoProvider.latitudeAtual + ',' + this.autenticacaoProvider.longitiudeAtual + '&destination=' + data.location.position.lat + ',' + data.location.position.lng + '">Iniciar trajeto</a></div>'
+          '<a onclick="window.open(this.href, \'_system\'); return false;" style="color: blue;" href="https://www.google.com/maps/dir/?api=1&origin=' + this.lat + ',' + this.lon +  '&destination=' + data.location.position.lat + ',' + data.location.position.lng + '">Iniciar trajeto</a></div>'
         ].join("");
 
         /*frame.getElementsByTagName("img")[0].addEventListener("click", () => {

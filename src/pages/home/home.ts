@@ -12,6 +12,7 @@ import { NotificationsPage } from '../notifications/notifications';
 import { Notificacao } from '../../model/notificacao.model';
 import { NetworkProvider } from '../../providers/network/network';
 import { Storage } from '@ionic/storage';
+import { AutenticacaoProvider } from '../../providers/autenticacao/autenticacao';
 @IonicPage({
   name: 'page-home',
   segment: 'home',
@@ -43,12 +44,14 @@ export class HomePage {
     public funcoes: FuncoesProvider,
     public zone: NgZone,
     public storage: Storage,
+    public autenticacaoProvider: AutenticacaoProvider,
     public networkProvider: NetworkProvider) {
       this.usuario = this.navParams.get('usuario');
 
   }
 
   async ionViewWillEnter() {
+    await this.obterConfiguracoes();
     await this.AtualizarNotificacoes();
 
   }
@@ -243,6 +246,17 @@ export class HomePage {
 
     });
 
+  }
+
+
+  async obterConfiguracoes() {
+   await this.autenticacaoProvider.ObterConfiguracoes("EMPRESA_LATITUDE,EMPRESA_LONGITUDE").then((data:any)=>{
+   
+      if(data.ok){
+        this.storage.set("CONFIG",JSON.stringify(data.retorno));
+   //     alert(JSON.stringify(data.retorno[0].valor));
+      }
+    });
   }
 
 

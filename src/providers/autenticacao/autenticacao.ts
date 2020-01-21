@@ -220,6 +220,38 @@ return location;
 
 }
 
+public ObterConfiguracoes(chaves : string) {
+
+  let token = this.getToken();
+
+  this.usuario = this.getUser(token);
+  let dados = { "nome": chaves};
+
+
+  const httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    })
+  };
+
+  return new Promise(resolve => {
+
+    this.http.post(Constantes.API_OBTER_CONFIGURACOES, dados, httpOptions).timeout(Constantes.TIMEOUT_RESQUEST).subscribe((data: any) => {
+
+      resolve(data);
+
+    }, err => {
+      console.log(JSON.stringify(err));
+      resolve(err);
+
+    });
+  });
+
+
+
+}
+
 
 
 }

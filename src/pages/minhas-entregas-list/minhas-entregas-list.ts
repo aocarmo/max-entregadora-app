@@ -1,5 +1,6 @@
+import { Diagnostic } from '@ionic-native/diagnostic';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { SuperTabsController } from 'ionic2-super-tabs';
 import _ from 'lodash';
 import { IntimacoesProvider } from '../../providers/intimacoes/intimacoes';
@@ -35,6 +36,8 @@ export class MinhasEntregasListPage {
   queryText: string;
   todasEntregas: any;
   public usuario: Usuario;
+  public lat: Number;
+  public lon: Number;
 
 
 
@@ -46,7 +49,9 @@ export class MinhasEntregasListPage {
     public storage: Storage,
     public network: Network,
     public networkProvider: NetworkProvider,
-    private iab: InAppBrowser ) {
+    private iab: InAppBrowser ,
+    public alertCtrl: AlertController,
+    public diagnostic: Diagnostic) {
     this.rootNavCtrl = this.navParams.get('rootNavCtrl');
     this.queryText = "";
 
@@ -57,7 +62,7 @@ export class MinhasEntregasListPage {
 
   async ionViewWillEnter() {
     let load = this.funcoes.showLoading('Carregando...');
-    await this.autenticacaoProvider.obterLocalizacaoAtual();
+    await  this.obterLocalizacao();    
     await this.storage.get(Constantes.STORAGE_USER).then((data :any)=>{
       load.dismiss();
       this.usuario = data;
@@ -248,4 +253,64 @@ export class MinhasEntregasListPage {
 
  
        }
+
+       async obterLocalizacao(){
+    
+        await this.diagnostic.isLocationEnabled().then(async (gpsAtivado:boolean)=>{
+          
+          if(!gpsAtivado){
+           
+            const confirm = this.alertCtrl.create({
+              title: 'Lozalização desativada!',
+              message: 'O aplicativo Max Entregadora precisa acessar sua localização para funcionar corretamente. Deseja ativar?',
+              buttons: [
+                {
+                  text: 'Não',
+                  handler: () => {
+                    console.log('Disagree clicked');
+                  }
+                },
+                {
+                  text: 'Sim',
+                  handler: () => {
+                    this.diagnostic.switchToLocationSettings();
+                    
+                  }
+                }
+              ]
+            });
+            confirm.present();
+    
+            await this.storage.get("CONFIG").then((data: any)=>{
+              let localizacao = JSON.parse(data);
+             
+              this.lat = localizacao[0].valor;
+              this.lon = localizacao[1].valor;
+            })
+            
+          }else{
+          await  this.diagnostic.isLocationAuthorized().then(async (gpsAutorizado:any)=>{
+            
+              if(gpsAutorizado){
+            
+                await this.autenticacaoProvider.obterLocalizacaoAtual();     
+                this.lat = this.autenticacaoProvider.latitudeAtual;
+                this.lon = this.autenticacaoProvider.longitiudeAtual;
+               
+              }else{
+               
+                //Colocar a latitude padrão
+                await this.storage.get("CONFIG").then((data: any)=>{
+                  let localizacao = JSON.parse(data);
+                 
+                  this.lat = localizacao[0].valor;
+                  this.lon = localizacao[1].valor;
+                })
+              }
+            });
+            
+          }
+        });
+    
+      }
 }
