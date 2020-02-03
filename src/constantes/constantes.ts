@@ -11,6 +11,7 @@ export class Constantes {
     public static API_OBTER_NOTIFICACOES = "https://sistema.maxentregadora.com.br/api/notificacoes/obterNotificacoes.json";
     public static API_EXCLUIR_NOTIFICACOES = "https://sistema.maxentregadora.com.br/api/notificacoes/excluirNotificacao.json";
     public static API_OBTER_CONFIGURACOES = "https://sistema.maxentregadora.com.br/api/Configuracoes/obterValorConfiguracao.json";
+    public static API_OBTER_PREBAIXAS = "https://sistema.maxentregadora.com.br/api/diligentes/obterPreBaixas.json";
     
     /*
     public static API_LOGIN='http://192.168.0.18/apihuntvision/autenticacao';
@@ -27,6 +28,7 @@ export class Constantes {
     public static INTIMACOES='intimacoes';
     public static TIPOS_ENTREGA='tiposEntrega';
     public static NOTIFICACOES='notificacoes_';
+    public static PREBAIXASOFF='prebaixaoff';
 
 
     //MENSAGENS PADRÃO

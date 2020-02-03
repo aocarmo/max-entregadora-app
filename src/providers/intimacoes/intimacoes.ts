@@ -265,6 +265,41 @@ export class IntimacoesProvider {
 
   }
 
+  public ObterPreBaixas(dtInicial: string, dtFinal: string) {
+
+    let token = this.autenticacaoProvider.getToken();
+
+    this.usuario = this.autenticacaoProvider.getUser(token);
+   // let dados = { "usuario_id": this.usuario.idDiligente };
+   let dados = { "diligente_id": 3,
+                  "data_entrega_inicial" : dtInicial,
+                  "data_entrega_final" : dtFinal
+              };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      })
+    };
+
+    return new Promise(resolve => {
+
+      this.http.post(Constantes.API_OBTER_PREBAIXAS, dados, httpOptions).timeout(Constantes.TIMEOUT_RESQUEST).subscribe((data: any) => {
+
+        resolve(data);     
+        
+      }, err => {
+        console.log(JSON.stringify(err));
+        resolve(err);
+
+      });
+    });
+
+
+
+  }
+
 
 
 

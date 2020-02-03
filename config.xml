@@ -116,6 +116,7 @@
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
     <allow-navigation href="*" />
+    <allow-navigation href="http://localhost:8100" sessionid="ae5986ae" />
     <engine name="browser" spec="5.0.4" />
     <engine name="android" spec="^8.1.0" />
     <engine name="ios" spec="^5.0.0" />

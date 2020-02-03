@@ -17,6 +17,7 @@ import { ImagemModalPage } from '../imagem-modal/imagem-modal';
 import { File } from '@ionic-native/file';
 import { IntimacoesProvider } from '../../providers/intimacoes/intimacoes';
 import { Storage } from '@ionic/storage';
+import { DadosDiligencia } from '../../model/dadosDiligencia.model';
 /**
  * Generated class for the PreBaixaPage page.
  *
@@ -48,7 +49,7 @@ export class PreBaixaPage {
   public tipoDiligencia : number = 1;
   public listaTipoEntrega: TipoEntrega [] = [];
   public usuario: Usuario;
-
+  public listaPreBaixaOffline : DadosDiligencia [] = [];
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
@@ -181,6 +182,7 @@ export class PreBaixaPage {
     this.actionSheet.show(options).then((buttonIndex: number) => {
 
       this.camera.takePicture(buttonIndex).then((data: string) => {
+        console.log(JSON.stringify(data));
         
         //Transformando o retorno em objeto para validar o retorno
         let retorno = JSON.parse(data);
@@ -229,7 +231,7 @@ public convertURLImgToBase64(foto: FotoDiligencia){
   });
 }
 
-registrarPreBaixa(){
+async registrarPreBaixa(){
    console.log(JSON.stringify(this.langForm.value.motivo));
    
   let loading = this.funcoes.showLoading('Salvando...');
@@ -241,7 +243,7 @@ registrarPreBaixa(){
     });  
   }
 
-  let dadosDiligencia = {
+  let dadosDiligencia : DadosDiligencia = {
 
     intimacao_id : this.entrega.idIntimacao,
     diligente_id: this.usuario.idDiligente,
@@ -255,37 +257,87 @@ registrarPreBaixa(){
     arquivos : fotos   
 
    }
+
+   if(this.networkProvider.previousStatus == 0){
+    
+  
+
+    this.intimacoesProvider.RegistrarPreBaixa(dadosDiligencia).then((data:any) =>{
+      loading.dismiss();
+      if(data.ok){
+
+        const confirm = this.alertCtrl.create({
+          title: data.msg,     
+          buttons: [
+            {
+              text: 'OK',
+              handler: () => {
+                this.navCtrl.setRoot('page-home', {"usuario" : this.usuario});
+              }
+            }       
+          ]
+        });
+  
+        confirm.present();
+      }else{
+        
+        this.funcoes.showAlert(data.msg)
+      }
+      
    
+     }).catch((err:any)=>{
+      loading.dismiss();
+       alert('Ocorreu algum arro ao salvar o registro de pré baixa: ' + JSON.stringify(err));
+     })
+
+   }else{
+     console.log('awui');
+     
+    dadosDiligencia.sync = false;
+
+    await this.storage.get(Constantes.PREBAIXASOFF).then(async (data: any) => {
+      if(data != null){
+        this.listaPreBaixaOffline = data;
+        this.listaPreBaixaOffline.push(dadosDiligencia);
+        let i = 0;
+        
+        for (let itemPrebaixa of this.listaPreBaixaOffline) {
+          if(itemPrebaixa.sync){
+            this.listaPreBaixaOffline.splice(i,1);
+          }
+          i++;
+        }
+      }else{
+            this.listaPreBaixaOffline.push(dadosDiligencia);           
+      }
+      await this.storage.set(Constantes.PREBAIXASOFF,this.listaPreBaixaOffline).then((data:any)=>{
+        loading.dismiss();
+        const confirm = this.alertCtrl.create({
+          title: "Pre-Baixa registrada offiline, por favor faça a sincronização das pré-baixas assim que possível.",     
+          buttons: [
+            {
+              text: 'OK',
+              handler: () => {
+                this.navCtrl.setRoot('page-home', {"usuario" : this.usuario});
+              }
+            }       
+          ]
+        });
+  
+        confirm.present();
+    
+      }).catch((err: any)=>{
+        loading.dismiss();
+      });
+
+    });
+
+
+   }
 
 
   
-   this.intimacoesProvider.RegistrarPreBaixa(dadosDiligencia).then((data:any) =>{
-    loading.dismiss();
-    if(data.ok){
-
-      const confirm = this.alertCtrl.create({
-        title: data.msg,     
-        buttons: [
-          {
-            text: 'OK',
-            handler: () => {
-              this.navCtrl.setRoot('page-home', {"usuario" : this.usuario});
-            }
-          }       
-        ]
-      });
-
-      confirm.present();
-    }else{
-      
-      this.funcoes.showAlert(data.msg)
-    }
-    
- 
-   }).catch((err:any)=>{
-    loading.dismiss();
-     alert('Ocorreu algum arro ao salvar o registro de pré baixa: ' + JSON.stringify(err));
-   })
+  
    
   
   
@@ -352,7 +404,7 @@ async AtualizarListaTipoEntrega(): Promise<any> {
 
         });
       } else {
-        this.funcoes.showAlert(Constantes.INTERNET_INDISPONIVEL);
+        //this.funcoes.showAlert(Constantes.INTERNET_INDISPONIVEL);
       }
 
     }

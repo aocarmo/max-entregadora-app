@@ -1,0 +1,60 @@
+<!-- -->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Detalhe da Pré-Baixa</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class=" common-bg">
+  <div id="map_three">
+  </div>
+ 
+
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col col-12>
+        <!--high light-->
+        <div class="border-bottom" padding>
+          <h5 ion-text color="dark" class="bold">Informações</h5>
+          <div class="border-bottom" padding>
+            <h5 no-margin ion-text color="primary" class="bold">Diligente</h5>
+            <span ion-text>{{ lista.dadosPreBaixa.diligente }}</span>
+            <h5 no-margin ion-text color="primary" class="bold">Devedor</h5>
+            <span ion-text>{{ lista.dadosIntimacao.nomeDestinatario }}</span>
+            <h5 no-margin ion-text color="primary" class="bold">Documento</h5>
+            <span ion-text>{{ lista.dadosIntimacao.documentoDestinatario }}</span>
+            <h5 no-margin ion-text color="primary" class="bold">Endereço</h5>
+            <span ion-text>{{ lista.dadosIntimacao.enderecoDestinatario }}</span>
+            <hr>
+            <h5 no-margin ion-text color="primary" class="bold">Data de Pré-Baixa</h5>
+            <span ion-text>{{ lista.dadosPreBaixa.dtEntrega }}</span>
+            <h5 no-margin ion-text color="primary" class="bold">Protocolo</h5>
+            <span ion-text>{{ lista.dadosIntimacao.numeroProtocolo }}</span>
+            <h5 no-margin ion-text color="primary" class="bold">Data de Limite</h5>
+            <span ion-text>{{ lista.dadosIntimacao.dtLimite }}</span>
+            <h5 no-margin ion-text color="primary" class="bold">Tipo Diligência</h5>
+            <span ion-text>{{ lista.dadosPreBaixa.nomeTipoDiligencia }}</span>
+            <h5 no-margin ion-text color="primary" class="bold">Motivo Entrega</h5>
+            <span ion-text>{{ lista.dadosPreBaixa.nomeMotivoEntrega }}</span>
+         <!--   <h5 no-margin ion-text color="primary" class="bold">Observação</h5>
+            <span ion-text>{{ lista.dadosPreBaixa.diligente }}</span>-->       
+            <ion-item *ngIf="lista.dadosPreBaixa.imagens != []">
+              <ion-grid>
+                <ion-row wrap>
+                  <ion-col col-3 *ngFor="let imagem  of lista.dadosPreBaixa.imagens" (tap)="abrirImagem(imagem)">
+                    <ion-thumbnail>
+                      <img  [src]="imagem">
+                    </ion-thumbnail>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -33,7 +33,8 @@ export class CameraService {
     return new Promise(resolve => {
 
       this.diagnostic.isCameraAuthorized().then((data: any) => {
-   
+      
+        
        if (data) {
      
           const options: CameraOptions = {
@@ -105,7 +106,7 @@ export class CameraService {
        } else {
  
           this.diagnostic.requestCameraAuthorization().then((data: string) => {
-          
+           
             if (data == "GRANTED" || data == "authorized") {
               this.takePicture(sourceType);
             } else {
@@ -172,7 +173,8 @@ export class CameraService {
         } else {
 
           this.diagnostic.requestCameraAuthorization().then((data: string) => {
-
+     
+            
             if (data == "GRANTED" || data == "authorized") {
               this.takePicture(sourceType);
             } else {

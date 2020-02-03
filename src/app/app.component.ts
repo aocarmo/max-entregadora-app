@@ -59,6 +59,7 @@ export class ionBookingApp {
           this.appMenuItems = [
           
             {title: 'Minhas Entregas', component: 'page-home', icon: 'fas fa-mail-bulk'},
+            {title: 'Produtividade do Diligente', component: 'page-produtividade-diligente', icon: 'fas fa-chart-line'},
           //  {title: 'Minhas ', component: 'page-message-list', icon: 'mail'}, 
 
             {title: 'Contato', component: 'page-support', icon: 'fas fa-phone'},

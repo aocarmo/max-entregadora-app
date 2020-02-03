@@ -13,6 +13,7 @@ import { Notificacao } from '../../model/notificacao.model';
 import { NetworkProvider } from '../../providers/network/network';
 import { Storage } from '@ionic/storage';
 import { AutenticacaoProvider } from '../../providers/autenticacao/autenticacao';
+import { DadosDiligencia } from '../../model/dadosDiligencia.model';
 @IonicPage({
   name: 'page-home',
   segment: 'home',
@@ -29,6 +30,8 @@ export class HomePage {
   public intimacoes: Intimacao[] = [];
   public qtdNotificacoesNaoLidas: number;
   public notificacoes: Notificacao[] = [];
+  public listaPreBaixaOffline: DadosDiligencia[] = [];
+  public qtdPreBaixasOff: number;
   public pages = [
     { pageName: 'page-minhas-entregas-map', title: 'Mapa', icon: 'map', id: 'newsTab' },
     { pageName: 'page-minhas-entregas-list', title: 'Entregas', icon: 'mail', id: 'aboutTab' }
@@ -46,13 +49,14 @@ export class HomePage {
     public storage: Storage,
     public autenticacaoProvider: AutenticacaoProvider,
     public networkProvider: NetworkProvider) {
-      this.usuario = this.navParams.get('usuario');
+    this.usuario = this.navParams.get('usuario');
 
   }
 
   async ionViewWillEnter() {
     await this.obterConfiguracoes();
     await this.AtualizarNotificacoes();
+    await this.obterPreBaixasOff();
 
   }
 
@@ -100,7 +104,7 @@ export class HomePage {
 
       if (notificacoes != null) {
 
-     
+
         let i = 0;
 
         notificacoes.forEach(notificacao => {
@@ -111,37 +115,37 @@ export class HomePage {
 
         });
 
-        if(i > 0){
-          this.qtdNotificacoesNaoLidas = i 
-        }else{
+        if (i > 0) {
+          this.qtdNotificacoesNaoLidas = i
+        } else {
           this.qtdNotificacoesNaoLidas = null;
         }
 
-       
-        
+
+
         if (this.networkProvider.previousStatus == 0) {
           this.obterNotificacoes();
         }
 
       } else {
-     
+
         if (this.networkProvider.previousStatus == 0) {
-          
+
           await this.intimacoesProvider.ObterNotificacoes().then(async (notificacoes: any) => {
-            
+
             if (notificacoes.ok) {
-              
+
               if (notificacoes.retorno.length > 0) {
                 this.notificacoes = notificacoes.retorno;
-               
+
                 this.notificacoes.forEach(notificacao => {
                   notificacao.lida = false;
                 });
-              
-                
+
+
                 this.storage.set(Constantes.NOTIFICACOES + this.usuario.id.toString(), this.notificacoes);
                 this.qtdNotificacoesNaoLidas = this.notificacoes.length;
-               
+
               }
 
 
@@ -171,8 +175,9 @@ export class HomePage {
   }
 
   doRefresh(refresher) {
-   
+
     this.obterNotificacoes();
+    this.enviarPreBaixaOff();
     setTimeout(() => {
       console.log('Async operation has ended');
       refresher.complete();
@@ -181,13 +186,13 @@ export class HomePage {
 
   async obterNotificacoes() {
 
-    let arrNotificacoes : Notificacao[] =[];
+    let arrNotificacoes: Notificacao[] = [];
 
     await this.intimacoesProvider.ObterNotificacoes().then(async (notificacoesOnline: any) => {
 
       if (notificacoesOnline.ok) {
-        
-        if (notificacoesOnline.retorno.length > 0){
+
+        if (notificacoesOnline.retorno.length > 0) {
 
           await this.storage.get(Constantes.NOTIFICACOES + this.usuario.id.toString()).then(async (notificacoesCache: any) => {
 
@@ -196,50 +201,50 @@ export class HomePage {
               arrNotificacoes = notificacoesCache;
 
               notificacoesOnline.retorno.forEach(notificacaoOnline => {
-                
+
                 notificacaoOnline.lida = false;
-                
+
                 let existe = false;
 
                 notificacoesCache.forEach(notificacaoCache => {
-                  
-                  if(notificacaoOnline.idNotificacao == notificacaoCache.idNotificacao){
+
+                  if (notificacaoOnline.idNotificacao == notificacaoCache.idNotificacao) {
                     existe = true
                   }
 
                 });
 
-                  if(!existe){
-                    arrNotificacoes.push(notificacaoOnline);
-                  }
+                if (!existe) {
+                  arrNotificacoes.push(notificacaoOnline);
+                }
 
               });
 
               let i = 0;
 
               arrNotificacoes.forEach(notificacao => {
-      
+
                 if (notificacao.lida == false) {
                   i++;
                 }
-      
+
               });
-              
-              if(i > 0){
-                this.qtdNotificacoesNaoLidas = i 
-              }else{
+
+              if (i > 0) {
+                this.qtdNotificacoesNaoLidas = i
+              } else {
                 this.qtdNotificacoesNaoLidas = null;
               }
-              
-           
+
+
               this.storage.set(Constantes.NOTIFICACOES + this.usuario.id.toString(), arrNotificacoes);
 
             }
-  
+
           });
 
         }
-     
+
       }
 
     }).catch((err: any) => {
@@ -250,13 +255,81 @@ export class HomePage {
 
 
   async obterConfiguracoes() {
-   await this.autenticacaoProvider.ObterConfiguracoes("EMPRESA_LATITUDE,EMPRESA_LONGITUDE").then((data:any)=>{
-   
-      if(data.ok){
-        this.storage.set("CONFIG",JSON.stringify(data.retorno));
-   //     alert(JSON.stringify(data.retorno[0].valor));
+    await this.autenticacaoProvider.ObterConfiguracoes("EMPRESA_LATITUDE,EMPRESA_LONGITUDE").then((data: any) => {
+
+      if (data.ok) {
+        this.storage.set("CONFIG", JSON.stringify(data.retorno));
+        //     alert(JSON.stringify(data.retorno[0].valor));
       }
     });
+  }
+
+  async obterPreBaixasOff() {
+
+    await this.storage.get(Constantes.PREBAIXASOFF).then(async (data: any) => {
+      this.listaPreBaixaOffline = data;
+      
+      let i = 0;
+      for (let itemPrebaixa of this.listaPreBaixaOffline) {
+        if (!itemPrebaixa.sync) {
+          i++;
+        }
+      }
+      this.qtdPreBaixasOff = i > 0 ? i : null;
+    });
+  }
+
+  async enviarPreBaixaOff() {
+    let load = this.funcoes.showLoading("Sincronizando...");
+   if(this.networkProvider.previousStatus == 0){
+ 
+
+    await this.storage.get(Constantes.PREBAIXASOFF).then(async (data: any) => {
+
+      
+      
+      if(data != null){
+
+        this.listaPreBaixaOffline = data;
+    
+        for (var i = 0; i <= this.listaPreBaixaOffline.length; i++) {
+                
+          if (!this.listaPreBaixaOffline[i].sync) {
+         
+            await this.intimacoesProvider.RegistrarPreBaixa(this.listaPreBaixaOffline[i]).then((data: any) => {
+                
+                if (data.ok) {
+                  this.listaPreBaixaOffline[i].sync = true;      
+                  this.listaPreBaixaOffline.splice(i,1); 
+                }
+  
+              }).catch((err: any) => {            
+                alert('Ocorreu algum arro ao salvar o registro de pré baixa: ' + JSON.stringify(err));
+              });
+             
+            }
+         
+            i++;   
+        }
+        await this.storage.set(Constantes.PREBAIXASOFF,this.listaPreBaixaOffline).then(async (data: any) => {
+         
+        });
+        this.obterPreBaixasOff();
+        
+        load.dismiss();
+
+      }else{
+        load.dismiss();
+      }
+  
+     
+      
+    });
+   }else{
+    load.dismiss();
+     this.funcoes.showAlert(Constantes.INTERNET_INDISPONIVEL);
+   }
+    
   }
 
 

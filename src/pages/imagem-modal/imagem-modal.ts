@@ -19,6 +19,7 @@ export class ImagemModalPage {
   foto: SafeUrl;
   constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl : ViewController) {
 
+    
     this.foto = this.navParams.get('fotoURL');
   
   }
