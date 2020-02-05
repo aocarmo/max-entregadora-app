@@ -154,6 +154,7 @@ export class IntimacoesProvider {
     postData.append('usuario_id', dadosPrebaixa.usuario_id);
     postData.append('latitude', dadosPrebaixa.latitude);
     postData.append('longitude', dadosPrebaixa.longitude);
+    postData.append('idEntregaIntimacao', dadosPrebaixa.idEntregaIntimacao);
 
 
     if (dadosPrebaixa.arquivos != []) {

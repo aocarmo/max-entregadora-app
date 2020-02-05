@@ -108,7 +108,9 @@ export class CameraService {
           this.diagnostic.requestCameraAuthorization().then((data: string) => {
            
             if (data == "GRANTED" || data == "authorized") {
-              this.takePicture(sourceType);
+              this.takePicture(sourceType).then((data: string)=>{
+                resolve(data);
+              });
             } else {
               retorno.status = "false";
               retorno.mensagem = "Sem permissão para acessar a câmera, por favor conceda permissão ao Max Entregadora para acessar a câmera do seu dispositivo em configurações.";

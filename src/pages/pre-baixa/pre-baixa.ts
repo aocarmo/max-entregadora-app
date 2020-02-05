@@ -18,6 +18,7 @@ import { File } from '@ionic-native/file';
 import { IntimacoesProvider } from '../../providers/intimacoes/intimacoes';
 import { Storage } from '@ionic/storage';
 import { DadosDiligencia } from '../../model/dadosDiligencia.model';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 /**
  * Generated class for the PreBaixaPage page.
  *
@@ -68,7 +69,6 @@ export class PreBaixaPage {
               ) {
 
    this.entrega = this.navParams.get('entrega');
-
    
 
   }
@@ -104,7 +104,7 @@ export class PreBaixaPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PreBaixaPage');
+    
   }
 
   onChange(isChecked) {
@@ -179,34 +179,36 @@ export class PreBaixaPage {
       destructiveButtonLast: true
     };
 
-    this.actionSheet.show(options).then((buttonIndex: number) => {
-
-      this.camera.takePicture(buttonIndex).then((data: string) => {
-        console.log(JSON.stringify(data));
-        
+    this.actionSheet.show(options).then(async (buttonIndex: number) => {
+   
+     await this.camera.takePicture(buttonIndex).then((data: string) => {
+   
         //Transformando o retorno em objeto para validar o retorno
         let retorno = JSON.parse(data);
         
      
                
         if (retorno.status == "true") {
-
+   
           this.fotosExibir.push(
             {
               fotoExibir: this.sanitizer.bypassSecurityTrustUrl(this.win.Ionic.WebView.convertFileSrc(retorno.pathImage)),
               fotoPath: retorno.pathImage
 
             });
-              
+   
           loading.dismiss();
+   
 
         } else {
+   
           loading.dismiss();
           this.funcoes.showAlert(retorno.mensagem);
+   
         }
-
+   
       });
-
+      
     });
 
 
@@ -226,13 +228,13 @@ public convertURLImgToBase64(foto: FotoDiligencia){
   let caminho = foto.fotoPath.substring(0,foto.fotoPath.lastIndexOf('/')+1);
   
    this.file.readAsDataURL(caminho,nomeArquivo).then((data:any )=>{ 
-     console.log(JSON.stringify(data));
+
      
   });
 }
 
 async registrarPreBaixa(){
-   console.log(JSON.stringify(this.langForm.value.motivo));
+
    
   let loading = this.funcoes.showLoading('Salvando...');
   //Salvando fotos no array;
@@ -254,7 +256,8 @@ async registrarPreBaixa(){
     usuario_id: this.usuario.id,
     latitude: this.autenticacaoProvider.latitudeAtual,
     longitude: this.autenticacaoProvider.longitiudeAtual,
-    arquivos : fotos   
+    arquivos : fotos,
+    idEntregaIntimacao: this.entrega.idEntregaIntimacao   
 
    }
 
@@ -262,16 +265,29 @@ async registrarPreBaixa(){
     
   
 
-    this.intimacoesProvider.RegistrarPreBaixa(dadosDiligencia).then((data:any) =>{
+    this.intimacoesProvider.RegistrarPreBaixa(dadosDiligencia).then(async (data:any) =>{
       loading.dismiss();
       if(data.ok){
-
+        await this.storage.get(this.usuario.id.toString()).then(async (intimacoesLocal: any) => {
+          let intimacoes = intimacoesLocal;
+          let i = 0;
+          for (let intimacao of intimacoes) {
+            if(intimacao.idEntregaIntimacao == this.entrega.idEntregaIntimacao){
+              intimacoes.splice(i,1);
+            }
+            i++;
+          }
+          await this.storage.set(this.usuario.id.toString(), intimacoes).then((data: any) => {});
+          
+        });
+          
         const confirm = this.alertCtrl.create({
           title: data.msg,     
           buttons: [
             {
               text: 'OK',
               handler: () => {
+           
                 this.navCtrl.setRoot('page-home', {"usuario" : this.usuario});
               }
             }       
@@ -291,7 +307,7 @@ async registrarPreBaixa(){
      })
 
    }else{
-     console.log('awui');
+   
      
     dadosDiligencia.sync = false;
 
@@ -310,8 +326,23 @@ async registrarPreBaixa(){
       }else{
             this.listaPreBaixaOffline.push(dadosDiligencia);           
       }
-      await this.storage.set(Constantes.PREBAIXASOFF,this.listaPreBaixaOffline).then((data:any)=>{
+      await this.storage.set(Constantes.PREBAIXASOFF,this.listaPreBaixaOffline).then(async(data:any)=>{
         loading.dismiss();
+
+        await this.storage.get(this.usuario.id.toString()).then(async (intimacoesLocal: any) => {
+          let intimacoes = intimacoesLocal;
+          let i = 0;
+          for (let intimacao of intimacoes) {
+            if(intimacao.idEntregaIntimacao == this.entrega.idEntregaIntimacao){
+              intimacoes.splice(i,1);
+            }
+            i++;
+          }
+          await this.storage.set(this.usuario.id.toString(), intimacoes).then((data: any) => {});
+          
+        });
+
+
         const confirm = this.alertCtrl.create({
           title: "Pre-Baixa registrada offiline, por favor faça a sincronização das pré-baixas assim que possível.",     
           buttons: [
@@ -352,7 +383,7 @@ async AtualizarListaTipoEntrega(): Promise<any> {
     if (tiposEntrega != null) {
       
       let arrIdTipoEntrega =  Object.keys(tiposEntrega);
-      console.log(JSON.stringify(tiposEntrega));
+  
       
 
       arrIdTipoEntrega.forEach(id => {

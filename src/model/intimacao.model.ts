@@ -29,6 +29,7 @@ export class Intimacao {
     public tentativa: string;
     public historicoTentativas: string[];
     public location: Location;
+    public idEntregaIntimacao: number;
         
 
 

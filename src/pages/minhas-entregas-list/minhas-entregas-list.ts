@@ -31,7 +31,7 @@ import { AutenticacaoProvider } from '../../providers/autenticacao/autenticacao'
 })
 export class MinhasEntregasListPage {
 
-  public entregas: any;
+  public entregas: any = [];
   rootNavCtrl: NavController;
   queryText: string;
   todasEntregas: any;
@@ -68,7 +68,7 @@ export class MinhasEntregasListPage {
       this.usuario = data;
       if(this.usuario.idPerfil == 5){
         this.AtualizarListaIntimacoes().then((data: any) => {
-  
+          console.log(JSON.stringify(this.entregas));
         });
       }
     });
@@ -145,7 +145,8 @@ export class MinhasEntregasListPage {
         if(this.networkProvider.previousStatus == 0){
 
           await this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
-
+          
+            
             if (intimacoesAPI.ok) {
 
               this.storage.set(this.usuario.id.toString(), intimacoesAPI.retorno);

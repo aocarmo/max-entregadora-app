@@ -1,3 +1,4 @@
+import { Login1Page } from './../extras/login1/login1';
 
 import { Constantes } from './../../constantes/constantes';
 import { FuncoesProvider } from './../../providers/funcoes/funcoes';
@@ -57,7 +58,8 @@ export class HomePage {
     await this.obterConfiguracoes();
     await this.AtualizarNotificacoes();
     await this.obterPreBaixasOff();
-
+    await this.enviarPreBaixaOff();  
+ 
   }
 
 
@@ -268,68 +270,78 @@ export class HomePage {
 
     await this.storage.get(Constantes.PREBAIXASOFF).then(async (data: any) => {
       this.listaPreBaixaOffline = data;
-      
+
       let i = 0;
       for (let itemPrebaixa of this.listaPreBaixaOffline) {
         if (!itemPrebaixa.sync) {
           i++;
+        } else {
+          this.listaPreBaixaOffline.splice(i, 1);
         }
       }
+
+
+      await this.storage.set(Constantes.PREBAIXASOFF, this.listaPreBaixaOffline).then(async (data: any) => {
+
+      });
+
+
       this.qtdPreBaixasOff = i > 0 ? i : null;
     });
   }
 
   async enviarPreBaixaOff() {
-    let load = this.funcoes.showLoading("Sincronizando...");
-   if(this.networkProvider.previousStatus == 0){
- 
+   
+    if (this.networkProvider.previousStatus == 0) {
+      let load = this.funcoes.showLoading("Sincronizando...");
 
-    await this.storage.get(Constantes.PREBAIXASOFF).then(async (data: any) => {
+      await this.storage.get(Constantes.PREBAIXASOFF).then(async (data: any) => {
 
-      
-      
-      if(data != null){
+        if (data != null) {
 
-        this.listaPreBaixaOffline = data;
-    
-        for (var i = 0; i <= this.listaPreBaixaOffline.length; i++) {
-                
-          if (!this.listaPreBaixaOffline[i].sync) {
+          this.listaPreBaixaOffline = data;
          
-            await this.intimacoesProvider.RegistrarPreBaixa(this.listaPreBaixaOffline[i]).then((data: any) => {
-                
+          for (let i = 0; i < this.listaPreBaixaOffline.length; i++) {
+
+
+            if (!this.listaPreBaixaOffline[i].sync) {
+
+              await this.intimacoesProvider.RegistrarPreBaixa(this.listaPreBaixaOffline[i]).then((data: any) => {
+
                 if (data.ok) {
-                  this.listaPreBaixaOffline[i].sync = true;      
-                  this.listaPreBaixaOffline.splice(i,1); 
+                  this.listaPreBaixaOffline[i].sync = true;
+
                 }
-  
-              }).catch((err: any) => {            
+
+              }).catch((err: any) => {
+                load.dismiss();
                 alert('Ocorreu algum arro ao salvar o registro de pré baixa: ' + JSON.stringify(err));
               });
-             
-            }
-         
-            i++;   
-        }
-        await this.storage.set(Constantes.PREBAIXASOFF,this.listaPreBaixaOffline).then(async (data: any) => {
-         
-        });
-        this.obterPreBaixasOff();
-        
-        load.dismiss();
 
-      }else{
-        load.dismiss();
-      }
-  
-     
+            }
+          }
       
-    });
-   }else{
-    load.dismiss();
-     this.funcoes.showAlert(Constantes.INTERNET_INDISPONIVEL);
-   }
-    
+
+          await this.storage.set(Constantes.PREBAIXASOFF, this.listaPreBaixaOffline).then(async (data: any) => {
+           
+          });
+          
+          this.obterPreBaixasOff();
+
+          load.dismiss();
+
+        } else {
+          load.dismiss();
+        }
+
+
+
+      });
+    } else {
+     
+      this.funcoes.showAlert(Constantes.INTERNET_INDISPONIVEL);
+    }
+
   }
 
 

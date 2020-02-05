@@ -20,6 +20,7 @@ class DadosPreBaixa  {
     public longitudePreBaixa: number;
     public dtEntrega: string;
     public imagens: string[];
+    public observacao:string;
     
 }
 class DadosBaixa {

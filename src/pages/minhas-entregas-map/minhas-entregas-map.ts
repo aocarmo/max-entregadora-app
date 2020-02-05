@@ -99,13 +99,18 @@ export class MinhasEntregasMapPage {
 
     if (this.usuario.idPerfil == 5) {
       await this.AtualizarListaIntimacoes().then(async (data: any) => {
-       await this.loadMap();
-        loading.dismiss();
+      
+          await this.loadMap();
+          loading.dismiss();
+      
+        
       });
 
     } else {
-      loading.dismiss();
-      await this.loadMap();
+     
+        await this.loadMap();
+        loading.dismiss();
+      
     }
 
   }
@@ -172,64 +177,73 @@ export class MinhasEntregasMapPage {
       this.map_canvas.clear();
 
       if (this.usuario.idPerfil == 5) {
+        
+        if(this.entregas.length > 0){
+        
+          
+          this.entregas.forEach((data: any) => {
 
-        this.entregas.forEach((data: any) => {
-
-          let htmlInfoWindow = new HtmlInfoWindow();
-
-          let frame: HTMLElement = document.createElement('div');
-
-          frame.innerHTML = [
-            '<div style="width: 250px; max-height:300px;">',
-            '<h5>' + data.devedor + '</h5><br>',
-            ' <span><b>Tentativa: </b>' + data.tentativa + '</span><br>',
-            ' <span><b>Endereço: </b>' + data.endereco + '</span><br>',
-            ' <span><b>Protocolo: </b>' + data.protocolo + '</span><br>',
-            '<a onclick="window.open(this.href, \'_system\'); return false;" style="color: blue;" href="https://www.google.com/maps/dir/?api=1&origin=' + this.lat + ',' + this.lon + '&destination=' + data.location.position.lat + ',' + data.location.position.lng + '">Iniciar trajeto</a></div>'
-          ].join("");
-          /*frame.getElementsByTagName("img")[0].addEventListener("click", () => {
-            htmlInfoWindow.setBackgroundColor('red');
-          });*/
-
-          let corPin = "green";
-
-          if (data.idTentativaEntrega == 2) {
-            corPin = "yellow"
-          } else if (data.idTentativaEntrega == 3) {
-            corPin = "red"
-          }
-
-          let options: MarkerOptions = {
-            icon: corPin,
-            position: { lat: data.location.position.lat, lng: data.location.position.lng },
-            draggable: true,
-            disableAutoPan: true
-          };
-
-          /*  htmlInfoWindow.setContent(frame, {
-              width: "100px",
-              height: "100px"
+            let htmlInfoWindow = new HtmlInfoWindow();
+  
+            let frame: HTMLElement = document.createElement('div');
+  
+            frame.innerHTML = [
+              '<div style="width: 250px; max-height:300px;">',
+              '<h5>' + data.devedor + '</h5><br>',
+              ' <span><b>Tentativa: </b>' + data.tentativa + '</span><br>',
+              ' <span><b>Endereço: </b>' + data.endereco + '</span><br>',
+              ' <span><b>Protocolo: </b>' + data.protocolo + '</span><br>',
+              '<a onclick="window.open(this.href, \'_system\'); return false;" style="color: blue;" href="https://www.google.com/maps/dir/?api=1&origin=' + this.lat + ',' + this.lon + '&destination=' + data.location.position.lat + ',' + data.location.position.lng + '">Iniciar trajeto</a></div>'
+            ].join("");
+            /*frame.getElementsByTagName("img")[0].addEventListener("click", () => {
+              htmlInfoWindow.setBackgroundColor('red');
             });*/
-
-          htmlInfoWindow.setContent(frame);
-
-
-          let marker: Marker = this.map_canvas.addMarkerSync(options);
-
-          marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-            htmlInfoWindow.open(marker);
+  
+            let corPin = "green";
+  
+            if (data.idTentativaEntrega == 2) {
+              corPin = "yellow"
+            } else if (data.idTentativaEntrega == 3) {
+              corPin = "red"
+            }
+  
+            let options: MarkerOptions = {
+              icon: corPin,
+              position: { lat: data.location.position.lat, lng: data.location.position.lng },
+              draggable: true,
+              disableAutoPan: true
+            };
+  
+            /*  htmlInfoWindow.setContent(frame, {
+                width: "100px",
+                height: "100px"
+              });*/
+  
+            htmlInfoWindow.setContent(frame);
+  
+  
+            let marker: Marker = this.map_canvas.addMarkerSync(options);
+  
+            marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+              htmlInfoWindow.open(marker);
+            });
+  
           });
 
-        });
+        }
+        
 
       }
 
 
     } else {
-
+    
       let latInicial = -12.991814;
       let lngInicial = -38.469426;
-      if(this.entregas != null &&  this.entregas != []){
+
+   
+      if(this.entregas.length > 0){
+    
         let latInicial = this.entregas[0].location.position.lat;
         let lngInicial = this.entregas[0].location.position.lng;
       }
@@ -241,56 +255,60 @@ export class MinhasEntregasMapPage {
           tilt: 30
         }
       });
+      if(this.entregas.length > 0){
+     
+        this.entregas.forEach((data: any) => {
 
-      this.entregas.forEach((data: any) => {
-
-        let htmlInfoWindow = new HtmlInfoWindow();
-
-        let frame: HTMLElement = document.createElement('div');
-        frame.innerHTML = [
-          '<div style="width: 250px; max-height:300px;">',
-          '<h5>' + data.devedor + '</h5><br>',
-          ' <span><b>Tentativa: </b>' + data.tentativa + '</span><br>',
-          ' <span><b>Endereço: </b>' + data.endereco + '</span><br>',
-          ' <span><b>Protocolo: </b>' + data.protocolo + '</span><br>',
-          '<a onclick="window.open(this.href, \'_system\'); return false;" style="color: blue;" href="https://www.google.com/maps/dir/?api=1&origin=' + this.lat + ',' + this.lon +  '&destination=' + data.location.position.lat + ',' + data.location.position.lng + '">Iniciar trajeto</a></div>'
-        ].join("");
-
-        /*frame.getElementsByTagName("img")[0].addEventListener("click", () => {
-          htmlInfoWindow.setBackgroundColor('red');
-        });*/
-
-        let corPin = "green";
-
-        if (data.idTentativaEntrega == 2) {
-          corPin = "yellow"
-        } else if (data.idTentativaEntrega == 3) {
-          corPin = "red"
-        }
-
-        let options: MarkerOptions = {
-          icon: corPin,
-          position: { lat: data.location.position.lat, lng: data.location.position.lng },
-          draggable: true,
-          disableAutoPan: true
-        };
-
-        /*htmlInfoWindow.setContent(frame, {
-          width: "100px",
-          height: "100px"
-        });*/
-
-        htmlInfoWindow.setContent(frame);
-
-
-        let marker: Marker = this.map_canvas.addMarkerSync(options);
-
-        marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-          htmlInfoWindow.open(marker);
+          let htmlInfoWindow = new HtmlInfoWindow();
+  
+          let frame: HTMLElement = document.createElement('div');
+          frame.innerHTML = [
+            '<div style="width: 250px; max-height:300px;">',
+            '<h5>' + data.devedor + '</h5><br>',
+            ' <span><b>Tentativa: </b>' + data.tentativa + '</span><br>',
+            ' <span><b>Endereço: </b>' + data.endereco + '</span><br>',
+            ' <span><b>Protocolo: </b>' + data.protocolo + '</span><br>',
+            '<a onclick="window.open(this.href, \'_system\'); return false;" style="color: blue;" href="https://www.google.com/maps/dir/?api=1&origin=' + this.lat + ',' + this.lon +  '&destination=' + data.location.position.lat + ',' + data.location.position.lng + '">Iniciar trajeto</a></div>'
+          ].join("");
+  
+          /*frame.getElementsByTagName("img")[0].addEventListener("click", () => {
+            htmlInfoWindow.setBackgroundColor('red');
+          });*/
+  
+          let corPin = "green";
+  
+          if (data.idTentativaEntrega == 2) {
+            corPin = "yellow"
+          } else if (data.idTentativaEntrega == 3) {
+            corPin = "red"
+          }
+  
+          let options: MarkerOptions = {
+            icon: corPin,
+            position: { lat: data.location.position.lat, lng: data.location.position.lng },
+            draggable: true,
+            disableAutoPan: true
+          };
+  
+          /*htmlInfoWindow.setContent(frame, {
+            width: "100px",
+            height: "100px"
+          });*/
+  
+          htmlInfoWindow.setContent(frame);
+  
+  
+          let marker: Marker = this.map_canvas.addMarkerSync(options);
+  
+          marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+            htmlInfoWindow.open(marker);
+          });
+  
         });
+  
 
-      });
-
+      }
+   
 
     }
 
@@ -412,7 +430,8 @@ export class MinhasEntregasMapPage {
         if (this.networkProvider.previousStatus == 0) {
 
           await this.intimacoesProvider.ObterListaIntimacoes().then(async (intimacoesAPI: any) => {
-
+            console.log(JSON.stringify(intimacoesAPI));
+            
             if (intimacoesAPI.ok) {
 
               this.storage.set(this.usuario.id.toString(), intimacoesAPI.retorno);

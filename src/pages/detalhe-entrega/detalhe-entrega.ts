@@ -39,7 +39,8 @@ export class DetalheEntregaPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,public autenticacaoProvider: AutenticacaoProvider) {
 
     this.entrega = this.navParams.get('entrega');
- 
+
+    
   }
 
   registrarPreBaixa(entrega: any){

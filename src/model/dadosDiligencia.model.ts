@@ -10,6 +10,7 @@
     public latitude: number;
     public longitude: number; 
     public arquivos: string [];
+    public idEntregaIntimacao: number;
     public sync?: boolean;        
 
 
