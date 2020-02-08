@@ -7,7 +7,8 @@ import { Storage } from '@ionic/storage';
 import { Constantes } from '../../constantes/constantes';
 
 @IonicPage({
-  name: 'page-notifications'
+  name: 'page-notifications',
+  priority: 'high'
 })
 
 @Component({

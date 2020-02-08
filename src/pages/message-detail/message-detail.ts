@@ -2,7 +2,7 @@ import { Notificacao } from './../../model/notificacao.model';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import {MessageService} from '../../providers/message-service-mock';
+
 
 @IonicPage({
 	name: 'page-message-detail',
@@ -18,7 +18,7 @@ export class MessageDetailPage {
 	notificacao: Notificacao;
 	message: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public service: MessageService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.notificacao = this.navParams.get('notificacao');
   	
   }

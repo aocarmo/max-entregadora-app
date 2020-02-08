@@ -1,5 +1,3 @@
-import { Login1Page } from './../extras/login1/login1';
-
 import { Constantes } from './../../constantes/constantes';
 import { FuncoesProvider } from './../../providers/funcoes/funcoes';
 import { IntimacoesProvider } from './../../providers/intimacoes/intimacoes';

@@ -22,7 +22,6 @@ import { AutenticacaoProvider } from '../../providers/autenticacao/autenticacao'
 @IonicPage({
   name: 'page-detalhe-entrega',
   segment: 'detalhe',
-  priority: 'high'
 })
 @Component({
   selector: 'page-detalhe-entrega',

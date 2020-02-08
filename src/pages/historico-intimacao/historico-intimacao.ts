@@ -16,7 +16,7 @@ import { Constantes } from '../../constantes/constantes';
 @IonicPage({
   name: 'page-historico-intimacao',
   segment: 'historico-intimacao',
-
+  priority: 'high'
 })
 @Component({
   selector: 'page-historico-intimacao',

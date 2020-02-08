@@ -4,7 +4,7 @@ import {Component} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
-import {MessageService} from '../../providers/message-service-mock';
+
 import { Constantes } from '../../constantes/constantes';
 import { ItemSliding } from 'ionic-angular';
 import { IntimacoesProvider } from '../../providers/intimacoes/intimacoes';
@@ -23,7 +23,7 @@ export class MessageListPage {
    
     public notificacoes : Notificacao [] = [];
     public usuario:Usuario;
-    constructor(public navCtrl: NavController, public service: MessageService,
+    constructor(public navCtrl: NavController, 
                 public navParams: NavParams,  public storage: Storage, 
                 public intimacoesProvider :  IntimacoesProvider) {
         this.notificacoes = this.navParams.get('notificacoes');

@@ -5,10 +5,10 @@ import { IonicPage, NavController, NavParams, MenuController, ModalController, P
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { NotificationsPage } from "../notifications/notifications";
 import { Storage } from '@ionic/storage';
-import { HotelService } from "../../providers/hotel-service";
+
 
 import { AutenticacaoProvider } from "../../providers/autenticacao/autenticacao";
-import { ENTREGAS } from "../../mocks/mock-entregas";
+
 import {
   GoogleMaps,
   GoogleMap,
@@ -66,7 +66,7 @@ export class MinhasEntregasMapPage {
 
   constructor(public nav: NavController, public navParams: NavParams,
     public menuCtrl: MenuController, public modalCtrl: ModalController,
-    public popoverCtrl: PopoverController, public hotelService: HotelService, public autenticacaoProvider: AutenticacaoProvider, private mapCtrl: MapControllerProvider,
+    public popoverCtrl: PopoverController,  public autenticacaoProvider: AutenticacaoProvider, private mapCtrl: MapControllerProvider,
     private platform: Platform,
     private googleMaps: GoogleMaps,
     public diagnostic: Diagnostic,

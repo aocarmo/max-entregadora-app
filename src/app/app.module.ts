@@ -11,13 +11,7 @@ import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {Keyboard} from '@ionic-native/keyboard';
 
-import {HotelService} from "../providers/hotel-service";
-import {PlaceService} from "../providers/place-service";
-import {ActivityService} from "../providers/activity-service";
-import {CarService} from "../providers/car-service";
-import {TripService} from "../providers/trip-service";
-import {WeatherProvider} from '../providers/weather';
-import {MessageService} from '../providers/message-service-mock';
+
 
 import {ionBookingApp} from "./app.component";
 import { AutenticacaoProvider } from '../providers/autenticacao/autenticacao';
@@ -77,15 +71,6 @@ import { BrMaskerModule } from 'brmasker-ionic-3';
     StatusBar,
     SplashScreen,
     Keyboard,
-    HotelService,
-    PlaceService,
-    ActivityService,
-    CarService,
-    TripService,
-    CarService,
-    TripService,
-    MessageService,
-    WeatherProvider,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AutenticacaoProvider,
     FuncoesProvider,

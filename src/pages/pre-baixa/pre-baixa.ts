@@ -2,7 +2,6 @@ import { HomePage } from './../home/home';
 import { AutenticacaoProvider } from './../../providers/autenticacao/autenticacao';
 import { Usuario } from './../../model/usuario.model';
 import { Intimacao } from './../../model/intimacao.model';
-import { Login1Page } from './../extras/login1/login1';
 import { NetworkProvider } from './../../providers/network/network';
 import { Constantes } from './../../constantes/constantes';
 import { TipoEntrega } from './../../model/tipoEntrega.model';
@@ -33,7 +32,7 @@ export class FotoDiligencia {
 @IonicPage({
   name: 'page-pre-baixa',
   segment: 'preBaixa',
-  priority: 'high'
+
 })
 @Component({
   selector: 'page-pre-baixa',
