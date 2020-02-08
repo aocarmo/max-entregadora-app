@@ -36,14 +36,15 @@
 
           <ion-item>
             <ion-label>Tipo de Documento</ion-label>
-            <ion-select  formControlName="tipoDocumento">
+            <ion-select  formControlName="tipoDocumento" (ionChange)="onSelectChange($event)">
               <ion-option   value="cpf">CPF</ion-option>
               <ion-option  value="cnpj">CNPJ</ion-option>          
             </ion-select>
           </ion-item>
           <p ion-text color="danger" class="text-1x has-error" *ngIf="langForm.get('tipoDocumento').touched && langForm.get('tipoDocumento').hasError('required')">Favor informar o tipo de documento</p>
           <ion-item>
-            <ion-input formControlName="documento" type="text" name="cpf" placeholder="CPF/CNPJ" [brmasker]="{person: true}"></ion-input>
+            <ion-input *ngIf="isCPF" formControlName="documento" type="text" name="cpf" placeholder="CPF/CNPJ" [brmasker]="{mask:'000.000.000-00', len:14, type: 'num'}"></ion-input>
+            <ion-input *ngIf="!isCPF" formControlName="documento" type="text" name="cpf" placeholder="CPF/CNPJ" [brmasker]="{mask:'00.000.000/0000-00', len:18,  type: 'num'}"></ion-input>
           </ion-item>
           <p ion-text color="danger" class="text-1x has-error" *ngIf="langForm.get('documento').touched && langForm.get('documento').hasError('required')">Favor informar um CPF/CNPJ</p>
         </ion-card>

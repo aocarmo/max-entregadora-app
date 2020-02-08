@@ -25,6 +25,7 @@ import { Constantes } from '../../constantes/constantes';
 export class HistoricoIntimacaoPage {
 
   exibeMenu: boolean = true;
+  isCPF: boolean = true;
   public historicoIntimacao : HistoricoIntimacao = new HistoricoIntimacao();
   langs;
   langForm;
@@ -102,6 +103,16 @@ export class HistoricoIntimacaoPage {
       
       this.navCtrl.push('page-detalhe-historico-intimacao',{'historicoIntimacao': historicoIntimacao, 'dadosIntimacao': dadosIntimacao});
       
+  }
+
+  onSelectChange(selectedValue: any) {
+    if(selectedValue == 'cnpj') {
+      this.isCPF = false;
+
+    }
+    else{
+      this.isCPF = true;
+    }
   }
 
 }
