@@ -300,6 +300,43 @@ export class IntimacoesProvider {
 
 
   }
+  public ObterHistoricoIntimacao(dtInicial: string, dtFinal: string, nuDocumento: string, cpf: string) {
+
+    let token = this.autenticacaoProvider.getToken();
+
+    this.usuario = this.autenticacaoProvider.getUser(token);
+ 
+   let dados = { "numero_documento": nuDocumento,
+                  "data_final" : dtInicial,
+                  "data_inicial" : dtFinal,
+                  "tipo_documento": cpf
+              };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      })
+    };
+
+    return new Promise(resolve => {
+
+      this.http.post(Constantes.API_OBTER_HISTORICO_INTIMACAO, dados, httpOptions).timeout(Constantes.TIMEOUT_RESQUEST).subscribe((data: any) => {
+
+        resolve(data);     
+        
+      }, err => {
+        console.log(JSON.stringify(err));
+        resolve(err);
+
+      });
+    });
+
+
+
+  }
+
+  
 
 
 

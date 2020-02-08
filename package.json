@@ -45,6 +45,7 @@
     "angular-oauth2-oidc": "^3.1.4",
     "angular2-jwt": "^0.2.3",
     "b64-to-blob": "^1.2.19",
+    "brmasker-ionic-3": "^1.6.3",
     "cordova-android": "^8.1.0",
     "cordova-browser": "5.0.4",
     "cordova-ios": "^5.0.0",

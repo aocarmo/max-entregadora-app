@@ -78,4 +78,11 @@ export class FuncoesProvider {
     toast.present();
   }
 
+  formataDataPadraoBR (dataCompleta: string) :string{
+
+    let data = dataCompleta.split('T')[0].split('-');
+    return data[2] + "/" + data[1] + "/" +data[0];
+  }
+
+
 }

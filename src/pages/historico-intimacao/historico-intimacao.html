@@ -1,0 +1,95 @@
+<!-- -->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <button *ngIf="exibeMenu" ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title align="center">   
+      Historico de Intimações
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding class="search-cars common-bg">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col col-12>
+        <!-- choose pickup and drop-off-->
+        <h4 ion-text no-margin color="primary" align="center" class="marginB-16px">
+          Período 
+        </h4>
+        <form [formGroup]="langForm" class="list-form">
+
+        <!--choose time-->
+        <ion-card no-margin margin-bottom class="full-width">
+          <ion-item class="border-bottom">
+            <ion-icon class="fas fa-calendar-alt" color="primary" item-left></ion-icon>
+            <ion-datetime formControlName="dtInicial"  placeholder="Data Inicial" monthShortNames='Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez' cancelText="Cancelar" doneText="Ok" class="no-pl" ion-text displayFormat="DD/MM/YYYY" pickerFormat="DD/MMM/YYYY" ></ion-datetime>
+          </ion-item>
+          <ion-item>
+            <ion-icon class="fas fa-calendar-alt" color="primary" item-left></ion-icon>
+            <ion-datetime formControlName="dtFinal"  placeholder="Data Final" monthShortNames='Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez' cancelText="Cancelar" doneText="Ok"  class="no-pl" ion-text displayFormat="DD/MM/YYYY" pickerFormat="DD/MMM/YYYY"></ion-datetime>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Tipo de Documento</ion-label>
+            <ion-select  formControlName="tipoDocumento">
+              <ion-option   value="cpf">CPF</ion-option>
+              <ion-option  value="cnpj">CNPJ</ion-option>          
+            </ion-select>
+          </ion-item>
+          <p ion-text color="danger" class="text-1x has-error" *ngIf="langForm.get('tipoDocumento').touched && langForm.get('tipoDocumento').hasError('required')">Favor informar o tipo de documento</p>
+          <ion-item>
+            <ion-input formControlName="documento" type="text" name="cpf" placeholder="CPF/CNPJ" [brmasker]="{person: true}"></ion-input>
+          </ion-item>
+          <p ion-text color="danger" class="text-1x has-error" *ngIf="langForm.get('documento').touched && langForm.get('documento').hasError('required')">Favor informar um CPF/CNPJ</p>
+        </ion-card>
+
+        <hr>
+     
+
+        <button [disabled]="!langForm.valid  " ion-button icon-start block no-margin color="primary" class="round" tappable (click)="pesquisar()">
+          <ion-icon name="search"></ion-icon> Pesquisar
+        </button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid fixed>
+    <ion-row *ngFor="let intimacao of historicoIntimacao.dadosIntimacao" (click)="abrirDetalhe(historicoIntimacao, intimacao)">
+      <ion-col col-12 margin-bottom>
+        <div class="card round">
+          <ion-list no-margin>
+            <ion-item align="center" text-wrap [ngClass]="(intimacao.nomeUltimoTipoDiligencia == 'Positiva')?'green-bg':'danger-bg'" >           
+              <h2 align="center" ion-text class="text-white bold">{{ intimacao.nomeUltimoTipoDiligencia }}</h2>           
+            </ion-item>          
+          
+          </ion-list>   
+
+          <div class="border-bottom" padding>
+            <h5 no-margin ion-text color="primary" class="bold">Protocolo</h5>
+            <span ion-text>{{ intimacao.numero_protocolo }}</span>
+            <h5 no-margin ion-text color="primary" class="bold">Data de Entrega</h5>
+            <span ion-text>{{ intimacao.dtUltimaEntregaIntimacao }}</span>           
+            <h5 no-margin ion-text color="primary" class="bold">Tipo Diligência</h5>
+            <span ion-text>{{ intimacao.nomeUltimaTentativaEntrega }} Tentativa</span>       
+          </div>
+
+          <!--total price-->
+          <div padding>          
+            <div class="clear"></div>
+          </div>
+        </div>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <!-- search button -->
+
+</ion-footer>

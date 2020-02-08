@@ -50,7 +50,7 @@
       <ion-col col-12 margin-bottom>
         <div class="card round">
           <ion-list no-margin>
-            <ion-item text-wrap class="primary-bg">           
+            <ion-item text-wrap class="secondary-bg">           
               <h2 ion-text class="text-white bold">{{ lista.dadosIntimacao.nomeDestinatario }}</h2>           
             </ion-item>
           </ion-list>   
@@ -63,7 +63,9 @@
             <h5 no-margin ion-text color="primary" class="bold">Protocolo</h5>
             <span ion-text>{{ lista.dadosIntimacao.numeroProtocolo }}</span>
             <h5 no-margin ion-text color="primary" class="bold">Tipo Diligência</h5>
-            <span ion-text>{{ lista.dadosPreBaixa.nomeTentativaEntrega }} Tentativa - {{ lista.dadosPreBaixa.nomeTipoDiligencia }}</span>       
+            <span *ngIf="lista.dadosPreBaixa.nomeTentativaEntrega == '1ª'" color="green" ion-text>{{ lista.dadosPreBaixa.nomeTentativaEntrega }} Tentativa - {{ lista.dadosPreBaixa.nomeTipoDiligencia }}</span>       
+            <span *ngIf="lista.dadosPreBaixa.nomeTentativaEntrega == '2ª'" color="yellow" ion-text>{{ lista.dadosPreBaixa.nomeTentativaEntrega }} Tentativa - {{ lista.dadosPreBaixa.nomeTipoDiligencia }}</span>       
+            <span *ngIf="lista.dadosPreBaixa.nomeTentativaEntrega == '3ª'" color="danger" ion-text>{{ lista.dadosPreBaixa.nomeTentativaEntrega }} Tentativa - {{ lista.dadosPreBaixa.nomeTipoDiligencia }}</span>       
           </div>
 
           <!--total price-->

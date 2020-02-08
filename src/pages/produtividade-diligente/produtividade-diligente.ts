@@ -43,9 +43,11 @@ public listaPrebaixas : IntimacaoPreBaixa[] = [];
   }
 
   pesquisar(){
+    
+    
     if(this.networkProvider.previousStatus == 0){
       let load = this.FuncoesProvider.showLoading("Aguarde...");
-      this.IntimacoesProvider.ObterPreBaixas('31/10/2019','31/10/2019').
+      this.IntimacoesProvider.ObterPreBaixas(this.formataData(this.search.dtInicio),this.formataData(this.search.dtFim)).
         then((data: any) =>{
           load.dismiss();
           if(data.ok && data.retorno.length == 0){
