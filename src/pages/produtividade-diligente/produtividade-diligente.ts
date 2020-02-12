@@ -50,6 +50,8 @@ public listaPrebaixas : IntimacaoPreBaixa[] = [];
       this.IntimacoesProvider.ObterPreBaixas(this.formataData(this.search.dtInicio),this.formataData(this.search.dtFim)).
         then((data: any) =>{
           load.dismiss();
+          console.log(JSON.stringify(data));
+          
           if(data.ok && data.retorno.length == 0){
             this.FuncoesProvider.showAlert("Não foram encontrados registros para as datas informadas.");
           }else if(data.ok && data.retorno.length > 0){

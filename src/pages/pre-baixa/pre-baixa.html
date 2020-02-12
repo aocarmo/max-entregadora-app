@@ -19,7 +19,7 @@
         </div>
 
     <ion-item>
-      <ion-label>Motivo</ion-label>
+      <ion-label color="primary">Motivo</ion-label>
       <ion-select  formControlName="motivo">
         <ion-option *ngFor="let tipoEntrega  of listaTipoEntrega" [value]="tipoEntrega.id">{{tipoEntrega.descricao}}</ion-option>
      
@@ -29,7 +29,7 @@
     <p ion-text color="danger" class="text-1x has-error" *ngIf="langForm.get('motivo').touched && langForm.get('motivo').hasError('required')">Favor escolher um motivo</p>
 
      <ion-item>
-        <ion-label floating>Observação</ion-label>
+        <ion-label  color="primary" floating>Observação</ion-label>
         <ion-textarea style=" color: black;" placeholder="" formControlName="observacao"></ion-textarea>
       </ion-item>
 

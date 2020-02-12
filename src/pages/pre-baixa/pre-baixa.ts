@@ -94,12 +94,12 @@ export class PreBaixaPage {
 
       ])],
       observacao: ['', Validators.compose([
-        Validators.required
+        //Validators.required
       ])]
     });
 
     this.langForm.get('motivo').disable();
-    this.langForm.get('observacao').disable();
+   // this.langForm.get('observacao').disable();
   }
 
   ionViewDidLoad() {
@@ -112,13 +112,13 @@ export class PreBaixaPage {
       this.tipoDiligencia = 1;
      this.langForm.reset();
       this.langForm.get('motivo').disable();    
-      this.langForm.get('observacao').disable();
+      //this.langForm.get('observacao').disable();
     
 
     }else{
       this.tipoDiligencia = 2;
       this.langForm.get('motivo').enable();
-      this.langForm.get('observacao').enable();
+    //  this.langForm.get('observacao').enable();
     }
 
    

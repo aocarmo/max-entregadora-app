@@ -34,7 +34,7 @@ export class HomePage {
   public pages = [
     { pageName: 'page-minhas-entregas-map', title: 'Mapa', icon: 'map', id: 'newsTab' },
     { pageName: 'page-minhas-entregas-list', title: 'Entregas', icon: 'mail', id: 'aboutTab' },
-    { pageName: 'page-historico-intimacao', title: 'Historico', icon: 'time', id: 'historico', params: {"id" : false} }
+    { pageName: 'page-historico-intimacao', title: 'Histórico', icon: 'time', id: 'historico', params: {"id" : false} }
   ];
 
   selectedTab = 0;
