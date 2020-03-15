@@ -34,7 +34,8 @@ export class HistoricoIntimacaoPage {
               public FuncoesProvider: FuncoesProvider) {
 
                 console.log(this.navParams.get('id'));
-                
+                this.historicoIntimacao.dadosDevedor = null;
+                this.historicoIntimacao.dadosIntimacao = [];
               
                 if(this.navParams.get('id') != null ){
                   this.exibeMenu = false;
@@ -80,10 +81,11 @@ export class HistoricoIntimacaoPage {
         ,this.langForm.value.documento,this.langForm.value.tipoDocumento).
         then((data: any) =>{
           load.dismiss();
+        console.log(JSON.stringify(data));
         
-          if(data.ok && data.retorno.dadosIntimacao.length == 0){
-            this.FuncoesProvider.showAlert("Não foram encontrados registros para as datas informadas.");
-          }else if(data.ok &&  data.retorno.dadosIntimacao.length > 0){
+          if(data.ok && data.retorno.dadosDevedor.nome_empresarial == ""){
+            this.FuncoesProvider.showAlert("Não foram encontrados registros para os filtros informados.");
+          }else if(data.ok && data.retorno.dadosDevedor.nome_empresarial != ""){
             this.historicoIntimacao = data.retorno;
            
             

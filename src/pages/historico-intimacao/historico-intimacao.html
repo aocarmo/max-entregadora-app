@@ -59,6 +59,24 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-grid *ngIf="historicoIntimacao.dadosDevedor != null" fixed>
+    <ion-row>
+      <ion-col col-12>
+        <!--high light-->
+        <div class="border-bottom" padding>
+          <h5 ion-text color="dark" class="bold">Devedor</h5>
+          <h5 no-margin ion-text color="primary" class="bold">Nome Empresarial</h5>
+          <span ion-text>{{ historicoIntimacao.dadosDevedor.nome_empresarial }}</span>
+          <h5 no-margin ion-text color="primary" class="bold">Nome Fantasia</h5>
+          <span ion-text>{{ historicoIntimacao.dadosDevedor.nome_fantasia }}</span>
+          <h5 no-margin ion-text color="primary" class="bold">Documento</h5>
+          <span ion-text>{{ historicoIntimacao.dadosDevedor.numero_documento }}</span>
+          <hr>   
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
   <ion-grid fixed>
     <ion-row *ngFor="let intimacao of historicoIntimacao.dadosIntimacao" (click)="abrirDetalhe(historicoIntimacao, intimacao)">
       <ion-col col-12 margin-bottom>

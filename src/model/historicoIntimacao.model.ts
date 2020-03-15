@@ -60,6 +60,6 @@ class DadosIntimacao {
 }
 
 export class HistoricoIntimacao {
-    public dadosIntimacao : DadosIntimacao[];
-    public dadosDevedor : DadosDevedor;
+    public dadosIntimacao? : DadosIntimacao[];
+    public dadosDevedor? : DadosDevedor;
 }
